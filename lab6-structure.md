@@ -13,16 +13,7 @@ Trong kỹ thuật vệ tinh CubeSat, Phân hệ Cấu trúc thường bị nh�
 ### 2. Tác động Đa chiều của Khung Cơ khí lên các Phân hệ Khác
 Một thay đổi nhỏ trong thiết kế cơ khí sẽ ngay lập tức gây ra hiệu ứng domino ảnh hưởng trực tiếp tới hoạt động của tất cả các phân hệ còn lại:
 
-```mermaid
-flowchart TD
-    FRAME["🔩 KHUNG CẤU TRÚC CƠ KHÍ CUBESAT"]
-    
-    FRAME -->|1. Cung cấp Tấm tản nhiệt & Vách nén tế bào pin| EPS["🔋 Phân hệ Năng lượng (EPS)"]
-    FRAME -->|2. Lồng Faraday che chắn bức xạ & Tiếp mass tĩnh điện| OBC["🖥️ Phân hệ Xử lý (OBC)"]
-    FRAME -->|3. Mặt đất phẳng phản xạ nhân tạo (Ground Plane 50 Ohm)| COM["📡 Phân hệ Truyền thông (COM)"]
-    FRAME -->|4. Mặt phẳng tham chiếu cơ học siêu cứng, chống uốn| SENSORS["🔬 Phân hệ Cảm biến (Sensors)"]
-    FRAME -->|5. Bề mặt tiếp xúc ray trượt dẫn hướng chịu mài mòn| PPOD["🚀 Ống phóng Tên lửa (P-POD)"]
-```
+![Giao diện liên kết cơ khí cấu trúc 1U](../figs/png/lab6_structure_interfaces.png)
 
 1. **Tác động lên Phân hệ Năng lượng (EPS):**
    - *Tản nhiệt cho Khối Pin:* Pin Li-Po chỉ hoạt động an toàn trong dải nhiệt độ hẹp (0°C - 45°C). Khung cơ khí phải cung cấp các cầu nhiệt kim loại dẫn nhiệt sinh ra khi sạc/xả pin ra vỏ ngoài.
@@ -70,20 +61,7 @@ Vật liệu sử dụng cho khung CubeSat phải đáp ứng đồng thời 4 t
 ### 2. Quy trình Xử lý Bề mặt Chọn lọc: Anodize Cứng Type III vs Lớp Phủ Alodine
 Khung nhôm CubeSat bắt buộc phải trải qua quy trình xử lý bề mặt chọn lọc hai giai đoạn (Selective Masking) theo tiêu chuẩn quân sự Hoa Kỳ:
 
-```mermaid
-flowchart LR
-    RAW["Khung Nhôm Al 6061-T6 Thô Gia công CNC"] --> MASK["Dán Che Chọn Lọc (Selective Masking)"]
-    
-    MASK -->|Xử lý 4 Thanh Ray Ngoài| ANODIZE["Anode Hóa Cứng Type III (MIL-A-8625)
-- Lớp Oxit Nhôm Gốm Dày 25-50 um
-- Độ Cứng 60-70 HRC Chống Mài Mòn
-- Cách Điện Tuyệt Đối Chống Hàn Nguội"]
-    
-    MASK -->|Xử lý Lòng Trong & Mặt Ghép| ALODINE["Phủ Chuyển đổi Hóa học Alodine (MIL-DTL-5541 Class 3)
-- Màng Cromat Mỏng Bảo vệ Khỏi Oxy Hóa
-- Duy trì Tính Dẫn Điện Tuyệt Hảo (R < 0.1 Ohm)
-- Dùng Làm Điểm Nối Mass Chung (Ground Bonding)"]
-```
+![Quy trình xử lý bề mặt Anodize và Alodine](../figs/png/lab6_surface_treatment.png)
 
 1. **Anodize Hóa Cứng Type III (Hard Anodizing - Tiêu chuẩn MIL-A-8625):**
    - Áp dụng trên: **4 thanh ray dẫn hướng ở 4 góc** tiếp xúc trực tiếp với lòng ống phóng P-POD.
@@ -132,21 +110,15 @@ Bên trong lòng khối lập phương 1U, các tầng bo mạch điện tử (O
   - Khi đưa vệ tinh vào buồng thử nghiệm chân không nhiệt (TVAC), lượng khí nén này sẽ rò rỉ cực kỳ chậm chạp qua các khe hở vi mô của đường ren ra ngoài (hiện tượng **Rò rỉ ảo - Virtual Leak**), khiến buồng thử nghiệm không bao giờ đạt được mức chân không mong muốn và làm sai lệch kết quả đo.
   - Bu lông thông hơi được khoan một lỗ rỗng siêu nhỏ xuyên suốt tâm dọc trục bu lông, cho phép toàn bộ không khí ở đáy lỗ ren thoát ra ngay lập tức khi buồng hút chân không.
 
-```mermaid
-flowchart LR
-    VENT["Lỗ Khoan Xuyên Tâm Dọc Trục Bu lông (Vented Hole)"]
-    BLIND["Đáy Lỗ Ren Kín (Blind Hole) Bị Kẹt Khí"]
-    
-    BLIND -->|Khí Thoát Tự Do Qua Tâm Ốc| VENT
-    VENT --> VACUUM["Không gian Chân không Siêu cao TVAC"]
-    Note over VENT,VACUUM: Triệt tiêu Hoàn toàn Hiện tượng Rò rỉ Ảo (Virtual Leak)
-```
+![Thiết kế bu-lông thông hơi chống rò rỉ ảo](../figs/png/lab6_vented_screw.png)
 
 ### 3. Bảng Cân Đối Khối Lượng (Mass Budget) & Cân Bằng Trọng Tâm (Center of Mass - CoM)
 - **Bảng Cân đối Khối lượng (Mass Budget):** Tổng khối lượng của một CubeSat 1U bị khống chế nghiêm ngặt không được vượt quá 1.330 kg (hoặc 2.000 kg). Trong giai đoạn thiết kế, kỹ sư phải duy trì một biên độ khối lượng dự phòng (**Mass Margin** ≥ 15 - 20%) để bù đắp cho sự tăng khối lượng thực tế của dây dẫn, màng bọc và keo dán trong quá trình lắp ráp.
 - **Quy chuẩn Trọng tâm CoM Khắt khe:**
   - Tiêu chuẩn CalPoly quy định: Vị trí trọng tâm thực tế của CubeSat 1U không được phép lệch quá **±2.0 cm (±20 mm)** so với tâm hình học lý thuyết của khối lập phương trên cả 3 trục $X, Y, Z$:
+
 $$|X_\text{cm}| \le 20\text{ mm}, \quad |Y_\text{cm}| \le 20\text{ mm}, \quad |Z_\text{cm}| \le 20\text{ mm}$$
+
   - Nếu trọng tâm bị lệch quá giới hạn, khi lò xo P-POD đẩy vào mặt đáy vệ tinh, lực đẩy không đi qua trọng tâm sẽ tạo ra một mô-men ngẫu lực (Tip-off Torque) cực lớn, khiến vệ tinh bị quay lộn vòng hỗn loạn với vận tốc góc hàng trăm độ trên giây ngay khi vừa rời ống phóng, gây tê liệt hệ thống ăng-ten và pin mặt trời.
 
 ---

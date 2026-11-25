@@ -5,26 +5,7 @@ Giai đoạn Tích hợp Hệ thống là thời điểm quyết định của t
 
 Khi nhồi nhét tất cả các phân hệ vào không gian chật hẹp của khối lập phương 1U (10 × 10 × 11.35 cm), kỹ sư tích hợp phải đối mặt và giải quyết đồng thời 5 thách thức kỹ thuật lớn:
 
-```mermaid
-flowchart TD
-    subgraph IntegrationChallenges ["⚠️ 5 THÁCH THỨC TÍCH HỢP HỆ THỐNG VỆ TINH"]
-        C1["1. Xung đột Tài nguyên Bus & Vi xử lý
-Tranh chấp bus I2C giữa BMP280, MPU6500, MAX17048
-Tranh chấp bus SPI giữa Thẻ nhớ và Flash"]
-        C2["2. Nhiễu Tương thích Điện từ Nội bộ (EMI/EMC)
-Sóng hài máy phát LoRa 433MHz & XCLK 20MHz Camera
-chèn ép làm tê liệt bộ thu định vị GNSS L1"]
-        C3["3. Chia sẻ Nguồn & Sụt áp Đột biến (Brownout)
-Đỉnh tải dòng điện khi đồng thời Chụp ảnh + Ghi thẻ + Phát LoRa
-vượt quá 500mA làm sập nguồn CPU"]
-        C4["4. Bẫy Nhiệt Khép kín Trong Không gian Kín
-Không có đối lưu không khí trong chân không
-Nhiệt bị giam giữ làm quá nhiệt chip, đóng băng pin"]
-        C5["5. Tính Tất định Thời gian thực & Ngăn ngừa Deadlock
-Hệ điều hành đa nhiệm FreeRTOS không được trễ deadline
-Tránh bế tắc tài nguyên (Deadlock) giữa các luồng"]
-    end
-```
+![5 thách thức tích hợp hệ thống CubeSat](../figs/png/lab7_integration_challenges.png)
 
 ### 2. Chi tiết Giải pháp Kỹ thuật Khắc phục 5 Thách thức
 1. **Giải quyết Xung đột Bus I2C/SPI:**

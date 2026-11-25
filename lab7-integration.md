@@ -9,26 +9,7 @@ Giai đoạn Tích hợp Hệ thống là thời điểm quyết định của t
 
 Khi nhồi nhét tất cả các phân hệ vào không gian chật hẹp của khối lập phương 1U (10 × 10 × 11.35 cm), kỹ sư tích hợp phải đối mặt và giải quyết đồng thời 5 thách thức kỹ thuật lớn:
 
-```mermaid
-flowchart TD
-    subgraph IntegrationChallenges ["⚠️ 5 THÁCH THỨC TÍCH HỢP HỆ THỐNG VỆ TINH"]
-        C1["1. Xung đột Tài nguyên Bus & Vi xử lý
-Tranh chấp bus I2C giữa BMP280, MPU6500, MAX17048
-Tranh chấp bus SPI giữa Thẻ nhớ và Flash"]
-        C2["2. Nhiễu Tương thích Điện từ Nội bộ (EMI/EMC)
-Sóng hài máy phát LoRa 433MHz & XCLK 20MHz Camera
-chèn ép làm tê liệt bộ thu định vị GNSS L1"]
-        C3["3. Chia sẻ Nguồn & Sụt áp Đột biến (Brownout)
-Đỉnh tải dòng điện khi đồng thời Chụp ảnh + Ghi thẻ + Phát LoRa
-vượt quá 500mA làm sập nguồn CPU"]
-        C4["4. Bẫy Nhiệt Khép kín Trong Không gian Kín
-Không có đối lưu không khí trong chân không
-Nhiệt bị giam giữ làm quá nhiệt chip, đóng băng pin"]
-        C5["5. Tính Tất định Thời gian thực & Ngăn ngừa Deadlock
-Hệ điều hành đa nhiệm FreeRTOS không được trễ deadline
-Tránh bế tắc tài nguyên (Deadlock) giữa các luồng"]
-    end
-```
+![5 thách thức tích hợp hệ thống CubeSat](../figs/png/lab7_integration_challenges.png)
 
 ### 2. Chi tiết Giải pháp Kỹ thuật Khắc phục 5 Thách thức
 1. **Giải quyết Xung đột Bus I2C/SPI:**
@@ -77,23 +58,7 @@ Tránh bế tắc tài nguyên (Deadlock) giữa các luồng"]
 ### 2. Máy Trạng Thái Hữu Hạn Điều Khiển Sứ Mệnh (Mission FSM)
 Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu Hạn (**Finite State Machine - FSM**) chuẩn mực:
 
-```mermaid
-stateDiagram-v2
-    [*] --> STATE_BOOT: Đóng điện từ ống phóng
-    
-    STATE_BOOT --> STATE_DETUMBLE: Hoàn tất 30 phút im lặng & Bung anten
-    STATE_DETUMBLE --> STATE_NORMAL_OPS: Vận tốc góc < 5 deg/s (Thuật toán B-dot)
-    
-    STATE_NORMAL_OPS --> STATE_PAYLOAD_EXEC: Nhận lệnh CMD_TAKE_PHOTO (SOC > 60%)
-    STATE_PAYLOAD_EXEC --> STATE_NORMAL_OPS: Hoàn tất chụp & lưu trữ
-    
-    STATE_NORMAL_OPS --> STATE_POWER_SAVE: Điện áp pin Vbat < 3.55V (SOC < 25%)
-    STATE_POWER_SAVE --> STATE_NORMAL_OPS: Pin phục hồi Vbat > 3.90V (SOC > 60%)
-    
-    STATE_NORMAL_OPS --> STATE_SAFE_MODE: Lỗi phần cứng / Pin < 3.4V / Lệnh khẩn cấp
-    STATE_POWER_SAVE --> STATE_SAFE_MODE: Pin chạm đáy nguy kịch < 3.4V
-    STATE_SAFE_MODE --> STATE_NORMAL_OPS: Lệnh phục hồi từ mặt đất CMD_RECOVER
-```
+![Máy trạng thái nhiệm vụ bay CubeSat FSM](../figs/png/lab7_mission_fsm.png)
 
 ### 3. Chi tiết 6 Trạng thái Bay Cốt lõi
 - **`STATE_BOOT`:**
@@ -128,6 +93,8 @@ stateDiagram-v2
 ---
 
 ## 📖 Doc 7.3: Sổ Tay Vận Hành Bay (FOM) & Mô Phỏng Quỹ Đạo LEO 95 Phút
+
+![Chu kỳ quỹ đạo LEO 95 phút và cửa sổ liên lạc Trạm Mặt đất](../figs/png/lab7_leo_orbit_pass.png)
 
 ### 1. Sổ Tay Vận Hành Bay (Flight Operations Manual - FOM)
 Sổ tay FOM là tài liệu quy chuẩn tác chiến dành cho kíp trực điều hành Trạm mặt đất:

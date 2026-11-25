@@ -13,7 +13,9 @@
 - **Cấu trúc Phần cứng:** Tích hợp 3 cảm biến từ điện trở dị hướng (Anisotropic Magnetoresistive - AMR) độ nhạy cao đo cường độ từ trường Trái Đất theo 3 trục trực giao $M_x, M_y, M_z$ (đơn vị Gauss hoặc $\mu\text{T}$).
 - **Thuật toán Tính Góc Hướng La bàn (Heading):**
   Góc hướng la bàn so với cực Bắc từ được tính bằng hàm lượng giác:
+
 $$\text{Heading} = \text{atan2}(M_y, M_x) \cdot \frac{180}{\pi}$$
+
   Nếu $\text{Heading} < 0^\circ$, hiệu chỉnh: $\text{Heading} = \text{Heading} + 360^\circ$.
 - **Hợp nhất Dữ liệu Quán tính 9 Bậc Tự do (9-DOF):** 
   Kết hợp gia tốc kế 3 trục (đo véc-tơ trọng trường), con quay hồi chuyển 3 trục (đo vận tốc góc) từ MPU6500 và từ kế 3 trục (đo véc-tơ từ trường Trái Đất) từ GY-271 cho phép phân hệ ADCS của vệ tinh xác định đầy đủ và ổn định cả 3 góc Euler trong không gian 3 chiều: Roll $\phi$, Pitch $\theta$ và Yaw / Heading $\psi$.
@@ -24,25 +26,12 @@ $$\text{Heading} = \text{atan2}(M_y, M_x) \cdot \frac{180}{\pi}$$
 - **Gia tốc kế:** Đo véc-tơ gia tốc trọng trường $g$. Cho góc nghiêng chính xác tuyệt vời khi ở trạng thái tĩnh dài hạn, nhưng lại cực kỳ nhạy cảm với các rung động cơ học ngắn hạn và lực quán tính lúc chuyển động (Nhiễu tần số cao).
 - **Con quay hồi chuyển:** Đo vận tốc góc quay tức thời $\omega$. Tích phân góc quay $\theta = \int \omega \, dt$ đáp ứng cực nhanh và không bị ảnh hưởng bởi rung lắc cơ học, nhưng lại bị hiện tượng trôi dạt điểm không (Gyro Drift / DC Bias) khiến góc tính toán bị sai lệch tích lũy tăng dần theo thời gian (Nhiễu tần số thấp).
 - **Bộ Lọc Bù (Complementary Filter):** Kết hợp một bộ lọc thông cao (High-pass Filter) cho con quay và một bộ lọc thông thấp (Low-pass Filter) cho gia tốc kế theo công thức hợp nhất:
+
 $$\theta_t = \alpha \cdot (\theta_{t-1} + \omega \cdot \Delta t) + (1 - \alpha) \cdot \theta_\text{accel}$$
+
   Trong đó: $\Delta t$ là chu kỳ lấy mẫu, $\alpha$ là trọng số lọc (thường chọn $\alpha = 0.96 - 0.98$). Thuật toán chạy siêu nhanh trên vi điều khiển, triệt tiêu hoàn toàn độ trôi của con quay và lọc sạch nhiễu rung lắc của gia tốc kế.
 
-```mermaid
-flowchart TD
-    GYRO["Con quay Hồi chuyển (Gyro)
-Đo vận tốc góc quay w"] --> INT["Tích phân Tức thời: w * dt"]
-    INT --> HPF["Bộ lọc Thông cao (High-Pass)
-Nhân hệ số alpha = 0.98"]
-    
-    ACCEL["Gia tốc kế (Accelerometer)
-Đo véc-tơ trọng trường g"] --> TRIG["Tính góc lượng giác: atan2()"]
-    TRIG --> LPF["Bộ lọc Thông thấp (Low-Pass)
-Nhân hệ số (1 - alpha) = 0.02"]
-    
-    HPF --> SUM["Cộng Hợp nhất (Fusion)"]
-    LPF --> SUM
-    SUM --> ANGLE["Góc Nghiêng Ước lượng Chính xác (Roll / Pitch)"]
-```
+![Bộ lọc bù hợp nhất dữ liệu IMU](../figs/png/lab4_complementary_filter.png)
 
 ---
 

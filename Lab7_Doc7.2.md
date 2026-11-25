@@ -11,23 +11,7 @@
 ### 2. Máy Trạng Thái Hữu Hạn Điều Khiển Sứ Mệnh (Mission FSM)
 Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu Hạn (**Finite State Machine - FSM**) chuẩn mực:
 
-```mermaid
-stateDiagram-v2
-    [*] --> STATE_BOOT: Đóng điện từ ống phóng
-    
-    STATE_BOOT --> STATE_DETUMBLE: Hoàn tất 30 phút im lặng & Bung anten
-    STATE_DETUMBLE --> STATE_NORMAL_OPS: Vận tốc góc < 5 deg/s (Thuật toán B-dot)
-    
-    STATE_NORMAL_OPS --> STATE_PAYLOAD_EXEC: Nhận lệnh CMD_TAKE_PHOTO (SOC > 60%)
-    STATE_PAYLOAD_EXEC --> STATE_NORMAL_OPS: Hoàn tất chụp & lưu trữ
-    
-    STATE_NORMAL_OPS --> STATE_POWER_SAVE: Điện áp pin Vbat < 3.55V (SOC < 25%)
-    STATE_POWER_SAVE --> STATE_NORMAL_OPS: Pin phục hồi Vbat > 3.90V (SOC > 60%)
-    
-    STATE_NORMAL_OPS --> STATE_SAFE_MODE: Lỗi phần cứng / Pin < 3.4V / Lệnh khẩn cấp
-    STATE_POWER_SAVE --> STATE_SAFE_MODE: Pin chạm đáy nguy kịch < 3.4V
-    STATE_SAFE_MODE --> STATE_NORMAL_OPS: Lệnh phục hồi từ mặt đất CMD_RECOVER
-```
+![Máy trạng thái nhiệm vụ bay CubeSat FSM](../figs/png/lab7_mission_fsm.png)
 
 ### 3. Chi tiết 6 Trạng thái Bay Cốt lõi
 - **`STATE_BOOT`:**

@@ -12,26 +12,7 @@ Kỹ thuật Hệ thống là phương pháp luận kỹ thuật và quản tr�
 ### 2. Vòng đời Dự án Không gian theo Pha (NASA/ESA Project Lifecycle)
 Chu trình phát triển một sứ mệnh vệ tinh được phân chia thành các pha kế tiếp với các cột mốc đánh giá kỹ thuật khắt khe (Gate Reviews):
 
-```mermaid
-flowchart LR
-    A["Pre-Phase A
-Nghiên cứu Khái niệm"] --> B["Phase A
-Phát triển Khái niệm
-(MDR / SRR)"]
-    B --> C["Phase B
-Thiết kế Sơ bộ
-(PDR)"]
-    C --> D["Phase C
-Thiết kế Chi tiết & Chế tạo
-(CDR)"]
-    D --> E["Phase D
-Tích hợp & Thử nghiệm AIT
-(AR / FRR)"]
-    E --> F["Phase E
-Vận hành Sứ mệnh"]
-    F --> G["Phase F
-Giải thể Sứ mệnh"]
-```
+![Vòng đời dự án vũ trụ chuẩn NASA/ESA](../figs/png/lab8_project_lifecycle.png)
 
 - **Pre-Phase A (Nghiên cứu Khái niệm - Concept Studies):** Xác định mục tiêu khoa học, nghiên cứu tính khả thi kỹ thuật và đề xuất các phương án kiến trúc sơ khởi.
 - **Phase A (Phát triển Khái niệm - Concept & Technology Development):** Chốt lại các yêu cầu sứ mệnh cấp hệ thống, kết thúc bằng cột mốc đánh giá **MDR / SRR (Mission Definition Review / System Requirements Review)**.
@@ -80,17 +61,7 @@ Bảng điều khiển (Mission Dashboard) là giao diện duy nhất để kíp
 | **Trung tâm Phát lệnh (Uplink Console)** | Danh mục lệnh và tham số kèm nút bấm Arm/Execute | Gửi các mệnh lệnh điều hành có cơ chế xác nhận an toàn hai bước để ngăn chặn thao tác bấm nhầm |
 | **Khung Ảnh Lũy tiến (Image Gallery)** | Mảng bộ đệm byte ảnh: Image Chunk Stream | Ghép và hiển thị dần bức ảnh bề mặt Trái Đất theo thời gian thực khi các gói mảnh được tải về từ không gian |
 
-```mermaid
-flowchart TD
-    SERIAL["Luồng Dữ liệu Viễn trắc Web Serial"] --> PARSER["Bộ Phân tích Giao thức (Parser)"]
-    
-    PARSER -->|Điện áp, Dung lượng, Nhiệt độ| GAUGE["Radial Gauge (Mức Tức thời)"]
-    PARSER -->|Lịch sử Điện áp & Áp suất| CHART["Time-Series Chart (Xu hướng Thời gian)"]
-    PARSER -->|Góc Roll, Pitch, Yaw| MODEL3D["Attitude 3D View (Mô hình Không gian 3D)"]
-    PARSER -->|Kinh độ, Vĩ độ GNSS| MAP["Ground Track Map (Bản đồ Quỹ đạo Toàn cầu)"]
-    PARSER -->|Mảnh Byte Ảnh JPEG| GALLERY["Progressive Image Gallery (Ghép Ảnh Lũy Tiến)"]
-    PARSER -->|Byte Thô Hex & Gỡ lỗi| TERM["Raw Hex/ASCII Terminal"]
-```
+![Kiến trúc bảng điều khiển viễn trắc thời gian thực](../figs/png/lab8_telemetry_dashboard.png)
 
 ---
 

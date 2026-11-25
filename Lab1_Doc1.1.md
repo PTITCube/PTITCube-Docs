@@ -12,43 +12,7 @@ Các nhiệm vụ sống còn mà OBC đảm nhiệm bao gồm:
 4. **Quản lý Hệ thống Tệp tin & Lưu trữ Dữ liệu Bay (Data Storage & File Management):** Quản lý quá trình ghi tệp dữ liệu cảm biến, hình ảnh viễn thám và nhật ký hành trình bay (Flight Log) lên thẻ nhớ microSD qua giao diện SPI tốc độ cao định dạng FAT32.
 5. **Giám sát Trạng thái & Tự động Phục hồi Lỗi (FDIR - Fault Detection, Isolation, and Recovery):** Theo dõi nhịp tim hệ thống (Heartbeat), duy trì xung làm tươi bộ định thời Watchdog Timer phần cứng (Hardware Watchdog Timer) và kích hoạt quy trình khởi động lại mềm (Soft Reset) hoặc ngắt mở lại nguồn (Power Cycling) khi phát hiện sự cố treo bus do bức xạ không gian.
 
-```mermaid
-flowchart TD
-    subgraph OBC_Hardware ["🖥️ KIẾN TRÚC PHẦN CỨNG OBC (ESP32-WROOM-32)"]
-        direction TB
-      
-        subgraph Core ["LÕI XỬ LÝ KÉP XTENSA 32-BIT LX6"]
-            CPU0["Core 0 (Protocol Engine)
-Chuyên trách mạng Wi-Fi, HTTP Server
-và giao tiếp ngầm Web Serial"]
-            CPU1["Core 1 (Application Engine)
-Chuyên trách máy trạng thái bay FSM,
-xử lý thuật toán & đọc cảm biến"]
-        end
-      
-        subgraph Memory ["BỘ NHỚ HỆ THỐNG"]
-            ROM["448 KB ROM Nội bộ
-(Bootloader nạp sẵn từ nhà máy)"]
-            SRAM["520 KB SRAM Nội bộ
-(IRAM cho hàm ngắt + DRAM cho ngăn xếp Heap)"]
-            FLASH["4 MB SPI Flash Ngoại vi
-(Lưu trữ Firmware Binary, Phân vùng SPIFFS / NVS)"]
-        end
-      
-        subgraph Peripherals ["NGOẠI VI GIAO TIẾP BO MẠCH"]
-            GPIO["Digital I/O: Điều khiển LED, Đọc Nút nhấn, Công tắc phóng"]
-            ADC["12-bit SAR ADC: Giám sát điện áp nguồn pin, cảm biến analog"]
-            PWM["LEDC PWM: Điều khiển độ sáng LED, xung động cơ rung tư thế"]
-            UART0["UART0: Cổng nạp Firmware và Serial Monitor gỡ lỗi"]
-            UART2["UART2: Cổng giao tiếp với Module GPS L76X & Camera"]
-            I2C_BUS["I2C Master: Bus giao tiếp chung BMP280, MPU6500, MAX17048"]
-            SPI_BUS["SPI Master: Bus giao tiếp tốc độ cao với Thẻ nhớ MicroSD"]
-        end
-      
-        Core <--> Memory
-        CPU1 --> Peripherals
-    end
-```
+![Kiến trúc phần cứng OBC ESP32](../figs/png/lab1_obc_architecture.png)
 
 ---
 
@@ -74,15 +38,7 @@ Bộ kit vệ tinh giáo dục **PTITCube** lựa chọn vi điều khiển hệ
 
 Trên vi điều khiển ESP32, có một số chân GPIO đặc biệt được gọi là **Strapping Pins**. Mức logic điện áp tại các chân này được chip lấy mẫu (sample) ngay tại khoảnh khắc xung Reset nhả ra ($0 \to 1$). Mức logic này quyết định chế độ hoạt động của chip:
 
-```mermaid
-flowchart LR
-    A["Xung Reset (Chân EN nhả từ 0 lên 1)"] --> B["Chip đọc mức Logic các chân Strapping"]
-    B --> C{"GPIO0 = LOW?"}
-    C -- Đúng --> D["Vào Chế độ DOWNLOAD BOOT
-(Sẵn sàng nạp Firmware mới qua UART)"]
-    C -- Sai (HIGH) --> E["Vào Chế độ SPI FLASH BOOT
-(Khởi chạy chương trình bay lưu trong Flash)"]
-```
+![Luồng khởi động và chân Strapping Pin ESP32](../figs/png/lab1_strapping_flow.png)
 
 | Tên Chân GPIO          | Chức năng Strapping                                             | Mức Logic Boot Bình thường             | Mức Logic Nạp Firmware                   | Cảnh báo An toàn Thiết kế                                                                                                                                                                                                                                          |
 | :----------------------- | :---------------------------------------------------------------- | :----------------------------------------- | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

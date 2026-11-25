@@ -1,5 +1,7 @@
 # Lab 2: Doc 2.2 - Quản lý Rủi ro Sụt áp (Brownout), Cơ chế Ngắt An toàn Phóng & Điều Khiển Mạch Hạ Áp Cấp Nguồn Cảm Biến
 
+![Bảo vệ sụt áp Brownout và điều khiển cấp nguồn tải](../figs/png/lab2_brownout_power_gating.png)
+
 ### 1. Cơ chế Ngắt An toàn Phóng (Safety Inhibits)
 Để được các cơ quan hàng không vũ trụ (NASA, JAXA, ESA) cấp phép đưa lên tên lửa đẩy, vệ tinh bắt buộc phải có tối thiểu 2 cơ chế ngắt nguồn độc lập nhằm bảo đảm an toàn tuyệt đối cho tên lửa mẹ:
 1. **Chốt Rút Trước Giờ Bay (Remove-Before-Flight - RBF Pin):**
@@ -25,15 +27,21 @@ Trong một vệ tinh CubeSat, việc duy trì cấp nguồn liên tục cho to�
   - **Đóng gói Thư viện Cấp cao:** Thao tác cấu hình chân GPIO và xuất xung mức logic được đóng gói hoàn toàn bên trong thư viện `PTIT_EPS` thông qua phương thức `eps.setBuckState(true)` (BẬT nguồn tải) và `eps.setBuckState(false)` (TẮT nguồn tải), che giấu sự phụ thuộc vào chân phần cứng cụ thể.
   - **Cơ chế Kích hoạt Power Saving Mode dựa trên Ngưỡng Pin:**
     Hệ thống giám sát liên tục điện áp pin $V_\text{cell}$ và phần trăm dung lượng $\text{SOC}$. Chế độ tiết kiệm điện (Power Saving Mode) được tự động kích hoạt khi:
+
 $$V_\text{cell} < 3.70\text{ V} \quad \text{or} \quad \text{SOC} < 25.0\%$$
+
     - *Khi pin yếu:* OBC lập tức gọi `eps.setBuckState(false)` để ngắt mạch hạ áp, sa thải toàn bộ phụ tải tiêu thụ và kéo dài chu kỳ ngủ ($5000\text{ ms}$) nhằm bảo toàn năng lượng cho máy tính sinh tồn và nạp lại pin.
     - *Khi pin khỏe ($V_\text{cell} \ge 3.70\text{ V}$ và $\text{SOC} \ge 25.0\%$):* OBC duy trì `eps.setBuckState(true)` ở chế độ bình thường (Normal Mode) với chu kỳ làm việc tích cực ($1500\text{ ms}$).
 - **Hiệu quả Tiết kiệm Năng lượng (Duty Cycling):**
   - Giả sử tổng dòng tiêu thụ của khối tải ngoại vi khi hoạt động là 25 mA.
   - Nếu bật liên tục trong 1 chu kỳ quỹ đạo 95 phút, năng lượng tiêu thụ là:
+
 $$E_{\text{continuous}} = 3.3\text{ V} \times 25\text{ mA} \times 1.583\text{ h} \approx 130.6\text{ mWh}$$
+
   - Nếu chỉ bật 1.5 giây mỗi 6.5 giây (chu kỳ hoạt động với Duty Cycle $\approx 23\%$):
+
 $$E_{\text{gating}} \approx 130.6\text{ mWh} \times 0.23 \approx 30.0\text{ mWh}$$
+
   - Kỹ thuật điều khiển dòng mạch hạ áp giúp giảm thiểu tới **77%** lượng điện năng tiêu hao của tải ngoại vi, kéo dài tuổi thọ của pin trong pha bóng tối Trái Đất (Eclipse).
 
 ---

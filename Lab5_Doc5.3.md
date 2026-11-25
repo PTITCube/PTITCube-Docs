@@ -8,6 +8,8 @@ Module **Ebyte E32-433T20D** sử dụng chip thu phát bán dẫn SX1278 của 
   - **Hệ số Trải phổ (Spreading Factor - SF7 đến SF12):** SF càng lớn, tầm xa càng tăng nhưng tốc độ truyền dữ liệu (Data Rate) càng giảm.
   - **Băng thông (Bandwidth - BW):** Thường chọn 125 kHz cho kênh UHF.
 
+![Kiến trúc truyền thông LoRa E32 và Trạm Mặt đất](../figs/png/lab5_lora_ground_station.png)
+
 ### 2. Sơ đồ Chân & Các Chế độ Hoạt động của Module Ebyte E32
 Module E32 giao tiếp với vi điều khiển OBC thông qua cổng UART1 chuẩn và hai chân điều khiển chế độ `M0`, `M1`:
 
@@ -71,7 +73,9 @@ Giao thức giao tiếp cấu hình của module E32 và AS32 sử dụng khung 
 - **Byte 4 (CHAN - Kênh Tần Số Hoạt Động):**
   - Đối với dòng module 433 MHz, dải kênh CHAN từ `0x00` đến `0x1F` (0 đến 31).
   - Tần số thực tế được tính theo công thức:
+
 $$f_\text{RF} = 410\text{ MHz} + \text{CHAN} \times 1\text{ MHz}$$
+
     *(Ví dụ: $\text{CHAN} = 23 \implies f_\text{RF} = 433.0\text{ MHz}$)*.
 - **Byte 5 (OPTION - Tùy Chọn Hoạt Động):**
   - Chọn chế độ truyền: Truyền trong suốt (Transparent Transmission) hoặc Truyền cố định có định tuyến địa chỉ (Fixed Transmission).

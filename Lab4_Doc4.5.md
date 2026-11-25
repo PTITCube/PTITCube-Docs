@@ -1,5 +1,7 @@
 # Lab 4: Doc 4.5 - Tải Trọng Camera Viễn Thám OV2640, Nén JPEG Phần Cứng & Giao Thức Lệnh UART
 
+![Quy trình chụp ảnh JPEG từ OV2640 lưu MicroSD và truyền LoRa](../figs/png/lab4_ov2640_capture_pipeline.png)
+
 ### 1. Tải trọng Camera OV2640
 - **Đặc tính Tải trọng:** Cảm biến ảnh màu CMOS Omnivision **OV2640** độ phân giải 2 Megapixel (1600 × 1200 pixel), tích hợp bộ mã hóa nén phần cứng JPEG giúp giảm dung lượng tệp ảnh từ hàng Megabytes xuống còn $30 - 60\text{ KB}$, rất phù hợp với băng thông hạn chế của kênh truyền sóng không gian.
 - **Yêu cầu Xung nhịp Ngoài XCLK:** Để mạch xử lý tín hiệu hình ảnh (ISP) bên trong OV2640 hoạt động, nó đòi hỏi vi điều khiển OBC phải phát ra một đường xung nhịp tần số cao ổn định từ 10 MHz đến 20 MHz tại chân `XCLK`.

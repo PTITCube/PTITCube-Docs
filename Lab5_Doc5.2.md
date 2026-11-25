@@ -13,10 +13,14 @@
 | **Telemetry Data** | $N - 5$ Bytes | Khối dữ liệu cảm biến: $V_\text{bat}$, SOC, Nhiệt độ, Áp suất, Gia tốc, Tọa độ GPS |
 | **Checksum CRC-16**| 2 Bytes | Mã kiểm tra lỗi chu kỳ 16-bit bảo vệ tính toàn vẹn dữ liệu |
 
+![Cấu trúc khung bản tin viễn trắc và mã kiểm tra CRC-16](../figs/png/lab5_telemetry_frame_crc.png)
+
 ### 2. Thuật toán Kiểm tra Lỗi Chu kỳ CRC-16-CCITT
 Trong không gian, nhiễu nền vũ trụ có thể làm biến dạng ngẫu nhiên một vài bit dữ liệu. Phương pháp tính tổng cộng (Checksum đơn giản) rất dễ bị lọt lưới khi hai lỗi bit triệt tiêu nhau.
 - **Thuật toán CRC-16-CCITT:** Sử dụng đa thức sinh chuẩn quốc tế:
+
 $$G(x) = x^{16} + x^{12} + x^5 + 1 \quad (\text{Hex: } \mathbf{0x1021})$$
+
   Giá trị khởi tạo thanh ghi: `0xFFFF`.
 - Khi trạm mặt đất nhận được gói tin, nó thực hiện tính toán lại mã CRC trên toàn bộ chuỗi byte nhận được. Nếu mã CRC tính toán trùng khớp hoàn toàn với 2 byte CRC đính kèm ở cuối gói tin, gói tin được xác nhận là vẹn toàn 100%. Nếu sai khác dù chỉ một bit, gói tin bị loại bỏ ngay lập tức.
 

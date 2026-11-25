@@ -1,5 +1,7 @@
 # Lab 4: Doc 4.3 - Nguyên lý Phần Cứng Module Định Vị GNSS L76X & Giao Tiếp UART Đọc Dữ Liệu Thô
 
+![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](../figs/png/lab4_gnss_l76x_architecture.png)
+
 ### 1. Kiến trúc Phần cứng Module Định vị Toàn cầu GNSS L76X
 Module Quectel **L76X** là khí tài định vị không gian tích hợp đồng thời hai hệ thống vệ tinh: **GPS** (Hoa Kỳ - tần số L1 1575.42 MHz) và **GLONASS** (Nga - tần số L1 1602 MHz):
 - **Ăng-ten Gốm Tích hợp (Ceramic Patch Antenna):** Thu sóng vô tuyến phân cực tròn thuận (RHCP) từ các chòm vệ tinh trên quỹ đạo.

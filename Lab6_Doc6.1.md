@@ -9,16 +9,7 @@ Trong kỹ thuật vệ tinh CubeSat, Phân hệ Cấu trúc thường bị nh�
 ### 2. Tác động Đa chiều của Khung Cơ khí lên các Phân hệ Khác
 Một thay đổi nhỏ trong thiết kế cơ khí sẽ ngay lập tức gây ra hiệu ứng domino ảnh hưởng trực tiếp tới hoạt động của tất cả các phân hệ còn lại:
 
-```mermaid
-flowchart TD
-    FRAME["🔩 KHUNG CẤU TRÚC CƠ KHÍ CUBESAT"]
-    
-    FRAME -->|1. Cung cấp Tấm tản nhiệt & Vách nén tế bào pin| EPS["🔋 Phân hệ Năng lượng (EPS)"]
-    FRAME -->|2. Lồng Faraday che chắn bức xạ & Tiếp mass tĩnh điện| OBC["🖥️ Phân hệ Xử lý (OBC)"]
-    FRAME -->|3. Mặt đất phẳng phản xạ nhân tạo (Ground Plane 50 Ohm)| COM["📡 Phân hệ Truyền thông (COM)"]
-    FRAME -->|4. Mặt phẳng tham chiếu cơ học siêu cứng, chống uốn| SENSORS["🔬 Phân hệ Cảm biến (Sensors)"]
-    FRAME -->|5. Bề mặt tiếp xúc ray trượt dẫn hướng chịu mài mòn| PPOD["🚀 Ống phóng Tên lửa (P-POD)"]
-```
+![Giao diện liên kết cơ khí cấu trúc 1U](../figs/png/lab6_structure_interfaces.png)
 
 1. **Tác động lên Phân hệ Năng lượng (EPS):**
    - *Tản nhiệt cho Khối Pin:* Pin Li-Po chỉ hoạt động an toàn trong dải nhiệt độ hẹp (0°C - 45°C). Khung cơ khí phải cung cấp các cầu nhiệt kim loại dẫn nhiệt sinh ra khi sạc/xả pin ra vỏ ngoài.

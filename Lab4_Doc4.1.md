@@ -18,21 +18,9 @@ Bus **I2C** do hãng Philips (nay là NXP) phát triển là một bus truyền 
   - Khi không có thiết bị nào truyền tin, điện trở kéo lên giữ cho đường bus luôn ở mức logic `HIGH`.
   - Thiết kế này tạo ra cổng logic "HOẶC có dây" (Wired-AND), triệt tiêu hoàn toàn nguy cơ đoản mạch làm cháy chip khi hai thiết bị vô tình phát xung đối nghịch cùng lúc.
 
-```mermaid
-sequenceDiagram
-    participant Master as OBC Master
-    participant Bus as Bus I2C (SDA & SCL)
-    participant Slave as Cảm biến Slave (0x68)
-    
-    Note over Master,Bus: Trạng thái Rảnh: SDA=HIGH, SCL=HIGH
-    Master->>Bus: Điều kiện START: SDA rơi xuống LOW khi SCL vẫn HIGH
-    Master->>Bus: Gửi 7-bit Địa chỉ (0x68) + Bit Đọc/Ghi R/W (0 = Ghi)
-    Slave->>Bus: Bit xác nhận ACK: Slave kéo SDA xuống LOW trong nhịp SCL thứ 9
-    Master->>Bus: Gửi 8-bit Địa chỉ Thanh ghi nội cần truy cập (Register Pointer)
-    Slave->>Bus: Bit xác nhận ACK (SDA = LOW)
-    Master->>Bus: Gửi/Đọc Byte Dữ liệu
-    Master->>Bus: Điều kiện STOP: SDA chuyển từ LOW lên HIGH khi SCL đang HIGH
-```
+![Sơ đồ kết nối bus I2C đa cảm biến và điện trở kéo lên](../figs/png/lab4_i2c_connection.png)
+
+![Trình tự giao thức đọc thanh ghi I2C](../figs/png/lab4_i2c_protocol_sequence.png)
 
 ### 3. Khung Truyền Dữ liệu & Các Trạng thái Điều khiển
 1. **Điều kiện START và STOP (Bắt đầu và Kết thúc):**
@@ -61,7 +49,9 @@ sequenceDiagram
   - Màng cảm biến áp suất gốm áp điện (Piezoresistive) có đặc tính phi tuyến tính cao theo nhiệt độ. Trong quá trình sản xuất tại nhà máy, mỗi chip BMP280 được đo kiểm riêng lẻ và nạp sẵn 24 byte hằng số hiệu chuẩn vào bộ nhớ ROM không khả biến (từ thanh ghi `0x88` đến `0xA1`: `dig_T1` đến `dig_T3` cho nhiệt độ, `dig_P1` đến `dig_P9` cho áp suất).
   - Thuật toán giải mã bắt buộc phải đọc toàn bộ mảng 24 byte hằng số này và áp dụng công thức bù trừ nhiệt độ bậc cao theo tài liệu chuẩn của Bosch để quy đổi giá trị ADC thô thành giá trị áp suất thực tế.
 - **Công thức Tính Độ cao Khí quyển (Barometric Hypsometric Formula):**
+
 $$h = 44330 \times \left[ 1 - \left(\frac{P}{P_0}\right)^{\frac{1}{5.255}} \right]$$
+
   Trong đó: $h$ là độ cao tính bằng mét, $P$ là áp suất khí quyển đo được, $P_0$ là áp suất chuẩn tại mực nước biển (1013.25 hPa).
 
 ### ❓ Câu Hỏi Củng Cố Kiến Thức (Doc 4.1)

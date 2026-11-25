@@ -13,17 +13,7 @@ Bảng điều khiển (Mission Dashboard) là giao diện duy nhất để kíp
 | **Trung tâm Phát lệnh (Uplink Console)** | Danh mục lệnh và tham số kèm nút bấm Arm/Execute | Gửi các mệnh lệnh điều hành có cơ chế xác nhận an toàn hai bước để ngăn chặn thao tác bấm nhầm |
 | **Khung Ảnh Lũy tiến (Image Gallery)** | Mảng bộ đệm byte ảnh: Image Chunk Stream | Ghép và hiển thị dần bức ảnh bề mặt Trái Đất theo thời gian thực khi các gói mảnh được tải về từ không gian |
 
-```mermaid
-flowchart TD
-    SERIAL["Luồng Dữ liệu Viễn trắc Web Serial"] --> PARSER["Bộ Phân tích Giao thức (Parser)"]
-    
-    PARSER -->|Điện áp, Dung lượng, Nhiệt độ| GAUGE["Radial Gauge (Mức Tức thời)"]
-    PARSER -->|Lịch sử Điện áp & Áp suất| CHART["Time-Series Chart (Xu hướng Thời gian)"]
-    PARSER -->|Góc Roll, Pitch, Yaw| MODEL3D["Attitude 3D View (Mô hình Không gian 3D)"]
-    PARSER -->|Kinh độ, Vĩ độ GNSS| MAP["Ground Track Map (Bản đồ Quỹ đạo Toàn cầu)"]
-    PARSER -->|Mảnh Byte Ảnh JPEG| GALLERY["Progressive Image Gallery (Ghép Ảnh Lũy Tiến)"]
-    PARSER -->|Byte Thô Hex & Gỡ lỗi| TERM["Raw Hex/ASCII Terminal"]
-```
+![Kiến trúc bảng điều khiển viễn trắc thời gian thực](../figs/png/lab8_telemetry_dashboard.png)
 
 ---
 

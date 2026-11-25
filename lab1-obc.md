@@ -16,43 +16,7 @@ Các nhiệm vụ sống còn mà OBC đảm nhiệm bao gồm:
 4. **Quản lý Hệ thống Tệp tin & Lưu trữ Dữ liệu Bay (Data Storage & File Management):** Quản lý quá trình ghi tệp dữ liệu cảm biến, hình ảnh viễn thám và nhật ký hành trình bay (Flight Log) lên thẻ nhớ microSD qua giao diện SPI tốc độ cao định dạng FAT32.
 5. **Giám sát Trạng thái & Tự động Phục hồi Lỗi (FDIR - Fault Detection, Isolation, and Recovery):** Theo dõi nhịp tim hệ thống (Heartbeat), duy trì xung làm tươi bộ định thời Watchdog Timer phần cứng (Hardware Watchdog Timer) và kích hoạt quy trình khởi động lại mềm (Soft Reset) hoặc ngắt mở lại nguồn (Power Cycling) khi phát hiện sự cố treo bus do bức xạ không gian.
 
-```mermaid
-flowchart TD
-    subgraph OBC_Hardware ["🖥️ KIẾN TRÚC PHẦN CỨNG OBC (ESP32-WROOM-32)"]
-        direction TB
-      
-        subgraph Core ["LÕI XỬ LÝ KÉP XTENSA 32-BIT LX6"]
-            CPU0["Core 0 (Protocol Engine)
-Chuyên trách mạng Wi-Fi, HTTP Server
-và giao tiếp ngầm Web Serial"]
-            CPU1["Core 1 (Application Engine)
-Chuyên trách máy trạng thái bay FSM,
-xử lý thuật toán & đọc cảm biến"]
-        end
-      
-        subgraph Memory ["BỘ NHỚ HỆ THỐNG"]
-            ROM["448 KB ROM Nội bộ
-(Bootloader nạp sẵn từ nhà máy)"]
-            SRAM["520 KB SRAM Nội bộ
-(IRAM cho hàm ngắt + DRAM cho ngăn xếp Heap)"]
-            FLASH["4 MB SPI Flash Ngoại vi
-(Lưu trữ Firmware Binary, Phân vùng SPIFFS / NVS)"]
-        end
-      
-        subgraph Peripherals ["NGOẠI VI GIAO TIẾP BO MẠCH"]
-            GPIO["Digital I/O: Điều khiển LED, Đọc Nút nhấn, Công tắc phóng"]
-            ADC["12-bit SAR ADC: Giám sát điện áp nguồn pin, cảm biến analog"]
-            PWM["LEDC PWM: Điều khiển độ sáng LED, xung động cơ rung tư thế"]
-            UART0["UART0: Cổng nạp Firmware và Serial Monitor gỡ lỗi"]
-            UART2["UART2: Cổng giao tiếp với Module GPS L76X & Camera"]
-            I2C_BUS["I2C Master: Bus giao tiếp chung BMP280, MPU6500, MAX17048"]
-            SPI_BUS["SPI Master: Bus giao tiếp tốc độ cao với Thẻ nhớ MicroSD"]
-        end
-      
-        Core <--> Memory
-        CPU1 --> Peripherals
-    end
-```
+![Kiến trúc phần cứng OBC ESP32](../figs/png/lab1_obc_architecture.png)
 
 ---
 
@@ -78,15 +42,7 @@ Bộ kit vệ tinh giáo dục **PTITCube** lựa chọn vi điều khiển hệ
 
 Trên vi điều khiển ESP32, có một số chân GPIO đặc biệt được gọi là **Strapping Pins**. Mức logic điện áp tại các chân này được chip lấy mẫu (sample) ngay tại khoảnh khắc xung Reset nhả ra ($0 \to 1$). Mức logic này quyết định chế độ hoạt động của chip:
 
-```mermaid
-flowchart LR
-    A["Xung Reset (Chân EN nhả từ 0 lên 1)"] --> B["Chip đọc mức Logic các chân Strapping"]
-    B --> C{"GPIO0 = LOW?"}
-    C -- Đúng --> D["Vào Chế độ DOWNLOAD BOOT
-(Sẵn sàng nạp Firmware mới qua UART)"]
-    C -- Sai (HIGH) --> E["Vào Chế độ SPI FLASH BOOT
-(Khởi chạy chương trình bay lưu trong Flash)"]
-```
+![Luồng khởi động và chân Strapping Pin ESP32](../figs/png/lab1_strapping_flow.png)
 
 | Tên Chân GPIO          | Chức năng Strapping                                             | Mức Logic Boot Bình thường             | Mức Logic Nạp Firmware                   | Cảnh báo An toàn Thiết kế                                                                                                                                                                                                                                          |
 | :----------------------- | :---------------------------------------------------------------- | :----------------------------------------- | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -109,15 +65,7 @@ flowchart LR
 
 Môi trường thực hành của PTITCube được thiết kế theo mô hình điện toán đám mây hiện đại (Cloud-native Embedded Development Platform), giúp học viên có thể lập trình, biên dịch và nạp vi điều khiển trực tiếp trên trình duyệt web mà không cần cài đặt chuỗi công cụ cồng kềnh (như Python, Toolchain GCC, ESP-IDF hay driver phức tạp):
 
-```mermaid
-flowchart LR
-    A["Học viên viết code C++
-trên Monaco Editor (Web IDE)"] -->|Gửi mã nguồn qua HTTPS| B["Cloud Compiler Server
-(Docker Container chạy GCC-Xtensa)"]
-    B -->|Biên dịch chéo ra tệp nhị phân| C["Tệp Firmware.bin (Flash Binary)"]
-    C -->|Tải trực tiếp về trình duyệt| D["Web Serial API Driver"]
-    D -->|Ghi qua cổng USB-UART 115200 bps| E["OBC ESP32 Hardware Kit"]
-```
+![Quy trình biên dịch đám mây và nạp Web Serial](../figs/png/lab1_cloud_compile_flow.png)
 
 - **Khung Biên tập Mã nguồn (Monaco Editor):** Sử dụng nhân trình soạn thảo mã nguồn chuẩn công nghiệp (cùng nền tảng với VS Code), hỗ trợ đầy đủ các tính năng lập trình chuyên nghiệp: tô màu cú pháp C++, gợi ý mã thông minh (IntelliSense), tự động thụt đầu dòng và phát hiện lỗi cú pháp theo thời gian thực.
 - **Trình Biên dịch Đám mây (Cloud Compiler Backend):** Hệ thống máy chủ phân tán tự động tiếp nhận mã nguồn, kích hoạt môi trường container hóa chứa bộ công cụ biên dịch chéo `xtensa-esp32-elf-gcc`, liên kết thư viện bay PTITCube và xuất ra tệp nhị phân nén duy nhất `firmware.bin` trong vòng dưới 5 giây.
@@ -145,25 +93,7 @@ Web Serial API là tiêu chuẩn web hiện đại do W3C ban hành, cho phép c
 
 Trong thiết kế phần cứng vệ tinh, số lượng chân I/O trên vi điều khiển luôn là tài nguyên quý giá cần được tối ưu hóa triệt để. Vi mạch **74HC595** là chip dịch bit nối tiếp sang song song 8-bit tốc độ cao (**Serial-In Parallel-Out Shift Register**) kết hợp với một tầng thanh ghi chốt lưu trữ (**Storage / Latch Register**):
 
-```mermaid
-flowchart LR
-    subgraph IC_74HC595 ["⚡ CẤU TRÚC NỘI BỘ VI MẠCH 74HC595"]
-        direction TB
-        DS["Chân DS (Pin 14): Dữ liệu bit nối tiếp vào"]
-        SHCP["Chân SH_CP (Pin 11): Xung nhịp dịch bit (Shift Clock)"]
-        STCP["Chân ST_CP (Pin 12): Xung nhịp chốt dữ liệu (Storage Clock)"]
-      
-        SR["Thanh ghi Dịch 8 tầng (Shift Register: Bit 0 -> Bit 7)"]
-        LR["Thanh ghi Chốt Lưu trữ 8 tầng (Storage Register)"]
-        OUT["8 Ngõ ra Song song (Q0 - Q7: Pin 15, 1, 2, 3, 4, 5, 6, 7)"]
-      
-        DS --> SR
-        SHCP -->|Cạnh lên: Dịch từng bit vào| SR
-        SR -->|Chuyển 8 bit song song| LR
-        STCP -->|Cạnh lên: Chốt 8 bit ra ngõ ra| LR
-        LR --> OUT
-    end
-```
+![Cấu trúc vi mạch ghi dịch 74HC595 và LED 7 đoạn](../figs/png/lab1_74hc595_structure.png)
 
 - **Thanh ghi Dịch (Shift Register):** Hoạt động theo cơ chế hàng đợi bit. Mỗi khi xuất hiện một cạnh lên ($0 \to 1$) trên chân xung nhịp **SH_CP (Shift Clock)**, bit dữ liệu hiện tại trên chân **DS (Serial Data)** sẽ được ghi vào tầng đầu tiên, đồng thời toàn bộ 7 bit trước đó sẽ bị đẩy dịch sang phải một nấc.
 - **Thanh ghi Chốt Lưu trữ (Storage / Latch Register):** Hoạt động độc lập với thanh ghi dịch. Trong suốt quá trình dịch 8 bit vào thanh ghi dịch, trạng thái của 8 chân ngõ ra Q₀ - Q₇ vẫn được giữ nguyên không đổi. Chỉ khi ta kích hoạt một xung cạnh lên ($0 \to 1$) trên chân **ST_CP (Latch Clock)**, toàn bộ 8 bit từ thanh ghi dịch mới được sao chép tức thì sang thanh ghi chốt và xuất ra ngoài. Cơ chế đệm hai tầng này loại bỏ hoàn toàn hiện tượng nhấp nháy đèn LED trong quá trình dịch dữ liệu.
@@ -201,20 +131,9 @@ Giao tiếp **UART (Universal Asynchronous Receiver-Transmitter)** là chuẩn t
   - `TX (Transmit)`: Đường xuất dữ liệu từ thiết bị phát.
   - `RX (Receive)`: Đường nhận dữ liệu vào thiết bị thu (Nối chéo: TX_A → RX_B và RX_A → TX_B).
 
-```mermaid
-sequenceDiagram
-    autonumber
-    Note over TX,RX: Đường dây ở trạng thái rảnh: Mức HIGH (3.3V)
-    TX->>RX: 1 Bit START (Kéo xuống mức LOW 0V)
-    TX->>RX: Bit D0 (LSB - Bit trọng số thấp nhất truyền trước)
-    TX->>RX: Bit D1 ... Bit D6
-    TX->>RX: Bit D7 (MSB - Bit trọng số cao nhất)
-    opt Bit Parity
-        TX->>RX: 1 Bit Chẵn Lẻ (Even / Odd / None)
-    end
-    TX->>RX: 1 hoặc 2 Bit STOP (Kéo lên mức HIGH 3.3V)
-    Note over TX,RX: Kết thúc khung truyền; trở về trạng thái rảnh HIGH
-```
+![Sơ đồ kết nối UART Full-Duplex](../figs/png/lab1_uart_connection.png)
+
+![Giản đồ xung khung truyền UART 8-N-1](../figs/png/lab1_uart_timing_sequence.png)
 
 ### 2. Cấu hình Cổng Serial & Khung Truyền SERIAL_8N1
 
@@ -226,6 +145,7 @@ Khung truyền nối tiếp chuẩn mực nhất của ngành công nghiệp là
 - **Thời gian truyền 1 Byte:**
   Tổng số bit cần truyền cho 1 byte là: 1 Start + 8 Data + 1 Stop = 10 bit.
   Ở tốc độ baud chuẩn 115200 bps, thời gian truyền 1 bit là:
+
 $$T_{\text{bit}} = \frac{1}{115200} \approx 8.68\,\mu\text{s} \implies T_{\text{byte}} = 10 \times 8.68\,\mu\text{s} \approx 86.8\,\mu\text{s}$$
 
   Tốc độ truyền dữ liệu hữu ích cực đại đạt: ≈ 11520 Byte/s ≈ 11.25 KB/s.
@@ -249,31 +169,7 @@ Khối vô tuyến Wi-Fi tích hợp trên ESP32 hỗ trợ đầy đủ các ch
 - **Chế độ Máy khách (Station Mode - STA):** ESP32 kết nối vào một mạng Wi-Fi có sẵn (như router phòng lab) và nhận một địa chỉ IP nội bộ từ máy chủ DHCP.
 - **Chế độ Điểm truy cập Mềm (SoftAP Mode):** ESP32 tự mình biến thành một trạm phát sóng Wi-Fi độc lập, tự cấp phát địa chỉ IP cho các thiết bị kết nối vào (mặc định là `192.168.4.1`). Học viên dùng laptop hoặc điện thoại kết nối thẳng vào mạng của vệ tinh mà không phụ thuộc vào hạ tầng mạng bên ngoài.
 
-```mermaid
-flowchart TD
-    subgraph SoftAP_Architecture ["📡 KIẾN TRÚC EMBEDDED HTTP WEB SERVER TRÊN OBC"]
-        direction TB
-        Client["Thiết bị Học viên (Laptop / Smartphone)
-Kết nối Wi-Fi vào SSID 'PTITCube-Lab1'"]
-      
-        WebServer["Máy chủ HTTP WebServer (Cổng 80)
-Lắng nghe yêu cầu HTTP Request"]
-      
-        Route1["GET /
-Trả về Giao diện Điều khiển HTML/CSS/JS"]
-      
-        Route2["GET /api/telemetry
-Trả về chuỗi JSON chứa thông số viễn trắc:
-{ 'temp': 28.5, 'volt': 3.95, 'uptime': 120 }"]
-      
-        Route3["POST /api/led
-Nhận lệnh điều khiển bật/tắt đèn LED chỉ thị"]
-      
-        Client -->|Gửi HTTP GET /api/telemetry| WebServer
-        WebServer --> Route2
-        Route2 -->|Phản hồi HTTP 200 OK + JSON| Client
-    end
-```
+![Kiến trúc SoftAP Web Server trên ESP32](../figs/png/lab1_softap_webserver.png)
 
 ### 2. Máy chủ Web HTTP Nhúng (Embedded Web Server)
 
@@ -285,6 +181,8 @@ OBC thực thi thư viện `WebServer.h` trên cổng mạng tiêu chuẩn $80$:
 ---
 
 ## 📖 Doc 1.6: Quy chuẩn Lập trình C++ Định thời Non-blocking với millis() & Thuật toán Chống Tràn số
+
+![Kiến trúc định thời Non-blocking millis() và chống tràn số](../figs/png/lab1_millis_nonblocking.png)
 
 ### 1. Tại sao Tuyệt đối CẤM sử dụng `delay()` trong Phần mềm Bay Vệ tinh?
 

@@ -8,26 +8,7 @@ Kỹ thuật Hệ thống là phương pháp luận kỹ thuật và quản tr�
 ### 2. Vòng đời Dự án Không gian theo Pha (NASA/ESA Project Lifecycle)
 Chu trình phát triển một sứ mệnh vệ tinh được phân chia thành các pha kế tiếp với các cột mốc đánh giá kỹ thuật khắt khe (Gate Reviews):
 
-```mermaid
-flowchart LR
-    A["Pre-Phase A
-Nghiên cứu Khái niệm"] --> B["Phase A
-Phát triển Khái niệm
-(MDR / SRR)"]
-    B --> C["Phase B
-Thiết kế Sơ bộ
-(PDR)"]
-    C --> D["Phase C
-Thiết kế Chi tiết & Chế tạo
-(CDR)"]
-    D --> E["Phase D
-Tích hợp & Thử nghiệm AIT
-(AR / FRR)"]
-    E --> F["Phase E
-Vận hành Sứ mệnh"]
-    F --> G["Phase F
-Giải thể Sứ mệnh"]
-```
+![Vòng đời dự án vũ trụ chuẩn NASA/ESA](../figs/png/lab8_project_lifecycle.png)
 
 - **Pre-Phase A (Nghiên cứu Khái niệm - Concept Studies):** Xác định mục tiêu khoa học, nghiên cứu tính khả thi kỹ thuật và đề xuất các phương án kiến trúc sơ khởi.
 - **Phase A (Phát triển Khái niệm - Concept & Technology Development):** Chốt lại các yêu cầu sứ mệnh cấp hệ thống, kết thúc bằng cột mốc đánh giá **MDR / SRR (Mission Definition Review / System Requirements Review)**.

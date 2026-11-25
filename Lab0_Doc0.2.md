@@ -5,54 +5,7 @@ Một vệ tinh CubeSat là một hệ sinh thái cơ điện tử phức tạp 
 1. **Hệ thống Nền tảng (Bus System):** Tập hợp các phân hệ kỹ thuật cơ bản chịu trách nhiệm duy trì sự sống, cung cấp năng lượng, bảo vệ cơ học, xử lý lệnh và duy trì liên lạc với Trái Đất.
 2. **Tải trọng Sứ mệnh (Payload):** Thiết bị hoặc cảm biến chuyên dụng phục vụ mục tiêu khoa học, thương mại hoặc thử nghiệm công nghệ cụ thể của chuyến bay (ví dụ: camera chụp ảnh bề mặt, máy thu tín hiệu hàng hải AIS/ADS-B, cảm biến đo bức xạ hoặc mô-đun phát hiện cháy rừng).
 
-```mermaid
-flowchart TD
-    subgraph CubeSat_Architecture ["🛰️ KIẾN TRÚC PHÂN HỆ VỆ TINH CUBESAT 1U"]
-        direction TB
-        
-        subgraph BUS ["HỆ THỐNG NỀN TẢNG (BUS SYSTEM)"]
-            EPS["⚡ Phân hệ Năng lượng (EPS)
-Pin quang điện, Pin sạc Li-Po,
-Bộ sạc TP4056 & Mạch giám sát MAX17048"]
-            
-            OBC_CDH["🧠 Phân hệ Máy tính & C&DH
-Vi điều khiển lõi kép ESP32,
-RTOS Scheduler & Thẻ nhớ MicroSD FAT32"]
-            
-            COM["📡 Phân hệ Truyền thông (COM)
-Module thu phát vô tuyến LoRa 433 MHz,
-Anten monopole 1/4 bước sóng"]
-            
-            STR["🏗️ Phân hệ Cấu trúc Cơ khí (STR)
-Khung nhôm Al 6061-T6, ray trượt Anodized,
-Cọc đồng PC/104 & Công tắc hành trình"]
-            
-            ADCS["🧭 Phân hệ Xác định & Điều khiển Tư thế (ADCS)
-Cảm biến quán tính 6-DoF MPU6500,
-Từ kế 3 trục QMC5883L & Động cơ rung tạo lực"]
-        end
-        
-        subgraph PAYLOAD ["TẢI TRỌNG SỨ MỆNH (PAYLOAD)"]
-            CAM["📷 Tải trọng Viễn thám
-Camera OV2640 2MP JPEG,
-Module định vị toàn cầu GNSS L76X"]
-            ENV["🌡️ Cảm biến Môi trường Khí quyển
-Cảm biến áp suất khí quyển & nhiệt độ BMP280"]
-        end
-        
-        EPS -->|Đường nguồn 3.3V & 5V ổn áp| OBC_CDH
-        EPS -->|Đường nguồn 3.3V & 5V ổn áp| COM
-        EPS -->|Đường nguồn 3.3V & 5V ổn áp| ADCS
-        EPS -->|Đường nguồn 3.3V & 5V ổn áp| PAYLOAD
-        
-        OBC_CDH <-->|Bus I2C (SDA / SCL)| EPS
-        OBC_CDH <-->|Bus I2C (SDA / SCL)| ADCS
-        OBC_CDH <-->|Bus I2C (SDA / SCL)| ENV
-        OBC_CDH <-->|Bus UART (TX / RX)| COM
-        OBC_CDH <-->|Bus UART (TX / RX)| CAM
-        OBC_CDH <-->|Bus SPI (MOSI/MISO/SCK/CS)| OBC_CDH
-    end
-```
+![Kiến trúc hệ thống CubeSat tổng thể](../figs/png/system.png)
 
 ---
 
@@ -77,10 +30,14 @@ Cảm biến áp suất khí quyển & nhiệt độ BMP280"]
 
 #### 3. Phân hệ Cảm biến & Tải trọng Sứ mệnh (Sensors & Payload)
 - **Cảm biến Khí quyển BMP280:** Cảm biến áp suất vi cơ điện tử MEMS của Bosch, dải đo áp suất 300 - 1100 hPa, dải nhiệt độ -40°C đến +85°C. OBC sử dụng công thức khí áp chuẩn quốc tế (ICAO Barometric Formula) để suy ra độ cao khí quyển tương đối:
+
 $$h = 44330 \cdot \left[1 - \left(\frac{P}{P_0}\right)^{0.1903}\right]$$
+
 - **Cảm biến Quán tính 6-DoF MPU6500:** Tích hợp 3 trục gia tốc kế (Accelerometer) đo gia tốc thẳng và 3 trục con quay hồi chuyển (Gyroscope) đo vận tốc góc quay quanh 3 trục $X, Y, Z$. Đặt gần trọng tâm vệ tinh để giảm thiểu gia tốc quán tính ký sinh.
 - **Cảm biến Từ trường QMC5883L:** Từ kế 3 trục độ nhạy cao đo cường độ từ trường Trái Đất ($B_x, B_y, B_z$), giúp OBC tính toán góc phương vị La bàn (Heading):
+
 $$\text{Heading} = \text{atan2}(B_y, B_x) \cdot \frac{180}{\pi}$$
+
 - **Module Định vị Toàn cầu GNSS L76X:** Bắt sóng đồng thời hệ thống định vị GPS (Mỹ) và GLONASS (Nga), xuất các câu tin chuẩn NMEA 0183 (như bản tin tọa độ phẳng GPRMC và bản tin độ cao geoid GPGGA) qua cổng UART ở tốc độ 9600 bps.
 - **Tải trọng Viễn thám Camera OV2640:** Cảm biến ảnh CMOS độ phân giải 2 Megapixel (1600 × 1200 pixel), tích hợp bộ nén ảnh phần cứng chuẩn JPEG giúp giảm dung lượng tệp ảnh xuống còn $20 - 50\text{ KB}$, phù hợp để truyền tải qua kênh vô tuyến băng thông hẹp.
 
@@ -88,7 +45,9 @@ $$\text{Heading} = \text{atan2}(B_y, B_x) \cdot \frac{180}{\pi}$$
 - **Phần cứng Thu phát:** Module vô tuyến công nghệ trải phổ **LoRa (Long Range) Ebyte E32**, hoạt động ở băng tần UHF 433 MHz (công suất phát cực đại 20 dBm ≈ 100 mW hoặc bản mở rộng 30 dBm ≈ 1 W).
 - **Công nghệ Điều chế:** Kỹ thuật trải phổ Chirp Spread Spectrum (CSS) mang lại độ nhạy thu tín hiệu cực kỳ ấn tượng (xuống tới -138 dBm), cho phép giải mã thành công tín hiệu yếu bị chìm sâu dưới ngưỡng sàn nhiễu nhiệt (Noise floor) mà các bộ điều chế FSK/OOK truyền thống hoàn toàn bất lực.
 - **Hệ thống Anten:** Anten đơn cực (Monopole) dài $1/4$ bước sóng (λ/4). Với tần số f = 433 MHz:
+
 $$\lambda = \frac{c}{f} = \frac{3 \times 10^8\text{ m/s}}{433 \times 10^6\text{ Hz}} \approx 0.6928\text{ m} = 69.28\text{ cm} \implies L_{\text{anten}} = \frac{\lambda}{4} \approx 17.32\text{ cm}$$
+
   Anten được chế tạo từ lá thước cuộn thép lò xo đàn hồi (Spring steel tape measure), có thể cuộn tròn gọn ghẽ bên trong khoang thân và tự động bật thẳng bung ra ngoài nhờ lực đàn hồi cơ học sau khi rời khỏi ống phóng.
 
 #### 5. Phân hệ Kết cấu Cơ khí (Structure Subsystem)
@@ -115,27 +74,7 @@ $$\lambda = \frac{c}{f} = \frac{3 \times 10^8\text{ m/s}}{433 \times 10^6\text{ 
 ### 2. Hướng dẫn Tương tác Không gian 3D trên Web LMS
 Trình mô phỏng 3D của CubeSat-LMS được xây dựng trên nền tảng WebGL mượt mà, cho phép người học thao tác không gian đa chiều trực tiếp trên trình duyệt mà không cần cài đặt phần mềm ngoài:
 
-```mermaid
-flowchart TD
-    subgraph UI_Controls ["🖱️ THAO TÁC ĐIỀU KHIỂN KHÔNG GIAN 3D"]
-        direction TB
-        Rotate["🔄 XOAY GÓC NHÌN (ORBIT)
-Nhấp & Giữ CHUỘT TRÁI, sau đó rê chuột
-để quay 360 độ quanh tâm vệ tinh."]
-        
-        Pan["↔️ TRƯỢT TỊNH TIẾN (PAN)
-Nhấp & Giữ CHUỘT PHẢI (hoặc Shift + Chuột Trái)
-để tịnh tiến khung nhìn sang trái, phải, lên, xuống."]
-        
-        Zoom["🔍 PHÓNG TO / THU NHỎ (ZOOM)
-Cuộn CON LĂN CHUỘT (Scroll Wheel)
-để phóng to sát linh kiện hoặc thu nhỏ toàn cảnh."]
-        
-        Click["👆 TRA CỨU LINH KIỆN (COMPONENT VIEWER)
-Nhấp CHUỘT TRÁI trực tiếp lên một linh kiện 3D
-để mở Bảng Thông số Kỹ thuật (Spec Card) chi tiết."]
-    end
-```
+![Thao tác điều khiển mô phỏng 3D WebGL](../figs/png/lab0_ui_controls.png)
 
 ### 3. Quy trình Thực hiện Bài Thực hành Từng bước
 1. **Bước 1 - Khởi động Trình duyệt & Mở Trình Mô phỏng 3D:**

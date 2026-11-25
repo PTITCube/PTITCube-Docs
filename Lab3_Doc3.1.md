@@ -6,27 +6,7 @@ Phân hệ Xử lý Dữ liệu và Lệnh (**Command and Data Handling - C&DH**
 - **Lưu trữ tệp dữ liệu sứ mệnh:** Lưu giữ các tệp ảnh chụp Trái Đất và số liệu quan trắc khoa học để sẵn sàng trút dữ liệu (Data Dump) khi bay qua trạm mặt đất.
 - **Nhật ký sự kiện (Flight Event Log):** Ghi lại chi tiết thời điểm xuất hiện các cảnh báo bất thường, lỗi vi xử lý, và các lần phục hồi hệ thống.
 
-```mermaid
-flowchart LR
-    subgraph Master ["Master Device (ESP32 OBC)"]
-        SCK_M["SCK (Chân Xung nhịp Đồng bộ)"]
-        MOSI_M["MOSI (Master Out Slave In)"]
-        MISO_M["MISO (Master In Slave Out)"]
-        CS_M["CS / SS (Chip Select Mức Thấp)"]
-    end
-    
-    subgraph Slave ["Slave Device (Thẻ nhớ MicroSD)"]
-        SCK_S["CLK"]
-        MOSI_S["DI"]
-        MISO_S["DO"]
-        CS_S["CS"]
-    end
-    
-    SCK_M -->|Đồng hồ xung nhịp phần cứng| SCK_S
-    MOSI_M -->|Dữ liệu từ OBC sang thẻ nhớ| MOSI_S
-    MISO_S -->|Dữ liệu từ thẻ nhớ về OBC| MISO_M
-    CS_M -->|Chọn thiết bị tích cực mức LOW| CS_S
-```
+![Sơ đồ kết nối bus SPI Full-Duplex](../figs/png/lab3_spi_connection.png)
 
 ### 2. Giao thức Truyền thông Đồng bộ SPI (Serial Peripheral Interface)
 Chuẩn giao tiếp **SPI** là một bus truyền thông nối tiếp đồng bộ 4 dây, hoạt động theo mô hình Master-Slave ở chế độ song công toàn phần (Full-duplex):

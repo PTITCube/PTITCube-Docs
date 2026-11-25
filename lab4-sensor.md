@@ -22,21 +22,9 @@ Bus **I2C** do hãng Philips (nay là NXP) phát triển là một bus truyền 
   - Khi không có thiết bị nào truyền tin, điện trở kéo lên giữ cho đường bus luôn ở mức logic `HIGH`.
   - Thiết kế này tạo ra cổng logic "HOẶC có dây" (Wired-AND), triệt tiêu hoàn toàn nguy cơ đoản mạch làm cháy chip khi hai thiết bị vô tình phát xung đối nghịch cùng lúc.
 
-```mermaid
-sequenceDiagram
-    participant Master as OBC Master
-    participant Bus as Bus I2C (SDA & SCL)
-    participant Slave as Cảm biến Slave (0x68)
-    
-    Note over Master,Bus: Trạng thái Rảnh: SDA=HIGH, SCL=HIGH
-    Master->>Bus: Điều kiện START: SDA rơi xuống LOW khi SCL vẫn HIGH
-    Master->>Bus: Gửi 7-bit Địa chỉ (0x68) + Bit Đọc/Ghi R/W (0 = Ghi)
-    Slave->>Bus: Bit xác nhận ACK: Slave kéo SDA xuống LOW trong nhịp SCL thứ 9
-    Master->>Bus: Gửi 8-bit Địa chỉ Thanh ghi nội cần truy cập (Register Pointer)
-    Slave->>Bus: Bit xác nhận ACK (SDA = LOW)
-    Master->>Bus: Gửi/Đọc Byte Dữ liệu
-    Master->>Bus: Điều kiện STOP: SDA chuyển từ LOW lên HIGH khi SCL đang HIGH
-```
+![Sơ đồ kết nối bus I2C đa cảm biến và điện trở kéo lên](../figs/png/lab4_i2c_connection.png)
+
+![Trình tự giao thức đọc thanh ghi I2C](../figs/png/lab4_i2c_protocol_sequence.png)
 
 ### 3. Khung Truyền Dữ liệu & Các Trạng thái Điều khiển
 1. **Điều kiện START và STOP (Bắt đầu và Kết thúc):**
@@ -65,7 +53,9 @@ sequenceDiagram
   - Màng cảm biến áp suất gốm áp điện (Piezoresistive) có đặc tính phi tuyến tính cao theo nhiệt độ. Trong quá trình sản xuất tại nhà máy, mỗi chip BMP280 được đo kiểm riêng lẻ và nạp sẵn 24 byte hằng số hiệu chuẩn vào bộ nhớ ROM không khả biến (từ thanh ghi `0x88` đến `0xA1`: `dig_T1` đến `dig_T3` cho nhiệt độ, `dig_P1` đến `dig_P9` cho áp suất).
   - Thuật toán giải mã bắt buộc phải đọc toàn bộ mảng 24 byte hằng số này và áp dụng công thức bù trừ nhiệt độ bậc cao theo tài liệu chuẩn của Bosch để quy đổi giá trị ADC thô thành giá trị áp suất thực tế.
 - **Công thức Tính Độ cao Khí quyển (Barometric Hypsometric Formula):**
+
 $$h = 44330 \times \left[ 1 - \left(\frac{P}{P_0}\right)^{\frac{1}{5.255}} \right]$$
+
   Trong đó: $h$ là độ cao tính bằng mét, $P$ là áp suất khí quyển đo được, $P_0$ là áp suất chuẩn tại mực nước biển (1013.25 hPa).
 
 ### ❓ Câu Hỏi Củng Cố Kiến Thức (Doc 4.1)
@@ -98,7 +88,9 @@ $$h = 44330 \times \left[ 1 - \left(\frac{P}{P_0}\right)^{\frac{1}{5.255}} \righ
 - **Cấu trúc Phần cứng:** Tích hợp 3 cảm biến từ điện trở dị hướng (Anisotropic Magnetoresistive - AMR) độ nhạy cao đo cường độ từ trường Trái Đất theo 3 trục trực giao $M_x, M_y, M_z$ (đơn vị Gauss hoặc $\mu\text{T}$).
 - **Thuật toán Tính Góc Hướng La bàn (Heading):**
   Góc hướng la bàn so với cực Bắc từ được tính bằng hàm lượng giác:
+
 $$\text{Heading} = \text{atan2}(M_y, M_x) \cdot \frac{180}{\pi}$$
+
   Nếu $\text{Heading} < 0^\circ$, hiệu chỉnh: $\text{Heading} = \text{Heading} + 360^\circ$.
 - **Hợp nhất Dữ liệu Quán tính 9 Bậc Tự do (9-DOF):** 
   Kết hợp gia tốc kế 3 trục (đo véc-tơ trọng trường), con quay hồi chuyển 3 trục (đo vận tốc góc) từ MPU6500 và từ kế 3 trục (đo véc-tơ từ trường Trái Đất) từ GY-271 cho phép phân hệ ADCS của vệ tinh xác định đầy đủ và ổn định cả 3 góc Euler trong không gian 3 chiều: Roll $\phi$, Pitch $\theta$ và Yaw / Heading $\psi$.
@@ -109,25 +101,12 @@ $$\text{Heading} = \text{atan2}(M_y, M_x) \cdot \frac{180}{\pi}$$
 - **Gia tốc kế:** Đo véc-tơ gia tốc trọng trường $g$. Cho góc nghiêng chính xác tuyệt vời khi ở trạng thái tĩnh dài hạn, nhưng lại cực kỳ nhạy cảm với các rung động cơ học ngắn hạn và lực quán tính lúc chuyển động (Nhiễu tần số cao).
 - **Con quay hồi chuyển:** Đo vận tốc góc quay tức thời $\omega$. Tích phân góc quay $\theta = \int \omega \, dt$ đáp ứng cực nhanh và không bị ảnh hưởng bởi rung lắc cơ học, nhưng lại bị hiện tượng trôi dạt điểm không (Gyro Drift / DC Bias) khiến góc tính toán bị sai lệch tích lũy tăng dần theo thời gian (Nhiễu tần số thấp).
 - **Bộ Lọc Bù (Complementary Filter):** Kết hợp một bộ lọc thông cao (High-pass Filter) cho con quay và một bộ lọc thông thấp (Low-pass Filter) cho gia tốc kế theo công thức hợp nhất:
+
 $$\theta_t = \alpha \cdot (\theta_{t-1} + \omega \cdot \Delta t) + (1 - \alpha) \cdot \theta_\text{accel}$$
+
   Trong đó: $\Delta t$ là chu kỳ lấy mẫu, $\alpha$ là trọng số lọc (thường chọn $\alpha = 0.96 - 0.98$). Thuật toán chạy siêu nhanh trên vi điều khiển, triệt tiêu hoàn toàn độ trôi của con quay và lọc sạch nhiễu rung lắc của gia tốc kế.
 
-```mermaid
-flowchart TD
-    GYRO["Con quay Hồi chuyển (Gyro)
-Đo vận tốc góc quay w"] --> INT["Tích phân Tức thời: w * dt"]
-    INT --> HPF["Bộ lọc Thông cao (High-Pass)
-Nhân hệ số alpha = 0.98"]
-    
-    ACCEL["Gia tốc kế (Accelerometer)
-Đo véc-tơ trọng trường g"] --> TRIG["Tính góc lượng giác: atan2()"]
-    TRIG --> LPF["Bộ lọc Thông thấp (Low-Pass)
-Nhân hệ số (1 - alpha) = 0.02"]
-    
-    HPF --> SUM["Cộng Hợp nhất (Fusion)"]
-    LPF --> SUM
-    SUM --> ANGLE["Góc Nghiêng Ước lượng Chính xác (Roll / Pitch)"]
-```
+![Bộ lọc bù hợp nhất dữ liệu IMU](../figs/png/lab4_complementary_filter.png)
 
 ---
 
@@ -153,6 +132,8 @@ Nhân hệ số (1 - alpha) = 0.02"]
 ---
 
 ## 📖 Doc 4.3: Nguyên lý Phần Cứng Module Định Vị GNSS L76X & Giao Tiếp UART Đọc Dữ Liệu Thô
+
+![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](../figs/png/lab4_gnss_l76x_architecture.png)
 
 ### 1. Kiến trúc Phần cứng Module Định vị Toàn cầu GNSS L76X
 Module Quectel **L76X** là khí tài định vị không gian tích hợp đồng thời hai hệ thống vệ tinh: **GPS** (Hoa Kỳ - tần số L1 1575.42 MHz) và **GLONASS** (Nga - tần số L1 1602 MHz):
@@ -207,6 +188,8 @@ void loop() {
 ### 1. Tại Sao Bắt Buộc Phải Chuyển Đổi Dữ Liệu NMEA Thô?
 Luồng dữ liệu thô thu được từ cổng UART là các dòng chuỗi văn bản ASCII thuần túy. Vi điều khiển OBC không thể sử dụng trực tiếp chuỗi ký tự này để tính toán quỹ đạo, kiểm tra hàng rào địa lý (Geofencing) hay đóng gói vào bản tin Telemetry nếu không chuyển đổi thành các kiểu dữ liệu số thực (`float`, `double`) và số nguyên (`int`).
 
+![Quy trình kiểm tra Checksum XOR và giải mã bản tin NMEA 0183](../figs/png/lab4_nmea_parsing_flow.png)
+
 ### 2. Cấu Trúc Chi Tiết Từng Trường của Bản Tin NMEA Chuẩn
 Mỗi câu tin NMEA bắt đầu bằng ký tự `$`, theo sau là mã định danh nguồn phát (`GP` cho GPS, `GL` cho GLONASS, `GN` cho đa hệ thống), tên câu lệnh 3 ký tự, các trường dữ liệu ngăn cách bằng dấu phẩy `,` và kết thúc bằng mã Checksum sau dấu `*`:
 
@@ -227,12 +210,18 @@ $GPRMC,083559.00,A,2102.1234,N,10547.5678,E,0.05,84.4,121126,,,A*76
 
 #### B. Công Thức Chuyển Đổi Tọa Độ NMEA sang Độ Thập Phân (Decimal Degrees)
 Định dạng NMEA biểu diễn theo Độ và Phút (`ddmm.mmmm`). Để đưa lên bản đồ số (Google Maps, Leaflet, Dashboard), bắt buộc phải đổi sang Độ Thập Phân:
+
 $$\text{Decimal Degrees} = \text{Degrees} + \frac{\text{Minutes}}{60.0}$$
+
 *Ví dụ cụ thể:*
 - Vĩ độ thô: `2102.1234, N` ⇒ Số độ nguyên là 21°, số phút là 02.1234'.
+
 $$\text{Latitude} = 21 + \frac{2.1234}{60.0} = \mathbf{21.03539^\circ\text{ N}}$$
+
 - Kinh độ thô: `10547.5678, E` ⇒ Số độ nguyên là 105°, số phút là 47.5678'.
+
 $$\text{Longitude} = 105 + \frac{47.5678}{60.0} = \mathbf{105.79279^\circ\text{ E}}$$
+
 *(Quy ước: Nếu là bán cầu Nam `S` hoặc bán cầu Tây `W`, giá trị tọa độ mang dấu âm)*.
 
 #### C. Câu tin `$GPGGA` (Global Positioning System Fix Data)
@@ -256,7 +245,9 @@ $GPGGA,083559.00,2102.1234,N,10547.5678,E,1,08,1.05,45.2,M,-28.9,M,,*5A
 Để bảo đảm đường truyền UART không bị suy hao biến dạng bit làm sai lệch tọa độ:
 - Hai ký tự Hex sau dấu `*` ở cuối câu tin chính là mã Checksum 8-bit.
 - **Giải thuật:** Duyệt qua tất cả các byte nằm giữa ký tự `$` và ký tự `*`, thực hiện phép toán logic `XOR (^)` liên tục:
+
 $$\text{Checksum} = \bigoplus_{i=1}^{N} \text{byte}[i]$$
+
 - Nếu mã tính toán khớp với 2 ký tự Hex cuối dòng, câu tin được xác nhận hợp lệ.
 
 ### 4. Kỹ thuật Lập trình: Bộ Giải Mã Stream Parser (TinyGPS++ / PTIT_GPS)
@@ -308,6 +299,8 @@ void loop() {
 
 ## 📖 Doc 4.5: Tải Trọng Camera Viễn Thám OV2640, Nén JPEG Phần Cứng & Giao Thức Lệnh UART
 
+![Quy trình chụp ảnh JPEG từ OV2640 lưu MicroSD và truyền LoRa](../figs/png/lab4_ov2640_capture_pipeline.png)
+
 ### 1. Tải trọng Camera OV2640
 - **Đặc tính Tải trọng:** Cảm biến ảnh màu CMOS Omnivision **OV2640** độ phân giải 2 Megapixel (1600 × 1200 pixel), tích hợp bộ mã hóa nén phần cứng JPEG giúp giảm dung lượng tệp ảnh từ hàng Megabytes xuống còn $30 - 60\text{ KB}$, rất phù hợp với băng thông hạn chế của kênh truyền sóng không gian.
 - **Yêu cầu Xung nhịp Ngoài XCLK:** Để mạch xử lý tín hiệu hình ảnh (ISP) bên trong OV2640 hoạt động, nó đòi hỏi vi điều khiển OBC phải phát ra một đường xung nhịp tần số cao ổn định từ 10 MHz đến 20 MHz tại chân `XCLK`.
@@ -323,6 +316,8 @@ Khác với giao thức ký tự đơn sơ khởi (`'p'`), giao thức chuẩn c
 ---
 
 ## 📖 Doc 4.6: IC Chuyển Mạch Multiplexer 74HC4066 & Kỹ Thuật Đa Hóa Cổng UART
+
+![Sơ đồ đa hóa cổng UART2 qua IC 74HC4066](../figs/png/lab4_uart_mux_74hc4066.png)
 
 ### 1. Khóa Chuyển Mạch Tương Tự 74HC4066
 - **Xung đột Phần cứng khi Dùng chung Cổng UART:**

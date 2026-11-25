@@ -9,20 +9,9 @@ Giao tiếp **UART (Universal Asynchronous Receiver-Transmitter)** là chuẩn t
   - `TX (Transmit)`: Đường xuất dữ liệu từ thiết bị phát.
   - `RX (Receive)`: Đường nhận dữ liệu vào thiết bị thu (Nối chéo: TX_A → RX_B và RX_A → TX_B).
 
-```mermaid
-sequenceDiagram
-    autonumber
-    Note over TX,RX: Đường dây ở trạng thái rảnh: Mức HIGH (3.3V)
-    TX->>RX: 1 Bit START (Kéo xuống mức LOW 0V)
-    TX->>RX: Bit D0 (LSB - Bit trọng số thấp nhất truyền trước)
-    TX->>RX: Bit D1 ... Bit D6
-    TX->>RX: Bit D7 (MSB - Bit trọng số cao nhất)
-    opt Bit Parity
-        TX->>RX: 1 Bit Chẵn Lẻ (Even / Odd / None)
-    end
-    TX->>RX: 1 hoặc 2 Bit STOP (Kéo lên mức HIGH 3.3V)
-    Note over TX,RX: Kết thúc khung truyền; trở về trạng thái rảnh HIGH
-```
+![Sơ đồ kết nối UART Full-Duplex](../figs/png/lab1_uart_connection.png)
+
+![Giản đồ xung khung truyền UART 8-N-1](../figs/png/lab1_uart_timing_sequence.png)
 
 ### 2. Cấu hình Cổng Serial & Khung Truyền SERIAL_8N1
 
@@ -34,6 +23,7 @@ Khung truyền nối tiếp chuẩn mực nhất của ngành công nghiệp là
 - **Thời gian truyền 1 Byte:**
   Tổng số bit cần truyền cho 1 byte là: 1 Start + 8 Data + 1 Stop = 10 bit.
   Ở tốc độ baud chuẩn 115200 bps, thời gian truyền 1 bit là:
+
 $$T_{\text{bit}} = \frac{1}{115200} \approx 8.68\,\mu\text{s} \implies T_{\text{byte}} = 10 \times 8.68\,\mu\text{s} \approx 86.8\,\mu\text{s}$$
 
   Tốc độ truyền dữ liệu hữu ích cực đại đạt: ≈ 11520 Byte/s ≈ 11.25 KB/s.

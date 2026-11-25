@@ -11,20 +11,7 @@ Khi hệ thống chạy đa tác vụ, các tài nguyên phần cứng duy nhấ
 - Sau khi hoàn thành việc ghi dữ liệu, tác vụ bắt buộc phải nhả khóa: `xSemaphoreGive(xSPIMutex)`.
 - Các tác vụ khác muốn truy cập tài nguyên trong thời gian này sẽ tự động chuyển sang trạng thái chờ (Blocked), giải phóng chu kỳ CPU cho các công việc khác.
 
-```mermaid
-sequenceDiagram
-    participant TaskA as Task Ưu tiên Thấp (Ghi Thẻ nhớ)
-    participant Mutex as Khóa Mutex (SPI_Mutex)
-    participant TaskB as Task Ưu tiên Cao (Cảm biến)
-    
-    TaskA->>Mutex: Xin lấy khóa (xSemaphoreTake) - THÀNH CÔNG
-    Note over TaskA: Đang thực hiện ghi dữ liệu qua bus SPI...
-    TaskB->>Mutex: Xin lấy khóa (xSemaphoreTake) - BỊ TỪ CHỐI
-    Note over TaskB: Tự động chuyển sang trạng thái Blocked (Chờ)
-    TaskA->>Mutex: Trả khóa (xSemaphoreGive)
-    Mutex->>TaskB: Trao quyền sở hữu khóa
-    Note over TaskB: Thức dậy và thực thi truy cập SPI ngay lập tức
-```
+![Đảo ngược ưu tiên và cơ chế khóa Mutex](../figs/png/lab3_priority_inversion_mutex.png)
 
 ### 3. Vấn đề Nghịch đảo Mức Ưu tiên (Priority Inversion) & Cơ chế Thừa kế Ưu tiên (Priority Inheritance)
 - **Sự cố Lịch sử Mars Pathfinder (1997):** Tàu đổ bộ Sao Hỏa liên tục bị reset phần mềm bí ẩn giữa sa mạc Sao Hỏa do một lỗi thiết kế RTOS kinh điển:

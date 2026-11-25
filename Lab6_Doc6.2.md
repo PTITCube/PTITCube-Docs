@@ -15,20 +15,7 @@ Vật liệu sử dụng cho khung CubeSat phải đáp ứng đồng thời 4 t
 ### 2. Quy trình Xử lý Bề mặt Chọn lọc: Anodize Cứng Type III vs Lớp Phủ Alodine
 Khung nhôm CubeSat bắt buộc phải trải qua quy trình xử lý bề mặt chọn lọc hai giai đoạn (Selective Masking) theo tiêu chuẩn quân sự Hoa Kỳ:
 
-```mermaid
-flowchart LR
-    RAW["Khung Nhôm Al 6061-T6 Thô Gia công CNC"] --> MASK["Dán Che Chọn Lọc (Selective Masking)"]
-    
-    MASK -->|Xử lý 4 Thanh Ray Ngoài| ANODIZE["Anode Hóa Cứng Type III (MIL-A-8625)
-- Lớp Oxit Nhôm Gốm Dày 25-50 um
-- Độ Cứng 60-70 HRC Chống Mài Mòn
-- Cách Điện Tuyệt Đối Chống Hàn Nguội"]
-    
-    MASK -->|Xử lý Lòng Trong & Mặt Ghép| ALODINE["Phủ Chuyển đổi Hóa học Alodine (MIL-DTL-5541 Class 3)
-- Màng Cromat Mỏng Bảo vệ Khỏi Oxy Hóa
-- Duy trì Tính Dẫn Điện Tuyệt Hảo (R < 0.1 Ohm)
-- Dùng Làm Điểm Nối Mass Chung (Ground Bonding)"]
-```
+![Quy trình xử lý bề mặt Anodize và Alodine](../figs/png/lab6_surface_treatment.png)
 
 1. **Anodize Hóa Cứng Type III (Hard Anodizing - Tiêu chuẩn MIL-A-8625):**
    - Áp dụng trên: **4 thanh ray dẫn hướng ở 4 góc** tiếp xúc trực tiếp với lòng ống phóng P-POD.
