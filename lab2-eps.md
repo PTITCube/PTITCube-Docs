@@ -1,58 +1,58 @@
-# Lab 2: Phân hệ Năng lượng (EPS) & Quản lý Nguồn Quỹ đạo
+# Lab 2: Phân hệ năng lượng và quản lý nguồn
 
 ---
 
-## 📖 Doc 2.1: Tổng quan Phân hệ Năng lượng EPS, Công nghệ Pin & Mạch Đo Dung Lượng MAX17048
+## 📖 Doc 2.1: EPS, pin Li-Po và MAX17048
 
-### 1. Vai trò Sinh tồn của Phân hệ Năng lượng (EPS - Electrical Power System)
-Phân hệ Năng lượng được ví như "Trái tim" của vệ tinh CubeSat. Trong không gian vũ trụ, nếu hệ thống năng lượng bị gián đoạn dù chỉ vài mili-giây, toàn bộ máy tính và tải trọng sẽ sập nguồn tức thì. EPS gánh vác các trọng trách cốt lõi:
-- **Tích trữ Năng lượng Sơ cấp (Energy Storage):** Lưu trữ điện năng trong các cell pin hóa học để duy trì sự sống cho vệ tinh khi đi qua vùng tối của Trái Đất (Eclipse).
-- **Quản lý Nạp Năng lượng Thông minh (Battery Charging):** Điều phối dòng sạc từ các tấm pin quang điện (Solar Panels) vào khối pin theo thuật toán an toàn, bảo vệ chống quá nạp hoặc quá nhiệt.
-- **Biến đổi & Ổn định Điện áp (Power Conversion & Conditioning):** Chuyển đổi điện áp không ổn định của pin thành các đường bus điện áp sạch (3.3V và 5.0V) cung cấp cho các tải tiêu thụ.
-- **Giám sát Năng lượng Thời gian thực (Fuel Gauging):** Đo đạc liên tục điện áp, dòng điện tiêu thụ và phần trăm dung lượng còn lại (State of Charge - SOC) để OBC ra quyết định sa thải phụ tải khi pin yếu.
-- **Cơ chế Cách ly An toàn Phóng (Launch Safety Inhibit):** Đảm bảo vệ tinh hoàn toàn "chết điện" trong suốt quá trình phóng tên lửa cho tới khi được đẩy ra ngoài vũ trụ.
+### 1. Vai trò của hệ thống nguồn
+EPS lưu trữ và phân phối điện cho các hệ thống trên CubeSat. Nhiệm vụ chính:
+- **Lưu trữ:** Cấp điện cho vệ tinh khi đi qua vùng tối của Trái Đất.
+- **Sạc pin:** Điều phối dòng sạc từ các tấm pin quang điện và bảo vệ pin khỏi quá nạp, quá nhiệt.
+- **Chuyển đổi điện áp:** Cấp các đường nguồn 3.3 V và 5.0 V cho tải.
+- **Giám sát:** Đo điện áp, dòng điện và dung lượng còn lại (SOC), để OBC quản lý tải khi pin yếu.
+- **Ngắt an toàn:** Giữ vệ tinh mất nguồn trong quá trình phóng cho đến khi được đẩy khỏi ống phóng.
 
 ![Kiến trúc hệ thống nguồn điện EPS](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab2_eps_architecture.png)
 
-### 2. Đặc tính Hóa học và Vận hành của Pin Lithium Polymer (Li-Po)
-Kit vệ tinh PTITCube sử dụng pin sạc **Lithium-ion Polymer (Li-Po)** dạng túi phẳng (Pouch Cell) với các đặc tính kỹ thuật quan trọng:
-- **Điện áp Danh định (Nominal Voltage):** 3.7V trên mỗi cell.
-- **Điện áp Sạc Đầy (Fully Charged Cut-off):** 4.20V ± 0.05V. Không bao giờ được sạc vượt quá 4.25V vì sẽ gây phân hủy chất điện phân, sinh khí áp suất cao làm phồng nổ pin.
-- **Điện áp Xả Kiệt Nguy hiểm (Cut-off Threshold):** 3.00V. Nếu xả dưới 2.7V, cấu trúc tinh thể của các điện cực sẽ bị phá hủy vĩnh viễn (Dead Cell), pin không thể hồi phục dung lượng.
-- **Đồ thị Phóng điện (Discharge Curve):** Đường cong điện áp xả của pin Li-Po rất dốc ở vùng 10% đầu ($4.2\text{V} \to 3.8\text{V}$), cực kỳ phẳng ở vùng 80% dung lượng trung tâm ($3.8\text{V} \to 3.65\text{V}$), và rơi tự do cắm đầu ở 10% cuối ($3.65\text{V} \to 3.0\text{V}$). Do đó, không thể ước lượng chính xác phần trăm dung lượng pin chỉ bằng cách đo điện áp tĩnh đơn thuần!
+### 2. Đặc tính pin Li-Po
+Kit PTITCube dùng pin **Li-Po** dạng túi:
+- Điện áp danh định: 3.7 V mỗi cell.
+- Điện áp sạc đầy: 4.20 V ± 0.05 V. Không sạc quá 4.25 V để tránh làm pin phồng hoặc hỏng.
+- Ngưỡng ngắt xả: 3.00 V. Xả dưới 2.7 V có thể làm hỏng pin vĩnh viễn.
+- Điện áp giảm nhanh ở 10% đầu và cuối dung lượng, nhưng ít đổi trong khoảng 80% giữa. Vì vậy, không thể ước lượng chính xác dung lượng chỉ từ điện áp tĩnh.
 
-### 3. Thuật toán Sạc Chuẩn CC/CV với IC Sạc Chuyên Dụng TP4056
+### 3. Sạc pin bằng CC/CV
 Khối nạp nguồn sử dụng vi mạch điều khiển sạc tuyến tính chuyên dụng **TP4056A** kết hợp mạch bảo vệ pin **DW01A + MOSFET kép 8205A** thực hiện chu trình sạc hai giai đoạn hoàn hảo:
-1. **Giai đoạn Dòng không đổi (Constant Current - CC):**
+1. **Dòng không đổi (CC):**
    - Khi pin có điện áp từ 3.0V đến dưới 4.2V, mạch bơm một dòng điện sạc không đổi tối đa $I_\text{chg}$ vào pin.
    - Dòng sạc được thiết lập thông qua điện trở gắn ở chân `PROG` ($R_\text{prog}$) theo công thức của nhà sản xuất:
 
 $$I_\text{chg} = \frac{1200\text{ V}}{R_\text{prog}}$$
 
      Ví dụ: Với điện trở $R_\text{prog} = 1.2\text{ k}\Omega$, dòng nạp tối đa là $I_\text{chg} = 1000\text{ mA} = 1.0\text{ A}$.
-2. **Giai đoạn Áp không đổi (Constant Voltage - CV):**
+2. **Áp không đổi (CV):**
    - Khi điện áp pin đạt chính xác ngưỡng 4.20V, mạch tự động chuyển sang chế độ áp không đổi, giữ điện áp ở mức 4.20V và để dòng điện giảm dần theo hàm mũ.
-   - Khi dòng điện giảm xuống dưới $1/10$ dòng sạc định mức ($C/10 \approx 100\text{ mA}$), chip TP4056 ngắt sạc hoàn toàn, đèn chỉ thị đang sạc (`Charging Indicator`) tắt và đèn báo đầy (`Charging End Indicator`) bật sáng.
+   - Khi dòng điện giảm xuống dưới $1/10$ dòng sạc định mức ($C/10 \approx 100\text{ mA}$), TP4056 ngắt sạc; đèn sạc tắt và đèn báo đầy bật sáng.
 
 ![Sơ đồ mô-đun sạc và bảo vệ pin Li-Po TP4056A](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab2.1_Tp4056.png)
 
-| Chân / Thành phần trên Mô-đun TP4056A | Hướng / Vai trò | Thông số & Chức năng Kỹ thuật |
-| :--- | :--- | :--- |
-| **`IN+` / `IN-` & Cổng USB Type-C** | Ngõ vào Nguồn Sạc | Nhận nguồn DC $4.5\text{V} - 8.0\text{V}$ (dòng tối đa $1.2\text{ A}$) từ tấm pin mặt trời / bộ chuyển nguồn mặt đất hoặc cáp USB Type-C. |
-| **`B+` / `B-`** | Cực Nối Pin Li-Po | Kết nối trực tiếp tới cực dương (`+`) và cực âm (`-`) của cell pin Li-Po 3.7V (sạc đầy 4.2V, dòng sạc tối đa 1A). |
-| **`OUT+` / `OUT-`** | Ngõ ra Cấp Tải (`Vbatt`) | Cấp nguồn đầu ra từ pin ($V_\text{batt}$, dòng tối đa $3\text{ A}$) sang mạch chuyển đổi DC-DC Buck/Boost; tự động ngắt khi pin cạn hoặc ngắn mạch tải. |
-| **IC Sạc `TP4056A`** | Bộ xử lý Sạc Pin | Điều khiển thuật toán sạc tuyến tính CC/CV hai giai đoạn, điều khiển hai đèn LED trạng thái (`Charging` & `Charging End`). |
-| **IC Bảo vệ `DW01A` & MOSFET `8205A`** | Mạch Bảo vệ An toàn Pin | `DW01A` giám sát ngưỡng quá nạp, quá xả (< 2.5V–3.0V) và quá dòng/ngắn mạch, điều khiển MOSFET kép `8205A` ngắt cách ly pin ngay lập tức khi có sự cố. |
+| Chân / thành phần | Kết nối hoặc chức năng |
+| :--- | :--- |
+| `IN+` / `IN-` | Nguồn sạc DC 4.5–8.0 V, tối đa 1.2 A. |
+| `B+` / `B-` | Cực pin Li-Po 3.7 V; sạc đầy 4.2 V, dòng sạc tối đa 1 A. |
+| `OUT+` / `OUT-` | Cấp nguồn cho tải, tối đa 3 A; tự ngắt khi pin cạn hoặc ngắn mạch. |
+| TP4056A | Điều khiển sạc CC/CV và hai đèn trạng thái. |
+| DW01A, 8205A | Bảo vệ pin khỏi quá nạp, quá xả, quá dòng và ngắn mạch. |
 
-### 4. Mạch Chuyển đổi Nguồn Chuyển mạch DC-DC Buck và Boost
+### 4. Mạch Buck và Boost
 Để cấp nguồn cho các phân hệ, bo mạch EPS tích hợp hai mạch ổn áp chuyển mạch (Switching Regulators) với hiệu suất vượt trội so với ổn áp tuyến tính LDO:
-- **DC-DC Buck Converter (Hạ áp $V_\text{bat} \to 3.3\text{V}$):** Cung cấp dòng điện liên tục lên tới 2 A cho OBC, bộ nhớ Flash và các cảm biến. Hiệu suất chuyển đổi đạt $\sim 92\%$, giảm thiểu tối đa tổn hao nhiệt sinh ra bên trong lòng vệ tinh.
-- **DC-DC Boost Converter (Nâng áp $V_\text{bat} \to 5.0\text{V}$):** Khi điện áp pin xả xuống 3.4V, mạch Boost vẫn duy trì điện áp 5.0V ổn định cấp nguồn cho tầng khuếch đại công suất phát sóng của module LoRa và module Camera.
+- **Mạch hạ áp:** Chuyển $V_\text{bat}$ xuống 3.3 V, cấp tối đa 2 A cho OBC, bộ nhớ flash và cảm biến; hiệu suất khoảng 92%.
+- **Mạch nâng áp:** Duy trì 5.0 V khi pin còn 3.4 V, cấp cho tầng khuếch đại LoRa và camera.
 
-### 5. IC Giám Sát Nhiên Liệu Pin MAX17048 qua Giao thức I2C
+### 5. Giám sát pin bằng MAX17048
 Trên bo EPS, chip **MAX17048** của hãng Maxim Integrated đo đạc liên tục dung lượng pin với độ chính xác cao:
 - **Địa chỉ I2C Cố định:** `0x36` (dạng 7-bit).
-- **Thuật toán Độc quyền ModelGauge:** Theo dõi hành vi động học của cell pin, liên tục bù trừ theo nhiệt độ và tốc độ xả để tính toán chính xác tỷ lệ phần trăm dung lượng pin còn lại (State of Charge - SOC) mà **không cần mắc điện trở Shunt nối tiếp gây suy hao dòng điện**.
+- **ModelGauge:** Ước lượng dung lượng pin (SOC) theo nhiệt độ và tốc độ xả mà không cần điện trở đo dòng mắc nối tiếp.
 - **Các Thanh ghi Trọng yếu:**
   - Thanh ghi Điện áp Cell (`VCELL` - Địa chỉ `0x02` và `0x03`): Giá trị 16-bit. Độ phân giải là $78.125\text{ }\mu\text{V}$ trên mỗi bit (tương đương $1.25\text{ mV} / 16\text{ LSB}$).
 
@@ -62,16 +62,15 @@ $$V_\text{cell}\text{ (V)} = \text{RegValue} \times 0.000078125\text{ V}$$
 
 ![Sơ đồ chân và cổng kết nối bo mạch giám sát pin MAX17048](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab2.1_MAX17048.png)
 
-| Chân / Cổng trên Bo MAX17048 | Loại Giao tiếp | Chức năng Chi tiết |
-| :--- | :--- | :--- |
-| **`VIN`** | Nguồn Logic ($3\text{V} - 5\text{V DC}$) | Cấp nguồn nuôi mạch giao tiếp logic I2C (điện áp tham chiếu khớp với mức logic SDA/SCL của ESP32 là 3.3V). |
-| **`GND`** | Mass Chung (Ground) | Điểm tham chiếu điện áp 0V nối chung với mass của pin và vi điều khiển OBC. |
-| **`SCL`** | I2C Clock | Đường xung nhịp đồng bộ I2C, kết nối tới chân `GPIO22` (`WIRE_SCL`) của ESP32. |
-| **`SDA`** | I2C Data | Đường truyền dữ liệu 2 chiều I2C, kết nối tới chân `GPIO21` (`WIRE_SDA`) của ESP32. |
-| **`INT`** | Ngắt Cảnh báo (*Alarm*) | Chân ngõ ra tích cực mức `LOW` dùng để kích hoạt ngắt phần cứng đánh thức OBC khi điện áp/SOC pin tụt dưới ngưỡng cảnh báo. |
-| **`QStart`** | Khởi động nhanh (*Quick-Start*) | Kích hoạt khởi động lại chu trình ước lượng nhanh thuật toán *ModelGauge* trong điều kiện điện áp khởi tạo đặc biệt. |
-| **2× Cổng `JST 2.0PH` (`-` / `+`)** | Nguồn Pin / Tải / Sạc | Hai giắc cắm chuẩn JST-PH 2.0mm đấu song song, cho phép nối trực tiếp pack pin Li-Po vào một cổng và dẫn nguồn sang mạch tải/mạch sạc ở cổng còn lại. |
-| **2× Cổng `STEMMA QT` & `Power LED`** | Mở rộng Bus I2C & Chỉ thị | Hai giắc I2C 4 chân (`GND, VCC, SDA, SCL`) nối chuỗi các thiết bị I2C mà không cần hàn; `Power LED` báo trạng thái bo đang có nguồn. |
+| Chân | Kết nối hoặc chức năng |
+| :--- | :--- |
+| `VIN` | Cấp nguồn 3–5 V; mức logic tương thích ESP32 3.3 V. |
+| `GND` | Nối chung mass với pin và OBC. |
+| `SCL`, `SDA` | Nối lần lượt `GPIO22` và `GPIO21` của ESP32. |
+| `INT` | Ngõ ra tích cực `LOW`, báo khi điện áp hoặc SOC xuống dưới ngưỡng. |
+| `QStart` | Khởi động lại quá trình ước lượng dung lượng. |
+| Hai cổng JST-PH | Nối pin, tải hoặc bộ sạc; hai cổng đấu song song. |
+| Hai cổng STEMMA QT | Mở rộng bus I2C; có đèn báo nguồn. |
 
 ---
 
@@ -92,70 +91,108 @@ $$V_\text{cell}\text{ (V)} = \text{RegValue} \times 0.000078125\text{ V}$$
 
 ---
 
-## 📖 Doc 2.2: Quản lý Rủi ro Sụt áp (Brownout), Cơ chế Ngắt An toàn Phóng & Điều Khiển Mạch Hạ Áp Cấp Nguồn Cảm Biến
+## 📖 Doc 2.2: Sụt áp, ngắt an toàn và điều khiển nguồn tải
 
-![Bảo vệ sụt áp Brownout và điều khiển cấp nguồn tải](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab2_brownout_power_gating.png)
+![Sụt áp và điều khiển nguồn tải](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab2_brownout_power_gating.png)
 
-### 1. Cơ chế Ngắt An toàn Phóng (Safety Inhibits)
-Để được các cơ quan hàng không vũ trụ (NASA, JAXA, ESA) cấp phép đưa lên tên lửa đẩy, vệ tinh bắt buộc phải có tối thiểu 2 cơ chế ngắt nguồn độc lập nhằm bảo đảm an toàn tuyệt đối cho tên lửa mẹ:
-1. **Chốt Rút Trước Giờ Bay (Remove-Before-Flight - RBF Pin):**
+### 1. Ngắt an toàn khi phóng
+Vệ tinh cần có ít nhất hai cơ chế ngắt nguồn độc lập trong quá trình phóng:
+1. **Chốt RBF:**
    - Một chốt cơ khí cách điện được cắm xuyên qua vỏ vệ tinh, ngắt đường nguồn chính của pin.
-   - Khi chuẩn bị đưa vệ tinh vào ống phóng tại bãi phóng, kỹ sư thao tác rút chốt này ra. Dải cờ đỏ rực rỡ "REMOVE BEFORE FLIGHT" gắn liền với chốt giúp kiểm tra trực quan, loại bỏ nguy cơ quên kích hoạt.
-2. **Công tắc Hành trình Chân Ray (Deployment / Separation Switch):**
+   - Trước khi đưa vệ tinh vào ống phóng, kỹ sư rút chốt. Dải cờ đỏ giúp xác nhận chốt đã được tháo.
+2. **Công tắc hành trình:**
    - Bố trí ở đầu mút của thanh ray dẫn hướng.
    - Khi vệ tinh được trượt vào trong lòng ống phóng P-POD, cần gạt công tắc bị nén chặt xuống bởi thành ống phóng, giữ tiếp điểm ở trạng thái ngắt mạch điện.
    - Khi cửa P-POD mở và lò xo đẩy vệ tinh bay ra ngoài không gian, cần gạt bật bung ra, đóng tiếp điểm cấp điện toàn bộ hệ thống EPS.
 
-### 2. Hiện tượng Sụt áp Nguồn (Brownout) & Cơ chế Bảo vệ Của ESP32
-Khi tải tiêu thụ đột ngột đòi hỏi dòng điện lớn (như khi module LoRa bắt đầu phát sóng công suất cao hoặc module Camera nạp tụ), nội trở của pin và điện cảm đường mạch sẽ gây ra hiện tượng sụt áp tức thời (Voltage Sag):
+### 2. Sụt áp và bảo vệ ESP32
+Khi tải đột ngột cần dòng lớn, nội trở của pin và điện cảm đường mạch có thể làm sụt áp:
 - Nếu điện áp cấp cho vi điều khiển sụt xuống dưới ngưỡng an toàn tối thiểu (thường là 2.7V), CPU sẽ thực thi sai tập lệnh, bộ nhớ Flash có thể bị ghi đè dữ liệu rác làm hỏng hệ điều hành.
-- **Mạch Phát hiện Sụt áp Phần cứng (Brownout Detector - BOD):** Tích hợp bên trong ESP32, liên tục so sánh điện áp nguồn $V_{\text{dd}}$ với các mức ngưỡng tham chiếu. Khi phát hiện điện áp tụt dưới ngưỡng định sẵn, BOD kích hoạt tín hiệu Reset khẩn cấp bằng phần cứng để bảo vệ vi xử lý khỏi trạng thái bất định.
+- **Bộ phát hiện sụt áp (BOD):** ESP32 so sánh điện áp nguồn $V_{\text{dd}}$ với ngưỡng đặt trước và kích hoạt reset khi điện áp xuống thấp.
 - **Biện pháp Khắc phục Phần cứng:** Bố trí các tụ điện hóa Tantalum dung lượng lớn ($100\mu\text{F} - 470\mu\text{F}$) có nội trở ESR cực thấp ngay sát chân nguồn của module phát sóng và camera để xả năng lượng bù đắp cho các đỉnh dòng tức thời.
 
-### 3. Nguyên Lý Điều Khiển Mạch Hạ Áp (Buck Converter) & Kỹ Thuật Power Gating Tiết Kiệm Năng Lượng
-Trong một vệ tinh CubeSat, việc duy trì cấp nguồn liên tục cho toàn bộ các mạch tải ngoại vi là nguyên nhân hàng đầu gây hao tổn dung lượng pin do dòng tĩnh (Quiescent Current) và dòng rò vi mạch.
-- **Đầu ra Mạch Hạ Áp Cấp Nguồn Cho Tải Ngoại Vi:** Trên bo mạch EPS, đầu ra của mạch hạ áp DC-DC Buck Converter chịu trách nhiệm cung cấp đường nguồn 3.3V sạch riêng biệt cho toàn bộ cụm tải tiêu thụ ngoại vi.
-- **Kỹ thuật Cắt Nguồn Phân Hệ (Power Gating):** Trên bo mạch phân hệ nguồn EPS, đường tín hiệu điều khiển dòng điện đi vào mạch hạ áp hoạt động theo logic phần cứng:
-  - **Mức 1 (`HIGH`):** Ngắt dòng điện đi vào mạch hạ áp $\rightarrow$ Cắt toàn bộ nguồn cấp cho tải ngoại vi, đưa dòng tiêu thụ của khối tải về 0 mA trong thời gian nghỉ.
-  - **Mức 0 (`LOW`):** Cho phép dòng điện đi vào mạch hạ áp $\rightarrow$ Kích hoạt mạch hạ áp cấp nguồn 3.3V ổn định cho tải tiêu thụ.
-  - **Đóng gói Thư viện Cấp cao:** Thao tác cấu hình chân GPIO và xuất xung mức logic được đóng gói hoàn toàn bên trong thư viện `PTIT_EPS` thông qua phương thức `eps.setBuckState(true)` (BẬT nguồn tải) và `eps.setBuckState(false)` (TẮT nguồn tải), che giấu sự phụ thuộc vào chân phần cứng cụ thể.
-  - **Cơ chế Kích hoạt Power Saving Mode dựa trên Ngưỡng Pin:**
-    Hệ thống giám sát liên tục điện áp pin $V_\text{cell}$ và phần trăm dung lượng $\text{SOC}$. Chế độ tiết kiệm điện (Power Saving Mode) được tự động kích hoạt khi:
+### 3. Điều khiển mạch Buck và tiết kiệm điện
+Cấp nguồn liên tục cho tải ngoại vi làm tăng mức tiêu thụ do dòng tĩnh và dòng rò.
+- **Đầu ra mạch hạ áp:** Trên bo EPS, mạch Buck cấp nguồn 3.3 V cho tải ngoại vi.
+- **Cắt nguồn tải:** Trên bo EPS, tín hiệu điều khiển mạch hạ áp có logic:
+  - **Mức 1 (`HIGH`):** Ngắt nguồn vào mạch hạ áp và tắt tải.
+  - **Mức 0 (`LOW`):** Bật mạch hạ áp, cấp nguồn 3.3 V cho tải.
+  - Thư viện `PTIT_EPS` điều khiển nguồn tải qua `eps.setBuckState(true)` (bật) và `eps.setBuckState(false)` (tắt), không cần biết chân GPIO cụ thể.
+  - **Ngưỡng bật chế độ tiết kiệm điện:**
+    Hệ thống giám sát điện áp pin $V_\text{cell}$ và dung lượng $\text{SOC}$. Chế độ tiết kiệm điện bật khi:
 
-$$V_\text{cell} < 3.70\text{ V} \quad \text{or} \quad \text{SOC} < 25.0\%$$
+$$V_\text{cell} < 3.70\text{ V} \quad \text{hoặc} \quad \text{SOC} < 25.0\%$$
 
     - *Khi pin yếu:* OBC lập tức gọi `eps.setBuckState(false)` để ngắt mạch hạ áp, sa thải toàn bộ phụ tải tiêu thụ và kéo dài chu kỳ ngủ ($5000\text{ ms}$) nhằm bảo toàn năng lượng cho máy tính sinh tồn và nạp lại pin.
-    - *Khi pin khỏe ($V_\text{cell} \ge 3.70\text{ V}$ và $\text{SOC} \ge 25.0\%$):* OBC duy trì `eps.setBuckState(true)` ở chế độ bình thường (Normal Mode) với chu kỳ làm việc tích cực ($1500\text{ ms}$).
-- **Hiệu quả Tiết kiệm Năng lượng (Duty Cycling):**
+    - *Khi pin khỏe ($V_\text{cell} \ge 3.70\text{ V}$ và $\text{SOC} \ge 25.0\%$):* OBC gọi `eps.setBuckState(true)` với chu kỳ $1500\text{ ms}$.
+- **Tiết kiệm năng lượng theo chu kỳ bật/tắt:**
   - Giả sử tổng dòng tiêu thụ của khối tải ngoại vi khi hoạt động là 25 mA.
   - Nếu bật liên tục trong 1 chu kỳ quỹ đạo 95 phút, năng lượng tiêu thụ là:
 
 $$E_{\text{continuous}} = 3.3\text{ V} \times 25\text{ mA} \times 1.583\text{ h} \approx 130.6\text{ mWh}$$
 
-  - Nếu chỉ bật 1.5 giây mỗi 6.5 giây (chu kỳ hoạt động với Duty Cycle $\approx 23\%$):
+  - Nếu chỉ bật 1.5 giây mỗi 6.5 giây (tỉ lệ bật $\approx 23\%$):
 
 $$E_{\text{gating}} \approx 130.6\text{ mWh} \times 0.23 \approx 30.0\text{ mWh}$$
 
-  - Kỹ thuật điều khiển dòng mạch hạ áp giúp giảm thiểu tới **77%** lượng điện năng tiêu hao của tải ngoại vi, kéo dài tuổi thọ của pin trong pha bóng tối Trái Đất (Eclipse).
+  - Cách này giảm khoảng **77%** điện năng tiêu thụ của tải ngoại vi trong vùng tối quỹ đạo.
 
 ---
 
 ### ❓ Câu Hỏi Củng Cố Kiến Thức (Doc 2.2)
-1. **Chức năng an toàn bắt buộc của công tắc RBF (Remove Before Flight) hoặc Release Switch trên phân hệ EPS là gì?**
+1. **Chức năng an toàn của chốt RBF hoặc công tắc hành trình trên EPS là gì?**
    - A. Tự động xả cạn năng lượng pin trước khi đưa lên quỹ đạo
    - B. Kích hoạt chế độ truyền dữ liệu công suất cực đại
    - C. Chuyển đổi qua lại giữa pin chính và pin dự phòng
    - D. Ngắt hoàn toàn nguồn điện khi vệ tinh nằm trong ống phóng
 
-2. **Trên bo mạch EPS, vai trò cốt lõi của mạch hạ áp DC-DC Buck Converter là gì?**
-   - A. Chuyển điện áp một chiều DC thành xoay chiều AC
+2. **Mạch hạ áp Buck trên bo EPS có chức năng gì?**
+   - A. Chuyển điện áp một chiều thành xoay chiều
    - B. Ổn định điện áp 3.3V cấp cho vi xử lý với hiệu suất cao
    - C. Tăng điện áp pin từ 3.7V lên 12V để nạp nhanh
    - D. Đo đạc dòng điện rò rỉ của khung sườn cơ học
 
 ---
 
-## 💻 Hướng Dẫn Thực Hành: Lập Trình Giám Sát Phân Hệ Nguồn EPS
+## 📖 Doc 2.3: Hướng dẫn lắp ráp hệ thống nguồn
+
+Tài liệu này tổng hợp các kết nối của mô-đun sạc TP4056A và mạch đo pin MAX17048. Đối chiếu nhãn chân trên bo mạch trước khi đấu nối.
+
+### 1. Bố trí linh kiện
+
+> **Vị trí chèn hình:** Bố trí bo EPS, pin, mô-đun sạc và MAX17048.
+
+### 2. Kết nối TP4056A
+
+| Chân | Kết nối |
+| :--- | :--- |
+| `IN+` / `IN-` | Nguồn sạc DC 4.5–8.0 V |
+| `B+` / `B-` | Cực dương / cực âm của pin Li-Po |
+| `OUT+` / `OUT-` | Đầu ra cấp tải |
+
+> **Vị trí chèn hình:** Đấu nối nguồn sạc, pin và tải vào TP4056A.
+
+Không sạc pin vượt 4.25 V. Ngừng xả khi pin còn 3.0 V; xả dưới 2.7 V có thể làm hỏng pin.
+
+### 3. Kết nối MAX17048 với ESP32
+
+| MAX17048 | ESP32 |
+| :--- | :--- |
+| `VIN` | 3.3 V |
+| `GND` | `GND` |
+| `SCL` | `GPIO22` |
+| `SDA` | `GPIO21` |
+
+> **Vị trí chèn hình:** Kết nối MAX17048 với ESP32 và bo EPS.
+
+### 4. Kiểm tra trước khi thực hành
+
+- Đối chiếu cực tính pin và các đầu nối với sơ đồ lắp ráp.
+- Giữ nguyên địa chỉ I2C của MAX17048 là `0x36`.
+
+---
+
+## 💻 Hướng dẫn thực hành Lab 2: Giám sát hệ thống nguồn
 
 ### 1. Kỹ thuật Đọc Thanh Ghi I2C Thuần trên Chip MAX17048
 Chương trình C++ giao tiếp trực tiếp với các thanh ghi nội của MAX17048 thông qua thư viện `Wire.h`:
@@ -202,7 +239,7 @@ float readBatterySOC() {
 ### 2. Danh mục Bài Thực hành Lab 2
 - `Lab2-01a_Battery_I2C`: Thực hành lập trình đọc trực tiếp thanh ghi điện áp `VCELL` và dung lượng `SOC` từ IC MAX17048 qua giao tiếp I2C thuần.
 - `Lab2-01b_Battery_Library`: Khởi tạo và quản lý phân hệ nguồn EPS thông qua lớp đối tượng đóng gói cấp cao của thư viện PTITCube, in báo cáo định kỳ ra Serial Monitor.
-- `Lab2-02_Power_Saving`: Tự động kích hoạt chế độ tiết kiệm năng lượng (Power Saving Mode) dựa trên ngưỡng điện áp cell pin ($< 3.70\text{V}$) hoặc phần trăm dung lượng ($< 25\%$), điều khiển bật/tắt mạch hạ áp Buck Converter thông qua phương thức thư viện `PTIT_EPS` (`eps.setBuckState()`) để sa thải phụ tải an toàn.
+- `Lab2-02_Power_Saving`: Bật chế độ tiết kiệm điện khi điện áp pin dưới $3.70\text{ V}$ hoặc SOC dưới $25\%$. Dùng `eps.setBuckState()` của `PTIT_EPS` để ngắt tải an toàn.
 
 ### ❓ Câu Hỏi Đánh Giá Kỹ Năng Thực Hành (Lab 2)
 1. **Công thức chuyển đổi giá trị thô 16-bit đọc từ thanh ghi VCELL (0x02) của MAX17048 sang điện áp thực tế (Volt) là:**

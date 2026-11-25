@@ -1,38 +1,36 @@
-# Lab 3: Xử lý Dữ liệu và Lệnh (C&DH) & Hệ thống Lưu trữ Hộp Đen
+# Lab 3: Xử lý dữ liệu, lệnh và lưu trữ
 
 ---
 
-## 📖 Doc 3.1: Giao thức Giao tiếp SPI Tốc độ cao & Kiến trúc Hệ thống Tập tin FAT32 trên Thẻ MicroSD
+## 📖 Doc 3.1: SPI và hệ thống tệp FAT32 trên microSD
 
-### 1. Vai trò của Phân hệ C&DH và Hệ thống Hộp Đen (Black Box Storage)
-Phân hệ Xử lý Dữ liệu và Lệnh (**Command and Data Handling - C&DH**) là xương sống luân chuyển thông tin của vệ tinh CubeSat. Trong một vòng quỹ đạo kéo dài 95 phút, vệ tinh chỉ có khoảng thời gian kết nối với trạm mặt đất từ 8 đến 12 phút (Ground Pass). Trong suốt hơn 80 phút còn lại, vệ tinh hoàn toàn cô độc ngoài vùng phủ sóng. Phân hệ C&DH phải đảm đương:
+### 1. Lưu trữ dữ liệu trên vệ tinh
+Phân hệ xử lý dữ liệu và lệnh (C&DH) quản lý thông tin trên CubeSat. Trong mỗi vòng quỹ đạo 95 phút, vệ tinh chỉ liên lạc với trạm mặt đất khoảng 8–12 phút. Thời gian còn lại, phân hệ C&DH phải:
 - **Lưu trữ dữ liệu viễn trắc liên tục:** Ghi lại toàn bộ hành trình điện áp, dòng điện, nhiệt độ, tư thế quán tính và tọa độ vào thẻ nhớ MicroSD.
-- **Lưu trữ tệp dữ liệu sứ mệnh:** Lưu giữ các tệp ảnh chụp Trái Đất và số liệu quan trắc khoa học để sẵn sàng trút dữ liệu (Data Dump) khi bay qua trạm mặt đất.
-- **Nhật ký sự kiện (Flight Event Log):** Ghi lại chi tiết thời điểm xuất hiện các cảnh báo bất thường, lỗi vi xử lý, và các lần phục hồi hệ thống.
+- **Lưu trữ dữ liệu sứ mệnh:** Lưu ảnh và số liệu quan trắc để gửi về trạm mặt đất.
+- **Ghi nhật ký sự kiện:** Lưu thời điểm cảnh báo, lỗi vi xử lý và các lần phục hồi hệ thống.
 
-![Sơ đồ kết nối bus SPI Full-Duplex](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_spi_connection.png)
+![Sơ đồ nối bus SPI hai chiều](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_spi_connection.png)
 
-### 2. Giao thức Truyền thông Đồng bộ SPI (Serial Peripheral Interface)
-Chuẩn giao tiếp **SPI** là một bus truyền thông nối tiếp đồng bộ 4 dây, hoạt động theo mô hình Master-Slave ở chế độ song công toàn phần (Full-duplex):
-- **4 Đường tín hiệu Vật lý:**
-  - **SCLK / SCK (Serial Clock):** Do Master tạo ra để đồng bộ hóa việc dịch từng bit dữ liệu. Tần số xung nhịp có thể lên tới 20 MHz - 40 MHz, mang lại tốc độ truyền dữ liệu vượt trội so với I2C.
-  - **MOSI (Master Out Slave In):** Đường dữ liệu từ vi điều khiển Master gửi sang thiết bị Slave.
-  - **MISO (Master In Slave Out):** Đường dữ liệu từ thiết bị Slave trả về Master.
-  - **CS / SS (Chip Select / Slave Select):** Đường tín hiệu chọn chip tích cực ở mức logic `LOW`. Mỗi thiết bị Slave trên cùng đường bus cần một chân CS riêng biệt.
-- **4 Chế độ Hoạt động SPI (SPI Modes 0, 1, 2, 3):**
-  Xác định bởi hai thông số cấu hình: Cực tính xung nhịp (**CPOL - Clock Polarity**) và Pha xung nhịp (**CPHA - Clock Phase**):
-  - **Mode 0 (CPOL=0, CPHA=0):** Xung nhịp ở mức `LOW` khi rảnh rỗi. Dữ liệu được lấy mẫu (Sample) ở cạnh lên đầu tiên và dịch chuyển (Shift) ở cạnh xuống tiếp theo. Thẻ nhớ MicroSD tiêu chuẩn vận hành ở chế độ này.
+### 2. Giao thức SPI
+Chuẩn **SPI** truyền dữ liệu đồng bộ qua bốn dây, cho phép gửi và nhận đồng thời:
+- **SCLK / SCK:** Xung nhịp do thiết bị chủ tạo; tốc độ có thể đạt 20–40 MHz.
+- **MOSI:** Dữ liệu từ thiết bị chủ đến thiết bị phụ.
+- **MISO:** Dữ liệu từ thiết bị phụ về thiết bị chủ.
+- **CS / SS:** Chọn thiết bị phụ, tích cực ở mức `LOW`. Mỗi thiết bị cần một chân CS riêng.
+- **Bốn chế độ SPI:** Được xác định bởi CPOL (cực tính xung) và CPHA (pha xung):
+  - **Mode 0 (CPOL=0, CPHA=0):** Xung nhịp ở mức `LOW` khi rảnh; lấy mẫu ở cạnh lên và đổi dữ liệu ở cạnh xuống. MicroSD dùng chế độ này.
   - **Mode 1 (CPOL=0, CPHA=1):** Xung nhịp rảnh ở mức `LOW`. Dữ liệu được dịch chuyển ở cạnh lên và lấy mẫu ở cạnh xuống.
   - **Mode 2 (CPOL=1, CPHA=0):** Xung nhịp rảnh ở mức `HIGH`. Dữ liệu được lấy mẫu ở cạnh xuống và dịch chuyển ở cạnh lên.
   - **Mode 3 (CPOL=1, CPHA=1):** Xung nhịp rảnh ở mức `HIGH`. Dữ liệu được dịch chuyển ở cạnh xuống và lấy mẫu ở cạnh lên.
 
-### 3. Cấu trúc Vật lý Thẻ Nhớ & Hệ thống Tập tin FAT32
-- **Tổ chức Vật lý Thẻ Nhớ:** Bộ nhớ Flash NAND của thẻ nhớ MicroSD không thể ghi từng byte đơn lẻ mà được phân chia thành các cung từ vật lý (**Sectors**) có kích thước cố định là $512\text{ bytes}$. Thư viện phần mềm gom nhiều Sector thành một khối cấp phát dữ liệu (**Cluster**).
-- **Cơ chế Đệm Dữ liệu RAM (RAM Buffer Cache):** Khi chương trình thực hiện lệnh `file.print()` hoặc `file.write()`, các byte dữ liệu thực chất chỉ mới được ghi tạm vào mảng đệm nội bộ $512\text{ bytes}$ trên bộ nhớ RAM của ESP32. Chỉ khi mảng đệm này đầy đủ 512 bytes, phần cứng mới phát lệnh SPI đẩy toàn bộ Sector xuống thẻ nhớ.
+### 3. Thẻ nhớ và hệ thống tệp FAT32
+- **Ghi dữ liệu:** Bộ nhớ flash NAND của MicroSD ghi theo các cung từ 512 byte. Thư viện gom các cung từ thành cụm lưu trữ.
+- **Đệm RAM:** Lệnh `file.print()` hoặc `file.write()` ghi dữ liệu vào bộ đệm 512 byte của ESP32. Khi bộ đệm đầy, dữ liệu được gửi qua SPI.
 - **Tầm quan trọng Cốt tử của hàm `file.flush()` và `file.close()`:**
-  - Nếu vệ tinh bất ngờ bị sụt áp (Brownout) hoặc bị reset bởi Watchdog Timer trong khi mảng đệm RAM chưa đầy 512 bytes, toàn bộ số liệu đo đạc gần nhất sẽ biến mất hoàn toàn!
-  - Thậm chí nghiêm trọng hơn: Bảng phân bổ tệp (**File Allocation Table - FAT**) chưa kịp cập nhật kích thước tệp mới sẽ khiến tệp tin bị hỏng (File Corruption) và không thể đọc lại.
-  - **Quy tắc Bắt buộc:** Sau mỗi chu kỳ ghi dữ liệu định kỳ, phần mềm bay bắt buộc phải gọi hàm `file.flush()` để ép buộc vi điều khiển xả sạch bộ đệm RAM xuống ô nhớ vật lý của thẻ nhớ ngay lập tức.
+  - Nếu nguồn sụt áp hoặc Watchdog Timer khởi động lại hệ thống trước khi bộ đệm được ghi, dữ liệu chưa lưu sẽ mất.
+  - Nếu bảng phân bổ tệp FAT chưa cập nhật kích thước mới, tệp có thể bị hỏng.
+  - **Quy tắc:** Gọi `file.flush()` sau mỗi chu kỳ ghi để đẩy dữ liệu trong bộ đệm xuống thẻ.
 
 ---
 
@@ -53,9 +51,9 @@ Chuẩn giao tiếp **SPI** là một bus truyền thông nối tiếp đồng b
 
 ---
 
-## 📖 Doc 3.2: Kiến trúc Hệ thống Lệnh Shell CLI & Tổng quan Hệ Điều Hành trong Vệ Tinh
+## 📖 Doc 3.2: Giao diện dòng lệnh và hệ điều hành
 
-### 1. Kiến trúc Giao diện Dòng lệnh Shell CLI (Command Line Interface)
+### 1. Giao diện dòng lệnh
 Để phục vụ việc kiểm thử, vận hành và trút dữ liệu từ trạm mặt đất, phân hệ C&DH cài đặt một bộ phân tích cú pháp dòng lệnh tương tự hệ điều hành Linux thông qua cổng nối tiếp UART (`PTIT_Storage::handleCommand`):
 - **`pwd`:** In đường dẫn thư mục làm việc hiện tại (ví dụ: `/`, `/photos`, `/hieu`).
 - **`cd <path>`:** Đổi thư mục làm việc hiện tại (hỗ trợ thư mục cha `..`, thư mục gốc `/`, thư mục home `~`, đường dẫn tương đối và tuyệt đối).
@@ -66,29 +64,29 @@ Chuẩn giao tiếp **SPI** là một bus truyền thông nối tiếp đồng b
 - **`mkdir <path>`:** Tạo thư mục mới trên thẻ nhớ.
 - **`rmdir <path>`:** Xóa thư mục rỗng (bảo vệ không xóa thư mục gốc `/`).
 - **`rm <path>`:** Xóa bỏ tệp tin dữ liệu cũ trên thẻ nhớ (từ chối xóa nếu đường dẫn là thư mục).
-- **`df` (Disk Free):** Tính toán và in ra tổng dung lượng thẻ nhớ, dung lượng đã sử dụng và dung lượng còn trống (MB).
+- **`df`:** In tổng dung lượng, dung lượng đã dùng và dung lượng còn trống (MB).
 - **`help`:** Hiển thị danh sách các lệnh được hệ thống hỗ trợ.
 
-**Nguyên lý Thiết kế Chuẩn Unix Shell:**
-- **Silent Success (Thành công Im lặng):** Các lệnh điều hướng và thay đổi trạng thái (`cd`, `mkdir`, `rmdir`, `rm`, `touch`, `echo >`) khi thực thi thành công sẽ hoàn toàn im lặng, không trả về các tiền tố `OK:` rườm rà. Chỉ lệnh có dữ liệu xuất ra (`pwd`, `ls`, `cat`, `df`, `help`) hoặc khi xảy ra lỗi (`ERR: ...`) mới in thông tin ra màn hình.
-- **An toàn Hạt nhân VFS ESP-IDF:** Trước khi truy xuất tệp/thư mục, hệ thống sử dụng hàm `SD.exists()` để kiểm tra sự tồn tại (sử dụng hàm gọi hệ thống `stat()`), tuyệt đối không gọi `SD.open()` khi tệp chưa chắc chắn tồn tại nhằm triệt tiêu hoàn toàn các thông báo lỗi kernel VFS `[E][vfs_api.cpp:105] open(): ... does not exist`.
+**Nguyên tắc hoạt động:**
+- Các lệnh thay đổi trạng thái (`cd`, `mkdir`, `rmdir`, `rm`, `touch`, `echo >`) không in thông báo khi thành công. Lệnh có đầu ra hoặc gặp lỗi mới hiển thị thông tin.
+- Trước khi mở tệp hoặc thư mục, gọi `SD.exists()` để kiểm tra sự tồn tại và tránh lỗi VFS.
 
 ![Kiến trúc Shell CLI và bộ điều phối FreeRTOS](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_cli_rtos_overview.png)
 
-### 2. Tổng quan Hệ Điều Hành: Tuần Tự (Super-Loop) vs Đa Nhiệm Thời Gian Thực (RTOS)
-Trong các dự án nhúng đơn giản, kỹ sư thường sử dụng kiến trúc vòng lặp tuần tự (Bare-metal Super-Loop). Tuy nhiên, trên một vệ tinh không gian hiện đại, khối lượng công việc đòi hỏi phải chuyển sang sử dụng Hệ điều hành Thời gian thực (**Real-Time Operating System - RTOS**):
+### 2. Vòng lặp tuần tự và FreeRTOS
+Chương trình đơn giản có thể dùng vòng lặp tuần tự. Hệ thống nhiều tác vụ cần hệ điều hành thời gian thực như FreeRTOS:
 
-| Tiêu chí So sánh | Vòng lặp Tuần tự (Super-Loop) | Hệ điều hành Thời gian thực (FreeRTOS) |
+| Tiêu chí | Vòng lặp tuần tự | FreeRTOS |
 | :--- | :--- | :--- |
-| **Cơ chế Thực thi** | Thực hiện tuần tự từng hàm trong `loop()`, hết việc này đến việc khác | Đa nhiệm giả lập (Multitasking) phân chia thời gian CPU cho nhiều tác vụ độc lập |
-| **Đáp ứng Sự kiện Khẩn cấp** | Chậm chạp, phụ thuộc vào thời gian hoàn thành của các hàm trước đó | Tức thời, tác vụ ưu tiên cao có quyền ngắt ngang (Preempt) tác vụ ưu tiên thấp |
-| **Quản lý Bộ nhớ** | Toàn bộ chương trình dùng chung một ngăn xếp Stack duy nhất | Mỗi tác vụ (Task) được cấp phát một vùng ngăn xếp bộ nhớ riêng biệt |
-| **Độ phức tạp Thiết kế** | Dễ viết nhưng khó bảo trì và mở rộng quy mô khi hệ thống lớn | Phức tạp hơn, đòi hỏi cơ chế đồng bộ hóa an toàn (Mutex, Queue, Semaphore) |
+| **Thực thi** | Chạy lần lượt các hàm trong `loop()`. | Chia thời gian CPU cho nhiều tác vụ. |
+| **Đáp ứng sự kiện** | Phụ thuộc thời gian chạy các hàm trước đó. | Tác vụ ưu tiên cao có thể chiếm CPU. |
+| **Bộ nhớ** | Các hàm dùng chung một ngăn xếp. | Mỗi tác vụ có ngăn xếp riêng. |
+| **Độ phức tạp** | Dễ viết, khó mở rộng khi hệ thống lớn. | Cần đồng bộ tác vụ bằng Mutex, Queue hoặc Semaphore. |
 
-### 3. Cấu trúc Tác vụ (Task) & Bộ Điều phối Chiếm trước (Preemptive Scheduler)
+### 3. Tác vụ và bộ điều phối ưu tiên
 - **Tác vụ (Task):** Mỗi chức năng độc lập của vệ tinh được đóng gói thành một luồng thực thi vô tận (ví dụ: `TaskTelemetry`, `TaskSensors`, `TaskCommand`, `TaskStorage`).
 - **Mức Ưu tiên (Priority):** Mỗi tác vụ được gán một con số ưu tiên (từ 0 đến $N-1$). Con số càng lớn, độ ưu tiên càng cao.
-- **Bộ điều phối Chiếm trước (Preemptive Scheduler):** Cứ sau mỗi chu kỳ nhịp tích tắc hệ thống (System Tick, thường là $1\text{ ms}$), bộ điều phối kiểm tra danh sách các tác vụ sẵn sàng. Tác vụ nào có mức ưu tiên cao nhất sẽ giành quyền sở hữu CPU ngay lập tức.
+- **Bộ điều phối ưu tiên:** Mỗi nhịp hệ thống (thường là $1\text{ ms}$), bộ điều phối kiểm tra các tác vụ sẵn sàng và cấp CPU cho tác vụ có mức ưu tiên cao nhất.
 
 ---
 
@@ -109,13 +107,13 @@ Trong các dự án nhúng đơn giản, kỹ sư thường sử dụng kiến t
 
 ---
 
-## 📖 Doc 3.3: Tranh Chấp Tài Nguyên, Cơ Chế Khóa Bảo Vệ & Kỹ Thuật Ngăn Ngừa Deadlock
+## 📖 Doc 3.3: Tranh chấp tài nguyên và đồng bộ tác vụ
 
-### 1. Hiện tượng Tranh chấp Tài nguyên (Race Condition)
+### 1. Tranh chấp tài nguyên
 Khi hệ thống chạy đa tác vụ, các tài nguyên phần cứng duy nhất (như bus SPI của thẻ nhớ, cổng Serial Monitor, bus I2C) trở thành **Tài nguyên Dùng chung (Shared Resources)**:
 - Nếu `TaskTelemetry` đang mở tệp và ghi dở 50 byte đầu tiên thì bị `TaskCommand` có độ ưu tiên cao hơn chiếm quyền CPU và cũng nhảy vào ghi tệp trên cùng thẻ nhớ qua bus SPI, dữ liệu của hai tác vụ sẽ bị trộn lẫn vào nhau gây lỗi vỡ khung tệp tin nghiêm trọng.
 
-### 2. Khóa Loại trừ Tương hỗ Mutex (Mutual Exclusion)
+### 2. Khóa Mutex
 Để bảo vệ tài nguyên dùng chung, FreeRTOS cung cấp cơ chế khóa **Mutex** (`SemaphoreHandle_t`):
 - Quy tắc: "Ai giữ chìa khóa thì mới được vào phòng".
 - Trước khi truy cập thẻ nhớ hoặc bus SPI, tác vụ bắt buộc phải gọi hàm xin khóa: `xSemaphoreTake(xSPIMutex, portMAX_DELAY)`.
@@ -124,14 +122,14 @@ Khi hệ thống chạy đa tác vụ, các tài nguyên phần cứng duy nhấ
 
 ![Đảo ngược ưu tiên và cơ chế khóa Mutex](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_priority_inversion_mutex.png)
 
-### 3. Vấn đề Nghịch đảo Mức Ưu tiên (Priority Inversion) & Cơ chế Thừa kế Ưu tiên (Priority Inheritance)
+### 3. Nghịch đảo và kế thừa độ ưu tiên
 - **Sự cố Lịch sử Mars Pathfinder (1997):** Tàu đổ bộ Sao Hỏa liên tục bị reset phần mềm bí ẩn giữa sa mạc Sao Hỏa do một lỗi thiết kế RTOS kinh điển:
   - Tác vụ ưu tiên thấp giữ khóa tài nguyên chung.
   - Tác vụ ưu tiên cao cần tài nguyên nên bị chặn lại chờ đợi.
   - Một tác vụ ưu tiên trung bình (không cần tài nguyên đó) bất ngờ thức dậy và chiếm quyền CPU suốt một thời gian dài, gián tiếp ngăn không cho tác vụ ưu tiên thấp nhả khóa, khiến tác vụ ưu tiên cao bị "bỏ đói" (Starvation) dẫn tới vi phạm deadline khẩn cấp.
 - **Giải pháp Thừa kế Ưu tiên (Priority Inheritance):** Khi tác vụ ưu tiên cao bị chặn bởi một Mutex do tác vụ ưu tiên thấp nắm giữ, hệ điều hành tạm thời **nâng mức ưu tiên của tác vụ thấp lên ngang bằng với tác vụ cao**, giúp nó nhanh chóng hoàn thành công việc và nhả khóa, sau đó trả lại mức ưu tiên ban đầu.
 
-### 4. Hiện tượng Bế tắc (Deadlock / Deadly Embrace)
+### 4. Bế tắc
 Xảy ra khi hai tác vụ cùng chờ tài nguyên mà tác vụ kia đang nắm giữ:
 - `Task 1` đang giữ khóa Mutex A và muốn lấy khóa Mutex B.
 - `Task 2` đang giữ khóa Mutex B và muốn lấy khóa Mutex A.
@@ -157,9 +155,9 @@ Xảy ra khi hai tác vụ cùng chờ tài nguyên mà tác vụ kia đang nắ
 
 ---
 
-## 📖 Doc 3.4: Bộ Định Thời Giám Sát Phần Cứng Watchdog Timer (WDT) & Kiến Trúc Tự Phục Hồi FDIR
+## 📖 Doc 3.4: Watchdog và cơ chế tự phục hồi
 
-### 1. Nguyên lý Hoạt động của Bộ định thời Watchdog Timer Watchdog (WDT)
+### 1. Nguyên lý Watchdog
 Trong môi trường bức xạ quỹ đạo LEO, các hạt ion mang điện tích năng lượng cao có thể gây hiện tượng lật bit dữ liệu ngẫu nhiên (Single Event Upset - SEU), làm con trỏ chương trình (Program Counter) nhảy vào vùng nhớ rác khiến vi điều khiển bị treo cứng hoàn toàn:
 - **Watchdog Timer (WDT)** là một mạch đếm lùi phần cứng độc lập với CPU, hoạt động nhờ nguồn xung nhịp xung nội riêng biệt.
 - Khi khởi tạo, WDT được nạp một khoảng thời gian giới hạn (ví dụ: $5000\text{ ms}$). Mạch đếm liên tục giảm giá trị về $0$.
@@ -168,7 +166,7 @@ Trong môi trường bức xạ quỹ đạo LEO, các hạt ion mang điện t�
 
 ![Máy trạng thái bộ định thời Watchdog Timer](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_watchdog_fsm.png)
 
-### 2. Hai Phân cấp Watchdog Timer trong ESP32
+### 2. Các watchdog trên ESP32
 1. **Hardware Interrupt Watchdog (IWDT):** Giám sát ở cấp độ vi xử lý phần cứng cấp thấp. Nếu một ngắt (Interrupt Handler) chạy quá lâu hoặc CPU bị khóa hoàn toàn, IWDT kích hoạt.
 2. **Task Watchdog Timer (TWDT):** Giám sát ở cấp độ hệ điều hành FreeRTOS. Từng tác vụ riêng lẻ phải đăng ký với TWDT (`esp_task_wdt_add(NULL)`). Nếu bất kỳ tác vụ quan trọng nào bị kẹt và không gọi hàm `esp_task_wdt_reset()` trong khoảng thời gian cấu hình, TWDT sẽ in báo cáo lỗi ngăn xếp và reset hệ thống.
 
@@ -189,7 +187,36 @@ Trong môi trường bức xạ quỹ đạo LEO, các hạt ion mang điện t�
 
 ---
 
-## 💻 Hướng Dẫn Thực Hành: Xây Dựng Hệ Thống Lưu Trữ Dữ Liệu & Thao Tác Thẻ Nhớ
+## 📖 Doc 3.5: Hướng dẫn kết nối thẻ microSD
+
+Tài liệu này hướng dẫn kết nối mô-đun microSD với ESP32 qua bus SPI để thực hành lưu trữ dữ liệu.
+
+### 1. Bố trí linh kiện
+
+> **Vị trí chèn hình:** Bố trí ESP32, mô-đun microSD và dây kết nối.
+
+### 2. Kết nối SPI
+
+| Mô-đun microSD | ESP32 |
+| :--- | :--- |
+| `MOSI` | `GPIO23` |
+| `MISO` | `GPIO19` |
+| `SCK` | `GPIO18` |
+| `CS` | `GPIO13` |
+| `VCC`, `GND` | Theo nhãn nguồn trên mô-đun và sơ đồ lắp ráp |
+
+Ví dụ trong Lab 3 đặt chân chọn thẻ nhớ là `SD_CS_PIN 13`.
+
+> **Vị trí chèn hình:** Sơ đồ nối từng chân SPI giữa mô-đun microSD và ESP32.
+
+### 3. Kiểm tra trước khi thực hành
+
+- Kiểm tra thẻ microSD đã được lắp đúng chiều.
+- Đối chiếu chân `CS` với cấu hình `SD_CS_PIN` trong chương trình.
+
+---
+
+## 💻 Hướng dẫn thực hành Lab 3: Lưu trữ dữ liệu
 
 ### 1. Kỹ thuật Đọc/Ghi Thẻ Nhớ An Toàn với `flush()`
 Đoạn mã C++ minh họa chu trình ghi dữ liệu cảm biến kèm đóng dấu thời gian và xả bộ đệm RAM an toàn:

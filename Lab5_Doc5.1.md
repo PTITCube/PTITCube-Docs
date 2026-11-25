@@ -1,11 +1,11 @@
-# Lab 5: Doc 5.1 - Cơ Sở Lý Thuyết Truyền Thông Vô Tuyến Không Gian & Cân Bằng Tuyến
+# Lab 5: Doc 5.1 - Truyền thông vô tuyến và cân bằng tuyến
 
-### 1. Vai trò của Phân hệ Truyền thông (COM - Communication Subsystem)
+### 1. Vai trò của phân hệ truyền thông
 Phân hệ Truyền thông được xem như "Giọng nói và Đôi tai" của CubeSat. Cho dù các phân hệ khác hoạt động hoàn hảo và thu thập được hàng nghìn bức ảnh giá trị, nếu phân hệ COM thất bại, vệ tinh sẽ vĩnh viễn trở thành một khối rác vũ trụ câm lặng. Phân hệ COM đảm nhận:
 - **Tuyến truyền Đường xuống (Downlink):** Định kỳ phát sóng các gói tin tín hiệu định vị (Beacon) thông báo trạng thái sinh tồn của vệ tinh ($V_\text{bat}$, SOC, nhiệt độ) và truyền dữ liệu khoa học, hình ảnh về mặt đất.
 - **Tuyến truyền Đường lên (Uplink):** Lắng nghe các mệnh lệnh viễn lệnh (Telecommands) từ Trạm mặt đất để điều khiển vệ tinh, nạp cấu hình mới hoặc kích hoạt chế độ an toàn.
 
-### 2. Đặc tính Lan truyền Sóng Điện từ Băng tần UHF (433 MHz)
+### 2. Sóng UHF ở băng tần 433 MHz
 Băng tần sóng cực ngắn UHF (Ultra High Frequency, 300 MHz - 3 GHz) là băng tần kinh điển cho các vệ tinh CubeSat giáo dục và nghiên cứu:
 - **Khả năng Xuyên qua Tầng Điện ly (Ionospheric Penetration):** Khác với sóng ngắn HF bị phản xạ ngược lại Trái Đất, sóng vô tuyến tần số 433 MHz có khả năng xuyên thủng tầng điện ly của khí quyển để đi vào không gian sâu với độ suy hao tối thiểu.
 - **Kích thước Ăng-ten Hợp lý:** Bước sóng $\lambda$ ở tần số 433 MHz là:
@@ -14,7 +14,7 @@ $$\lambda = \frac{c}{f} = \frac{3 \times 10^8\text{ m/s}}{433 \times 10^6\text{ 
 
   Một ăng-ten đơn cực một phần tư bước sóng (λ/4) chỉ có chiều dài xấp xỉ 17.3 cm, rất lý tưởng để cuộn gọn gàng bên trong khung 1U trước khi bung mở ngoài không gian.
 
-### 3. Phương trình Suy hao Truyền sóng trong Không gian Tự do (Friis FSPL)
+### 3. Suy hao truyền sóng trong không gian tự do
 Khi sóng điện từ lan truyền từ ăng-ten phát hình cầu ra không gian vô tận, mật độ công suất sóng bị suy giảm theo bình phương khoảng cách. Công thức suy hao truyền sóng trong không gian tự do (**Free-Space Path Loss - FSPL**) của Harald T. Friis:
 
 $$\text{FSPL} = \left(\frac{4\pi d}{\lambda} \right)^2 = \left(\frac{4\pi d f}{c} \right)^2$$
@@ -33,7 +33,7 @@ $$\text{FSPL (dB)} = 20 \log_{10}(800) + 20 \log_{10}(433) + 32.44 \approx 58.06
 
 ![Sơ đồ cân bằng tuyến truyền thông vô tuyến LEO](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab5_rf_link_budget.png)
 
-### 4. Phương trình Cân Bằng Tuyến Truyền Thông (Link Budget)
+### 4. Cân bằng tuyến truyền thông
 Bảng cân đối tuyến truyền thông tổng hợp toàn bộ các nguồn tăng ích và suy hao trên toàn bộ chuỗi thu phát:
 
 $$P_\text{rx (dBm)} = P_\text{tx} + G_\text{tx} - L_\text{tx} - \text{FSPL} - L_\text{atm} + G_\text{rx} - L_\text{rx}$$
@@ -56,7 +56,7 @@ $$\text{Margin} = P_\text{rx} - S_\text{rx} = (-112.55\text{ dBm}) - (-140\text{
 
   Quy chuẩn không gian yêu cầu độ dự trữ tuyến truyền thông tối thiểu phải ≥ +6 dB. Với mức dự trữ +27.45 dB, tuyến truyền tin của PTITCube hoạt động cực kỳ tin cậy ngay cả khi trời mưa bão.
 
-### 5. Hiệu ứng Dịch Tần Doppler trên Quỹ đạo LEO
+### 5. Hiệu ứng Doppler trên quỹ đạo LEO
 Do vệ tinh bay với vận tốc quỹ đạo cực lớn (v ≈ 7.6 km/s), tần số sóng vô tuyến thu được tại trạm mặt đất bị dịch chuyển theo hiệu ứng Doppler:
 
 $$f_\text{rx} = f_0 \left(1 + \frac{v_\text{los}}{c} \right)$$

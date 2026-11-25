@@ -1,8 +1,14 @@
-# Lab 4: Doc 4.7 - Kiến Trúc Thu Thập & Xử Lý Dữ Liệu Đa Cảm Biến Toàn Diện
+# Lab 4: Doc 4.7 - Thu thập và xử lý dữ liệu cảm biến
 
 ---
 
-## 💻 Hướng Dẫn Thực Hành: Danh Mục Các Bài Thực Hành Lab 4
+## 📖 Doc 4.8: Hướng dẫn kết nối cảm biến và tải trọng
+
+Xem [hướng dẫn kết nối cảm biến và tải trọng Lab 4](./Lab4_Doc4.8.md) trước khi thực hành.
+
+---
+
+## 💻 Hướng dẫn thực hành Lab 4
 - `Lab4-01a_Environment_I2C`: Khởi tạo bus I2C, đọc trực tiếp 24 byte hằng số hiệu chuẩn và các thanh ghi áp suất thô của BMP280.
 - `Lab4-01b_Environment_Library`: Đọc và tính toán áp suất khí quyển, nhiệt độ môi trường và độ cao ước lượng thông qua thư viện PTITCube.
 - `Lab4-02a_IMU_I2C`: Đọc dữ liệu gia tốc (ACCEL), vận tốc góc (GYRO) từ MPU6500 và từ trường (MAG), góc la bàn (Heading) từ GY-271 qua I2C; xuất log Serial gọn gàng 3 trục mỗi dòng, không chứa tiền tố ngoặc vuông `[...]`.

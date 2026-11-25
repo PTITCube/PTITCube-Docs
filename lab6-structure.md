@@ -1,46 +1,46 @@
-# Lab 6: Phân hệ Cấu trúc Cơ khí (Structure) & Tích hợp Vật lý
+# Lab 6: Cấu trúc cơ khí và tích hợp vật lý
 
 ---
 
-## 📖 Doc 6.1: Vai Trò Khung Cơ Khí & Tác Động Đa Chiều Lên Các Phân Hệ Khác
+## 📖 Doc 6.1: Vai trò khung cơ khí
 
-### 1. Vai trò Cốt lõi của Phân hệ Cấu trúc Cơ khí (Structure Subsystem)
-Trong kỹ thuật vệ tinh CubeSat, Phân hệ Cấu trúc thường bị nhầm lẫn là một "chiếc hộp thụ động" chỉ đơn thuần làm nhiệm vụ chứa linh kiện. Thực tế trong môi trường hàng không vũ trụ, khung cấu trúc là một hệ thống cơ điện tử - nhiệt phức tạp, đảm nhận các chức năng sống còn:
-- **Chịu Tải Trọng Phóng Cực Đại (Launch Load Withstanding):** Trong giai đoạn tên lửa cất cánh, khung vệ tinh phải chịu gia tốc tĩnh liên tục lên tới $10 - 15\text{g}$, tải trọng dao động âm thanh (Acoustic Loads) và các rung động ngẫu nhiên (Random Vibration) với gia tốc hiệu dụng lên tới 14 g_rms. Khung phải giữ vững độ bền cơ học, không được biến dạng vĩnh viễn hoặc gãy nứt làm tổn hại khoang hàng tên lửa.
-- **Duy trì Giao diện Cơ học Tiêu chuẩn với Ống Phóng P-POD:** Định hình chính xác bao hình kích thước bên ngoài, dẫn hướng vệ tinh trượt êm ái ra khỏi ống phóng mà không bị kẹt dính.
-- **Khối Tản Nhiệt Thụ Động Chủ Đạo (Primary Thermal Heat Sink):** Dẫn nhiệt lượng tỏa ra từ các chip công suất bên trong truyền ra các bề mặt ngoài để bức xạ vào vũ trụ.
+### 1. Vai trò của phân hệ cấu trúc
+Khung CubeSat không chỉ bảo vệ linh kiện mà còn:
+- **Chịu tải khi phóng:** Chịu gia tốc tĩnh 10–15 g, rung âm học và rung ngẫu nhiên đến 14 g RMS mà không biến dạng hoặc nứt.
+- **Định vị vệ tinh trong ống P-POD:** Giữ đúng kích thước bao ngoài để vệ tinh trượt ra khỏi ống mà không bị kẹt.
+- **Tản nhiệt:** Dẫn nhiệt từ linh kiện công suất ra bề mặt khung để bức xạ vào không gian.
 
 ![Mô hình khung CubeSat 1U với các vách và thanh ray dẫn hướng ở góc](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab6.1_structure.png)
 
 *Mô hình khung CubeSat 1U.*
 
-### 2. Tác động Đa chiều của Khung Cơ khí lên các Phân hệ Khác
+### 2. Tác động của khung cơ khí lên các phân hệ
 Một thay đổi nhỏ trong thiết kế cơ khí sẽ ngay lập tức gây ra hiệu ứng domino ảnh hưởng trực tiếp tới hoạt động của tất cả các phân hệ còn lại:
 
 ![Giao diện liên kết cơ khí cấu trúc 1U](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab6_structure_interfaces.png)
 
 1. **Tác động lên Phân hệ Năng lượng (EPS):**
-   - *Tản nhiệt cho Khối Pin:* Pin Li-Po chỉ hoạt động an toàn trong dải nhiệt độ hẹp (0°C - 45°C). Khung cơ khí phải cung cấp các cầu nhiệt kim loại dẫn nhiệt sinh ra khi sạc/xả pin ra vỏ ngoài.
-   - *Vách Nén Tế bào Pin (Pouch Cell Containment):* Pin Li-Po dạng túi có xu hướng giãn nở cơ học khi sạc xả trong chân không. Khung cơ khí phải cung cấp một lực nén đồng đều (10 - 20 kPa) lên bề mặt cell pin để chống hiện tượng tách lớp điện cực (Delamination).
-   - *Tích hợp Công tắc Tách tầng:* Chân đế của thanh ray cơ khí là vị trí lắp đặt công tắc hành trình (Deployment Switch). Độ nhô và hành trình đàn hồi của công tắc phụ thuộc 100% vào dung sai gia công cơ khí của khung.
+   - *Tản nhiệt pin:* Pin Li-Po hoạt động an toàn trong khoảng 0–45°C. Cầu nhiệt kim loại dẫn nhiệt từ pin ra khung.
+   - *Giữ pin:* Pin Li-Po dạng túi có thể giãn nở khi sạc và xả. Khung cần tạo lực nén đồng đều 10–20 kPa để hạn chế tách lớp điện cực.
+   - *Công tắc hành trình:* Vị trí và hành trình công tắc ở chân ray phụ thuộc dung sai gia công khung.
 2. **Tác động lên Phân hệ Xử lý Trung tâm (OBC):**
-   - *Che chắn Bức xạ & Lồng Faraday (EMI/Radiation Shielding):* Vách nhôm của khung dày 1.5 - 2.0 mm đóng vai trò là một lồng Faraday triệt tiêu các xung nhiễu điện từ bên ngoài và làm suy giảm đáng kể liều bức xạ ion hóa tích lũy (TID) tác động vào chip vi xử lý.
-   - *Liên kết Mass Khung Vỏ (Chassis Ground Bonding):* Toàn bộ các tấm khung nhôm phải được nối thông điện liên tục về đường mass GND của bo mạch OBC với điện trở cực nhỏ (R < 0.1 Ω) để tiêu tán toàn bộ điện tích tĩnh điện vũ trụ (Spacecraft Plasma Charging), ngăn chặn hiện tượng phóng tia hồ quang tĩnh điện phá hủy vi mạch.
+   - *Che chắn nhiễu và bức xạ:* Vách nhôm dày 1.5–2.0 mm giúp giảm nhiễu điện từ và bức xạ ion hóa tác động lên vi xử lý.
+   - *Nối mass khung:* Nối các tấm nhôm với mass OBC, bảo đảm điện trở dưới 0.1 Ω để tiêu tán điện tích tĩnh.
 3. **Tác động lên Phân hệ Truyền thông (COM):**
-   - *Mặt Đất Phản Xạ Nhân Tạo (Artificial Ground Plane):* Ăng-ten phát sóng LoRa trên CubeSat thường là loại ăng-ten đơn cực một phần tư bước sóng (λ/4 Monopole Antenna). Loại ăng-ten này bắt buộc phải có một mặt phẳng kim loại dẫn điện bên dưới chân ăng-ten để tạo thành một "hình ảnh gương" của cực còn lại, giúp phối hợp trở kháng chuẩn 50 Ω. Bản thân bề mặt khung nhôm chính là mặt phẳng đất phản xạ này; nếu khung tiếp xúc điện kém, sóng phản xạ ngược sẽ làm cháy tầng khuếch đại công suất PA của module LoRa.
-4. **Tác động lên Phân hệ Cảm biến & Tải trọng (Sensors & Payload):**
-   - *Độ Cứng Vững và Căn Chỉnh Cơ học (Rigidity & Boresight Alignment):* Thấu kính Camera và cảm biến quán tính IMU đòi hỏi một mặt phẳng tham chiếu cơ học siêu cứng. Nếu khung bị uốn cong hoặc vặn xoắn dưới biến thiên nhiệt độ quỹ đạo, trục quang học của Camera sẽ bị lệch góc và cảm biến gia tốc kế/con quay hồi chuyển sẽ đo sai tư thế không gian.
+   - *Mặt phẳng tiếp địa:* Ăng-ten LoRa đơn cực λ/4 cần mặt phẳng kim loại dẫn điện để phối hợp trở kháng 50 Ω. Khung nhôm có thể đóng vai trò này; tiếp xúc điện kém làm tăng sóng phản xạ và có thể gây hỏng tầng khuếch đại công suất.
+4. **Tác động lên cảm biến và tải trọng:**
+   - *Độ cứng và căn chỉnh:* Thấu kính camera và IMU cần một mặt phẳng tham chiếu ổn định. Nếu khung cong hoặc xoắn do thay đổi nhiệt độ, trục quang học có thể lệch và cảm biến đo sai tư thế.
 
 ---
 
 ### ❓ Câu Hỏi Củng Cố Kiến Thức (Doc 6.1)
-1. **Ngoài vai trò chịu tải trọng cơ học và va đập khi phóng, khung cơ khí vệ tinh còn đóng vai trò then chốt nào?**
+1. **Ngoài chịu tải khi phóng, khung vệ tinh còn có vai trò nào?**
    - A. Tạo lực đẩy phản lực giúp vệ tinh giữ quỹ đạo
    - B. Tự động thu thập năng lượng mặt trời không cần quang điện
    - C. Cung cấp đường dẫn tản nhiệt ra không gian và mặt phẳng tiếp địa chung chống nhiễu
    - D. Tăng độ nhạy thu của anten vô tuyến lên gấp đôi
 
-2. **Phân bố khối lượng và vị trí trọng tâm (Center of Gravity - CoG) của CubeSat 1U cần đáp ứng yêu cầu kỹ thuật nào?**
+2. **Trọng tâm của CubeSat 1U cần đáp ứng yêu cầu nào?**
    - A. Trọng tâm phải nằm trong bán kính 2 cm tính từ tâm hình học khối 1U
    - B. Trọng tâm phải nằm lệch hẳn về một góc đáy
    - C. Toàn bộ trọng lượng phải dồn hết về thanh ray trượt
@@ -50,47 +50,47 @@ Một thay đổi nhỏ trong thiết kế cơ khí sẽ ngay lập tức gây r
 
 ---
 
-## 📖 Doc 6.2: Vật Liệu Hợp Kim Không Gian & Xử Lý Bề Mặt Chuyên Dụng
+## 📖 Doc 6.2: Vật liệu và xử lý bề mặt
 
-### 1. Lựa chọn Hợp kim Nhôm Hàng không Al 6061-T6 và Al 7075-T6
+### 1. Hợp kim nhôm Al 6061-T6 và Al 7075-T6
 Vật liệu sử dụng cho khung CubeSat phải đáp ứng đồng thời 4 tiêu chí khắt khe: Tỷ số độ bền trên khối lượng cao, tính dẫn nhiệt tốt, khả năng gia công cắt gọt CNC chính xác và không có từ tính:
 - **Nhôm Hợp kim Al 6061-T6:**
   - Thành phần hợp kim chính: Nhôm, Magie (1.0%) và Silic (0.6%).
-  - Trạng thái nhiệt luyện `-T6`: Được tôi dung dịch và hóa già nhân tạo (Artificially Aged) để tạo mạng kết tủa pha liên kim phân tán mịn.
-  - Giới hạn chảy (Yield Strength): 276 MPa; Giới hạn bền kéo (Tensile Strength): 310 MPa.
+  - Trạng thái nhiệt luyện `-T6`: Tôi dung dịch và hóa già nhân tạo.
+  - Độ bền: Giới hạn chảy 276 MPa; giới hạn kéo đứt 310 MPa.
   - Đặc tính: Dễ gia công phay CNC, hàn được, chống ăn mòn xuất sắc trong môi trường biển, là vật liệu kinh điển chiếm hơn 80% khối lượng khung CubeSat.
 - **Nhôm Hợp kim Al 7075-T6:**
   - Thành phần hợp kim chính: Nhôm và Kẽm (5.6%).
-  - Giới hạn chảy: 503 MPa; Giới hạn bền kéo: 572 MPa (tương đương với một số loại thép kết cấu nhưng nhẹ hơn thép gần 3 lần).
+  - Độ bền: Giới hạn chảy 503 MPa; giới hạn kéo đứt 572 MPa.
   - Ứng dụng: Dành riêng cho 4 thanh ray dẫn hướng góc hoặc các chi tiết chịu lực cắt và tải trọng va đập lớn nhất.
 
-### 2. Quy trình Xử lý Bề mặt Chọn lọc: Anodize Cứng Type III vs Lớp Phủ Alodine
-Khung nhôm CubeSat bắt buộc phải trải qua quy trình xử lý bề mặt chọn lọc hai giai đoạn (Selective Masking) theo tiêu chuẩn quân sự Hoa Kỳ:
+### 2. Anodize Type III và lớp phủ Alodine
+Khung nhôm CubeSat được xử lý bề mặt theo hai quy trình chọn lọc, theo tiêu chuẩn quân sự Hoa Kỳ:
 
 ![Quy trình xử lý bề mặt Anodize và Alodine](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab6_surface_treatment.png)
 
-1. **Anodize Hóa Cứng Type III (Hard Anodizing - Tiêu chuẩn MIL-A-8625):**
+1. **Anodize Type III (MIL-A-8625):**
    - Áp dụng trên: **4 thanh ray dẫn hướng ở 4 góc** tiếp xúc trực tiếp với lòng ống phóng P-POD.
    - Nguyên lý: Điện phân trong dung dịch axit sulfuric ở nhiệt độ thấp (0°C), tạo ra lớp màng gốm nhôm oxit Al₂O₃ dày 25 - 50 µm ăn sâu vào bề mặt kim loại.
-   - Đặc tính: Độ cứng bề mặt cực cao (60 - 70 HRC, cứng như đá sapphire), chống cào xước cơ học khi trượt trong ống phóng và **cách điện tuyệt đối**, triệt tiêu hoàn toàn nguy cơ **Hàn nguội (Cold Welding)** giữa thanh ray vệ tinh và lòng ống phóng trong môi trường chân không nhiệt.
-2. **Lớp Phủ Chuyển Đổi Hóa Học Alodine (Chromate Conversion Coating - Tiêu chuẩn MIL-DTL-5541 Class 3):**
+   - Đặc tính: Độ cứng 60–70 HRC, chống xước và cách điện, hạn chế nguy cơ hàn nguội giữa thanh ray và ống phóng.
+2. **Lớp phủ Alodine (MIL-DTL-5541 Class 3):**
    - Áp dụng trên: **Toàn bộ lòng trong của khung và các bề mặt lắp ghép bo mạch**.
    - Nguyên lý: Nhúng trong dung dịch muối cromat tạo màng thụ động hóa cực mỏng (< 1 µm).
    - Đặc tính cốt lõi: Khác với Anodize là chất cách điện, **lớp phủ Alodine Class 3 vẫn duy trì tính dẫn điện tiếp xúc tuyệt hảo**. Cho phép bu lông và các cọc tiếp địa nối thông điện các tấm khung về mass chung của hệ thống với điện trở tiếp xúc < 0.1 Ω.
 
-### 3. Tiêu chuẩn Quốc tế Thoát Khí Chân Không ASTM E595
+### 3. Tiêu chuẩn thoát khí ASTM E595
 Trong môi trường chân không sâu (< 10⁻⁵ Torr) và nhiệt độ cao, các vật liệu polyme hữu cơ (keo dán, băng dính, lớp phủ dây điện) bị bốc hơi giải phóng các phân tử khí (hiện tượng Outgassing). Tiêu chuẩn **ASTM E595** của NASA/ESA quy định 2 chỉ số kiểm định nghiêm ngặt:
-- **TML (Total Mass Loss - Tổng Khối Lượng Hao Hụt):** Phải ≤ 1.0% sau 24 giờ sấy nhiệt ở 125°C trong buồng chân không.
-- **CVCM (Collected Volatile Condensable Material - Vật Chất Bay Hơi Ngưng Tụ):** Phải ≤ 0.10% khi ngưng tụ lên một tấm gương lạnh ở 25°C. Chỉ số này bảo vệ các thấu kính quang học của Camera và bề mặt pin mặt trời không bị màng dầu polyme bám đục làm hỏng sứ mệnh.
+- **TML:** Không quá 1.0% sau 24 giờ ở 125°C trong buồng chân không.
+- **CVCM:** Không quá 0.10% khi ngưng tụ ở 25°C, giúp hạn chế lớp bám trên thấu kính và pin mặt trời.
 
 ---
 
 ### ❓ Câu Hỏi Củng Cố Kiến Thức (Doc 6.2)
-1. **Tại sao 4 thanh ray trượt (Rails) của CubeSat bắt buộc phải được xử lý bề mặt bằng công nghệ Anodized cứng (Hard Anodize Type III)?**
+1. **Vì sao bốn thanh ray của CubeSat cần được xử lý bằng Anodize Type III?**
    - A. Để khung có màu sắc thẩm mỹ bắt mắt
    - B. Để giảm trọng lượng của vật liệu nhôm xuống
    - C. Để tăng tính dẫn điện giữa vệ tinh và tên lửa
-   - D. Ngăn chặn hiện tượng hàn nguội (Cold Welding) và ma sát kẹt trong ống phóng
+   - D. Hạn chế hàn nguội và ma sát kẹt trong ống phóng
 
 2. **Vật liệu hợp kim nhôm nào sau đây thường được ưu tiên lựa chọn để gia công khung cấu trúc vệ tinh nhỏ?**
    - A. Nhôm tạp chất tái chế thông thường
@@ -102,13 +102,13 @@ Trong môi trường chân không sâu (< 10⁻⁵ Torr) và nhiệt độ cao, 
 
 ---
 
-## 📖 Doc 6.3: Tiêu Chuẩn Ngăn Xếp PC/104, Chốt Khóa Ren & Cân Bằng Trọng Tâm CoM
+## 📖 Doc 6.3: PC/104, khóa ren và cân bằng trọng tâm
 
-### 1. Kiến trúc Ngăn xếp Bo Mạch Chuẩn PC/104
+### 1. Ngăn xếp bo mạch PC/104
 Bên trong lòng khối lập phương 1U, các tầng bo mạch điện tử (OBC, EPS, Cảm biến, COM) được xếp chồng lên nhau theo chuẩn kết cấu công nghiệp **PC/104**:
 - **Kích thước Bo mạch Chuẩn:** 90.17 × 95.89 mm với 4 lỗ bắt bu lông ở 4 góc đối xứng.
-- **Trụ Ren Cách Tầng (Standoffs):** Các tầng bo mạch được cách ly khoảng cách bằng các trụ lục giác kim loại bằng đồng hoặc nhôm (chiều cao tiêu chuẩn 15.0 mm).
-- **Thanh Ren Chịu Lực Xâu Suốt (Threaded Rods):** Sử dụng 4 thanh ren bằng thép không gỉ Inox M3 xâu xuyên suốt từ tấm đáy lên tấm nóc của khung, kẹp chặt toàn bộ khối bo mạch thành một khối vững chắc nguyên khối (Monolithic Block), phân tán đều ứng suất rung động của tên lửa đẩy.
+- **Trụ cách tầng:** Dùng trụ lục giác bằng đồng hoặc nhôm, cao 15 mm.
+- **Thanh ren:** Luồn bốn thanh M3 bằng thép không gỉ từ đáy lên nóc để cố định cụm bo và phân tán rung động.
 
 #### 1.1. Các phương thức tích hợp cơ khí và điện của các bo mạch trên CubeSat
 
@@ -126,20 +126,20 @@ Tích hợp cơ khí xác định vị trí và cách cố định từng bo m�
 
 **Liên hệ với bộ kit:** Có thể xếp các bo bằng trụ ren và thanh M3, đồng thời nối riêng GNSS hoặc LoRa với OBC qua dây UART. Cùng một bộ kit có thể dùng ngăn xếp để cố định cơ khí và dùng Point-to-Point cho một số đường điện. Khi báo cáo, hãy ghi rõ cả cách giữ bo và cách truyền nguồn, tín hiệu.
 
-### 2. Bu lông Inox A2-70, Keo Khóa Ren Loctite 222 & Bu lông Thông Hơi
+### 2. Bu lông, keo khóa ren và bu lông thông hơi
 - **Cấp bền Bu lông Inox A2-70:** Chế tạo bằng thép không gỉ austenit AISI 304, giới hạn bền kéo tối thiểu 700 MPa.
 - **Keo Khóa Ren Chuyên dụng Không gian Loctite 222 (Tím / Low Strength):** Rung động tần số cao của tên lửa dễ làm nới lỏng các vòng ren cơ khí. Tất cả các mối ghép ren bắt buộc phải được tra keo khóa kỵ khí Loctite 222. Keo tự đông cứng khi không có không khí giữa các khe ren kim loại, khóa chặt bu lông không bị xoay lỏng nhưng vẫn cho phép kỹ sư tháo mở bằng dụng cụ cầm tay khi cần sửa chữa trong phòng lab.
 - **Bu lông Thông Hơi (Drilled-core Vented Screws):**
-  - Khi vặn một bu lông thông thường vào một lỗ ren kín đáy (Blind Hole), một lượng không khí khí quyển bị nén chặt ở đáy lỗ ren.
-  - Khi đưa vệ tinh vào buồng thử nghiệm chân không nhiệt (TVAC), lượng khí nén này sẽ rò rỉ cực kỳ chậm chạp qua các khe hở vi mô của đường ren ra ngoài (hiện tượng **Rò rỉ ảo - Virtual Leak**), khiến buồng thử nghiệm không bao giờ đạt được mức chân không mong muốn và làm sai lệch kết quả đo.
+  - Khi vặn bu lông vào lỗ ren kín đáy, không khí bị giữ lại trong lỗ.
+  - Khi thử nghiệm trong buồng chân không nhiệt (TVAC), khí thoát chậm qua khe ren, gây rò rỉ ảo và làm sai lệch kết quả đo.
   - Bu lông thông hơi được khoan một lỗ rỗng siêu nhỏ xuyên suốt tâm dọc trục bu lông, cho phép toàn bộ không khí ở đáy lỗ ren thoát ra ngay lập tức khi buồng hút chân không.
 
 ![Thiết kế bu-lông thông hơi chống rò rỉ ảo](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab6_vented_screw.png)
 
-### 3. Bảng Cân Đối Khối Lượng (Mass Budget) & Cân Bằng Trọng Tâm (Center of Mass - CoM)
-- **Bảng Cân đối Khối lượng (Mass Budget):** Tổng khối lượng của một CubeSat 1U bị khống chế nghiêm ngặt không được vượt quá 1.330 kg (hoặc 2.000 kg). Trong giai đoạn thiết kế, kỹ sư phải duy trì một biên độ khối lượng dự phòng (**Mass Margin** ≥ 15 - 20%) để bù đắp cho sự tăng khối lượng thực tế của dây dẫn, màng bọc và keo dán trong quá trình lắp ráp.
+### 3. Khối lượng và trọng tâm
+- **Khối lượng:** Tổng khối lượng CubeSat 1U không được vượt quá 1.330 kg (hoặc 2.000 kg). Dự phòng ít nhất 15–20% cho dây dẫn, màng bọc và keo dán phát sinh khi lắp ráp.
 - **Quy chuẩn Trọng tâm CoM Khắt khe:**
-  - Tiêu chuẩn CalPoly quy định: Vị trí trọng tâm thực tế của CubeSat 1U không được phép lệch quá **±2.0 cm (±20 mm)** so với tâm hình học lý thuyết của khối lập phương trên cả 3 trục $X, Y, Z$:
+  - Theo tiêu chuẩn CalPoly, trọng tâm CubeSat 1U không được lệch quá **±20 mm** so với tâm hình học trên ba trục $X, Y, Z$:
 
 $$|X_\text{cm}| \le 20\text{ mm}, \quad |Y_\text{cm}| \le 20\text{ mm}, \quad |Z_\text{cm}| \le 20\text{ mm}$$
 
@@ -147,20 +147,48 @@ $$|X_\text{cm}| \le 20\text{ mm}, \quad |Y_\text{cm}| \le 20\text{ mm}, \quad |Z
 
 ---
 
-## 💻 Hướng Dẫn Kỹ Thuật: Quy Trình Lắp Ráp Khung Bộ Kit & Báo Cáo Thực Hành
+## 📖 Doc 6.4: Hướng dẫn lắp ráp khung bộ kit
 
-### 1. Quy trình Lắp ráp Khung Vệ tinh của Bộ Kit
-- Học viên theo dõi video hướng dẫn **Video 6.2** để thực hiện từng bước lắp ráp cơ khí:
-  - Lắp ráp các trụ ren cách tầng (Standoffs) và các tầng bo mạch ngăn xếp PC/104 theo đúng thứ tự.
-  - Luồn 4 thanh ren chịu lực inox M3 qua các góc để cố định khối bo mạch.
-  - Ghép nối các tấm vách khung nhôm bên ngoài và 4 thanh ray dẫn hướng của bộ kit.
-  - Siết đều các bu lông bằng tua-vít cầm tay, bảo đảm các mối ghép chắc chắn và không bị vênh.
+Tài liệu này tổng hợp quy trình lắp các tầng bo mạch và khung cơ khí của bộ kit. Bổ sung hình vào các vị trí được đánh dấu.
 
-### 2. Thực Hành & Chụp Hình Ảnh Báo Cáo Kết Quả
-- Sau khi hoàn thành quá trình lắp ráp khung vệ tinh của bộ kit:
-  1. Kiểm tra độ vững chắc của toàn bộ khung cơ khí và các đầu nối dây dẫn.
-  2. Quan sát độ đồng phẳng của 4 thanh ray dẫn hướng ở các góc.
-  3. Chụp hình ảnh sản phẩm hoàn thiện cuối cùng rõ nét làm kết quả thực hành để nộp lên hệ thống LMS.
+Tham khảo Video 6.2 về quy trình lắp ráp trước khi bắt đầu.
+
+### 1. Linh kiện lắp ráp
+
+- Các tầng bo mạch PC/104.
+- Trụ ren cách tầng cao 15 mm.
+- Bốn thanh ren inox M3.
+- Các tấm vách nhôm và bốn thanh ray dẫn hướng.
+- Bu lông inox A2-70 và keo khóa ren Loctite 222.
+
+> **Vị trí chèn hình:** Các linh kiện và thứ tự lắp ráp.
+
+### 2. Lắp các tầng bo mạch
+
+1. Xếp các tầng bo mạch theo đúng thứ tự.
+2. Dùng trụ ren cách tầng để giữ khoảng cách giữa các bo.
+3. Luồn bốn thanh ren M3 qua các lỗ ở góc và cố định cụm bo.
+
+> **Vị trí chèn hình:** Thứ tự xếp bo mạch, trụ ren và thanh ren.
+
+### 3. Lắp khung ngoài
+
+1. Ghép các tấm vách nhôm quanh cụm bo.
+2. Lắp bốn thanh ray dẫn hướng.
+3. Siết đều bu lông bằng tua-vít cầm tay, tránh làm khung bị vênh.
+
+> **Vị trí chèn hình:** Lắp vách nhôm, thanh ray và vị trí siết bu lông.
+
+### 4. Kiểm tra sau khi lắp
+
+- Kiểm tra độ vững chắc của khung và đầu nối dây.
+- Kiểm tra độ đồng phẳng của bốn thanh ray.
+
+---
+
+## 💻 Báo cáo thực hành Lab 6
+
+Chụp ảnh khung đã lắp hoàn chỉnh và nộp lên LMS.
 
 ### ❓ Câu Hỏi Đánh Giá Kỹ Năng Thực Hành (Lab 6)
 1. **Trong quy trình lắp ráp các tầng bo mạch chuẩn PC/104 của kit vệ tinh, nguyên tắc siết ốc cơ học nào phải được tuân thủ?**

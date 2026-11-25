@@ -1,38 +1,38 @@
-# Lab 0: Giới thiệu Tổng quan Kỹ thuật Không gian & Vệ tinh CubeSat
+# Lab 0: Kỹ thuật không gian và CubeSat
 
 ---
 
-## 📖 Doc 0.1: Lịch sử CubeSat, Tiêu chuẩn Kỹ thuật & Môi trường Quỹ đạo LEO
+## 📖 Doc 0.1: Lịch sử CubeSat, tiêu chuẩn và môi trường quỹ đạo thấp
 
 ### 1. Lịch sử Phát triển và Triết lý Tiêu chuẩn Hóa CubeSat
 Vệ tinh siêu nhỏ tiêu chuẩn **CubeSat** được khởi xướng vào năm 1999 thông qua sự hợp tác lịch sử giữa Giáo sư **Jordi Puig-Suari** (Đại học Bách khoa Bang California - CalPoly, San Luis Obispo) và Giáo sư **Bob Twiggs** (Đại học Stanford). Mục tiêu nguyên bản của dự án là thiết lập một tiêu chuẩn kích thước và giao diện cơ khí đồng nhất, giúp sinh viên đại học có thể tự tay thiết kế, chế tạo, thử nghiệm và vận hành một vệ tinh nhân tạo thực thụ trong khoảng thời gian phù hợp với chu kỳ đào tạo (1 - 2 năm) với ngân sách chỉ bằng một phần nghìn so với các vệ tinh truyền thống.
 
 Trước khi CubeSat ra đời, ngành công nghiệp vũ trụ bị chi phối bởi các vệ tinh lớn có khối lượng từ vài trăm kilogam đến hàng tấn, chi phí phát triển lên tới hàng trăm triệu USD và thời gian chuẩn bị kéo dài hàng thập kỷ. Bất kỳ một sai sót nhỏ nào cũng dẫn đến thiệt hại khổng lồ, khiến các kỹ sư có xu hướng cực kỳ bảo thủ, chỉ sử dụng các linh kiện điện tử chuyên dụng chống bức xạ (**Radiation-Hardened**) thế hệ cũ và đắt đỏ.
 
-CubeSat đã tạo nên một cuộc cách mạng mang tính đột phá (**New Space Revolution**) dựa trên ba trụ cột triết lý cốt lõi:
-1. **Tiêu chuẩn Hóa Cơ khí & Giao diện Phóng (Standardized Form Factor & Deployment):** Quy định kích thước khối lập phương cố định giúp các nhà cung cấp tên lửa đẩy dễ dàng tích hợp vệ tinh vào các khoang chứa tiêu chuẩn mà không cần thiết kế lại cơ cấu gá phóng cho từng sứ mệnh.
-2. **Khai thác Linh kiện Thương mại Sẵn có (COTS - Commercial Off-The-Shelf):** Tận dụng bước nhảy vọt của ngành công nghiệp bán dẫn tiêu dùng (vi xử lý kiến trúc **ARM** / **ESP32**, cảm biến vi cơ điện tử **MEMS** - *Micro-Electro-Mechanical Systems*, pin Lithium-Ion điện thoại). Mặc dù linh kiện COTS không được bọc chắn bức xạ chuyên dụng, các kỹ sư vũ trụ hiện đại áp dụng các giải pháp kiến trúc hệ thống, thuật toán tự sửa lỗi và cơ chế dự phòng đa tầng để đạt độ tin cậy bay mong muốn với giá thành cực thấp.
-3. **Đóng gói Kín Giảm Thiểu Rủi ro cho Tên lửa Mẹ (Containerized Launch Integration):** Vệ tinh được nhốt hoàn toàn bên trong ống phóng dạng hộp kín có nắp đậy (như **P-POD** - *Poly-Picosatellite Orbital Deployer*). Mọi nguy cơ bung vỡ chi tiết, đoản mạch hay phát sóng ngoài ý muốn đều bị cô lập hoàn toàn, bảo vệ an toàn tuyệt đối cho tên lửa đẩy và tải trọng thương mại chính.
+CubeSat thúc đẩy cách tiếp cận mới trong phát triển vệ tinh, dựa trên ba nguyên tắc:
+1. **Tiêu chuẩn kích thước và giao diện phóng:** Kích thước thống nhất giúp tích hợp vệ tinh vào khoang phóng mà không cần thiết kế lại cơ cấu gá.
+2. **Linh kiện thương mại sẵn có (COTS):** Tận dụng vi xử lý ARM/ESP32, cảm biến MEMS và pin điện thoại. Dù không được thiết kế riêng để chống bức xạ, các linh kiện này có thể đạt độ tin cậy cần thiết nhờ kiến trúc hệ thống, sửa lỗi và dự phòng.
+3. **Tích hợp an toàn khi phóng:** Ống phóng kín như **P-POD** cô lập nguy cơ bung vỡ, đoản mạch hoặc phát sóng ngoài ý muốn.
 
 ![Lịch sử phát triển chuẩn CubeSat & New Space](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_timeline.png)
 
 ---
 
-### 2. Phân loại Vệ tinh Nhỏ (SmallSat) theo Khối lượng
-Trong thang phân loại quốc tế của Liên đoàn Hàng không Vũ trụ Quốc tế (**IAF** - *International Astronautical Federation*) và Cơ quan Hàng không và Vũ trụ Hoa Kỳ (**NASA** - *National Aeronautics and Space Administration*), các vệ tinh nhỏ (**SmallSat** - *Small Satellite*) được định danh chính xác dựa trên khối lượng ướt khi phóng (**Wet Mass** — bao gồm cả nhiên liệu nếu có):
+### 2. Phân loại vệ tinh theo khối lượng
+Các vệ tinh được phân nhóm theo khối lượng khi phóng, bao gồm cả nhiên liệu nếu có:
 
 | Nhóm Vệ tinh | Khối lượng Phóng ($M$) | Ví dụ Điển hình & Cấu hình CubeSat |
 | :--- | :--- | :--- |
-| **Minisatellite (Vệ tinh nhỏ)** | $100\text{ kg} \le M < 500\text{ kg}$ | Vệ tinh viễn thám cao cấp, chòm vệ tinh Starlink v1 |
-| **Microsatellite (Vệ tinh siêu nhỏ)** | $10\text{ kg} \le M < 100\text{ kg}$ | Vệ tinh VNREDSat-1 (115 kg), CubeSat 12U - 27U |
-| **Nanosatellite (Vệ tinh nano)** | $1\text{ kg} \le M < 10\text{ kg}$ | **Chuẩn CubeSat tiêu chuẩn: 1U (1.33 kg), 2U, 3U, 6U** |
-| **Picosatellite (Vệ tinh pico)** | $0.1\text{ kg} \le M < 1\text{ kg}$ | Vệ tinh dạng bản mạch PocketQube (5 × 5 × 5 cm), Chipsat |
-| **Femtosatellite (Vệ tinh femto)** | $M < 0.1\text{ kg}$ ($< 100\text{ g}$) | Vệ tinh vi mạch đơn màng mỏng (Sprite, KickSat) |
+| **Minisatellite** | $100\text{ kg} \le M < 500\text{ kg}$ | VNREDSat-1 (115 kg), Starlink v1 |
+| **Microsatellite** | $10\text{ kg} \le M < 100\text{ kg}$ | CubeSat 12U–27U |
+| **Nanosatellite** | $1\text{ kg} \le M < 10\text{ kg}$ | CubeSat 1U (1.33 kg), 2U, 3U, 6U |
+| **Picosatellite** | $0.1\text{ kg} \le M < 1\text{ kg}$ | PocketQube (5 × 5 × 5 cm), Chipsat |
+| **Femtosatellite** | $M < 0.1\text{ kg}$ ($< 100\text{ g}$) | Sprite, KickSat |
 
 ---
 
-### 3. Thông số Hình học Tiêu chuẩn 1U (1 Unit) theo Quy chuẩn CalPoly
-Một vệ tinh CubeSat đơn vị cơ sở (**1U** - *1 Unit*) phải tuân thủ nghiêm ngặt các quy định kích thước trong tài liệu đặc tả **CubeSat Design Specification (CDS)** do Đại học CalPoly ban hành để đảm bảo vệ tinh có thể trượt vừa vặn trơn tru bên trong ống phóng mà không bao giờ bị kẹt:
+### 3. Kích thước CubeSat 1U theo tiêu chuẩn CalPoly
+CubeSat 1U phải đáp ứng quy định trong tài liệu **CubeSat Design Specification (CDS)** để trượt vừa trong ống phóng:
 
 ![Thông số cơ học tiêu chuẩn CubeSat 1U](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_1u_dimensions.png)
 
@@ -43,9 +43,9 @@ Một vệ tinh CubeSat đơn vị cơ sở (**1U** - *1 Unit*) phải tuân th�
 | **Bề rộng Thanh ray (Rails)** | Tối thiểu 8.5 mm | Tiếp xúc trực tiếp với rãnh dẫn hướng của ống phóng **POD** (*Picosatellite Orbital Deployer*) để chịu tải trọng rung động. |
 | **Bán kính Bo viền Ray** | Tối thiểu 1.0 mm | Bán kính lượn góc nhẵn bóng nhằm loại bỏ hoàn toàn các gờ sắc nhọn gây cào xước ống phóng. |
 | **Độ nhám Bề mặt Ray ($R_a$)** | $R_a \le 0.8\text{ }\mu\text{m}$ | Bề mặt ray trượt phải được mài bóng kỹ thuật cao để giảm thiểu lực ma sát trượt khi bung. |
-| **Xử lý Bề mặt Ray (Hard Anodize)** | Anodize Cứng Type III | Tạo lớp gốm oxit nhôm ($\text{Al}_2\text{O}_3$) dày ($25 - 50\text{ }\mu\text{m}$) cách điện, chống mài mòn và chống hàn nguội trong chân không. |
-| **Vùng Cấm Nhô (Keep-out Zone)** | Tối đa 6.5 mm | Không có bất kỳ linh kiện, đầu ốc vít hay thấu kính nào được nhô ra khỏi bề mặt ngoài vượt quá 6.5 mm. |
-| **Vị trí Trọng tâm (CoM - Center of Mass)** | Cách tâm hình học ≤ 20 mm | Phân bố khối lượng lệch tâm vượt chuẩn sẽ tạo mô-men xoắn gây rung lắc ống phóng và kẹt khi đẩy. |
+| **Xử lý bề mặt ray** | Anodize Type III | Tạo lớp oxit nhôm dày 25–50 μm, cách điện và chống mài mòn. |
+| **Vùng giới hạn nhô** | Tối đa 6.5 mm | Linh kiện không được nhô quá giới hạn này. |
+| **Trọng tâm (CoM)** | Cách tâm hình học ≤ 20 mm | Lệch quá giới hạn có thể gây rung và kẹt khi phóng. |
 
 ---
 
@@ -56,15 +56,15 @@ CubeSat không được gắn trực tiếp lên tên lửa đẩy mà bắt bu�
 
 ![Trình tự phóng và triển khai CubeSat lên quỹ đạo](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_deployment_sequence.png)
 
-- **Lò xo đẩy chính (Ejection Spring):** Đặt tại đáy ống phóng, cung cấp lực đẩy tuyến tính ổn định để phóng vệ tinh với vận tốc tương đối từ $1.0\text{ m/s}$ đến $1.5\text{ m/s}$, tránh nguy cơ vệ tinh bay lơ lửng ngay cửa ống gây va chạm với tên lửa.
-- **Lò xo tách tầng (Deployment Plungers):** Lắp ở đỉnh các thanh ray trượt. Khi hai vệ tinh CubeSat xếp chồng trong cùng một ống phóng rời khỏi cửa, các lò xo plunger nhỏ sẽ lập tức đẩy hai vệ tinh dạt xa nhau để ngăn ngừa va chạm thứ cấp.
-- **Công tắc Hành trình Phóng (Deployment Switch / Inhibit Switch):** Lắp ở chân thanh ray trượt. Khi vệ tinh nằm trong ống phóng, nắp hoặc ray đè chặt công tắc ở trạng thái ngắt mạch điện (**Open Circuit**). Khi vệ tinh vừa trượt ra ngoài không gian, công tắc bung ra, đóng mạch điện kết nối pin sạc với hệ thống phân phối nguồn điện **EPS** (*Electrical Power System*).
-- **Quy tắc Im lặng Vô tuyến 30 Phút (30-Minute Radio Silence Rule):** Theo yêu cầu an toàn phóng quốc tế của CalPoly, NASA và Cơ quan Thám hiểm Hàng không Vũ trụ Nhật Bản (**JAXA** - *Japan Aerospace Exploration Agency*), CubeSat **bắt buộc phải giữ im lặng vô tuyến (RF Silence) hoàn toàn trong ít nhất 30 phút đầu tiên** sau khi rời ống phóng. Trong khoảng thời gian này, vi điều khiển không được phát sóng radio (**RF** - *Radio Frequency*), không được kích hoạt đốt nhiệt bung anten hay mở các tấm pin để tránh gây nhiễu cho các thiết bị điều khiển của tên lửa đẩy và các vệ tinh khác phóng cùng cụm.
+- **Lò xo đẩy:** Đặt ở đáy ống, phóng vệ tinh với vận tốc 1.0–1.5 m/s.
+- **Chốt đẩy tách vệ tinh:** Đặt ở đầu ray, đẩy hai vệ tinh ra xa nhau khi cùng rời ống.
+- **Công tắc hành trình:** Khi vệ tinh nằm trong ống, công tắc ngắt nguồn. Khi vệ tinh rời ống, công tắc đóng mạch pin với EPS.
+- **Im lặng vô tuyến:** CubeSat phải giữ im lặng ít nhất 30 phút sau khi rời ống phóng. Trong thời gian này, không phát sóng hoặc kích hoạt cơ cấu bung anten và pin mặt trời.
 
 ---
 
-### 5. Môi trường Vật lý Khắc nghiệt tại Quỹ đạo Trái Đất Tầm thấp (LEO)
-Quỹ đạo **LEO** (*Low Earth Orbit* - Quỹ đạo Trái Đất Tầm thấp) nằm ở độ cao từ 160 km đến 2000 km so với mực nước biển (phổ biến nhất cho CubeSat là 400 - 600 km, tương đương quỹ đạo trạm ISS $\approx 410\text{ km}$). Môi trường không gian tại đây đặt ra những thử thách kỹ thuật cực đoan:
+### 5. Môi trường quỹ đạo Trái Đất tầm thấp (LEO)
+LEO nằm ở độ cao 160–2000 km; CubeSat thường hoạt động ở 400–600 km, gần với quỹ đạo ISS (khoảng 410 km).
 
 #### A. Môi trường Chân không Cực cao (Ultra-High Vacuum)
 Áp suất khí quyển tại độ cao 500 km suy giảm xuống chỉ còn khoảng $10^{-6}\text{ Pa}$ đến $10^{-8}\text{ Pa}$ ($10^{-8} - 10^{-10}\text{ Torr}$), so với áp suất khí quyển tiêu chuẩn tại mặt đất là $101.325\text{ kPa}$ ($760\text{ Torr}$):
@@ -196,23 +196,23 @@ $$F_{\text{drag}} = \frac{1}{2} \rho v^2 C_d A$$
 
 ---
 
-## 📖 Doc 0.2: Kiến trúc Hệ thống Vệ tinh 1U & 6 Phân hệ Cốt lõi
+## 📖 Doc 0.2: Kiến trúc CubeSat 1U và sáu phân hệ
 
 ### 1. Kiến trúc Hệ thống Phân rã theo Khối Chức năng
 Một vệ tinh CubeSat là một hệ sinh thái cơ điện tử thu nhỏ, trong đó các thành phần được tổ chức thành các phân hệ chức năng phối hợp chặt chẽ với nhau. Xét theo mục tiêu nhiệm vụ, kiến trúc vệ tinh được chia thành hai nhóm lớn:
-1. **Hệ thống Nền tảng (Bus System):** Tập hợp các phân hệ kỹ thuật cơ bản đóng vai trò hạ tầng dịch vụ hỗ trợ — bảo đảm độ bền cơ khí, cung cấp năng lượng, điều khiển nhiệt, xử lý lệnh/dữ liệu, ổn định hướng và duy trì liên lạc với Trái Đất.
-2. **Tải trọng Sứ mệnh (Payload):** Bộ phận trực tiếp thực hiện mục tiêu khoa học, quan sát hoặc thử nghiệm công nghệ của chuyến bay — đây chính là lý do tồn tại của toàn bộ hệ thống vệ tinh trên quỹ đạo (ví dụ: camera chụp ảnh bề mặt Trái Đất, máy thu tín hiệu hàng hải AIS/ADS-B, cảm biến đo bức xạ hoặc mô-đun quan sát khí tượng).
+1. **Hệ thống nền tảng:** Các phân hệ cung cấp kết cấu, nguồn, điều khiển nhiệt, xử lý dữ liệu, ổn định hướng và liên lạc.
+2. **Tải trọng nhiệm vụ:** Thiết bị thực hiện mục tiêu khoa học hoặc công nghệ, như camera, máy thu AIS/ADS-B và cảm biến bức xạ.
 
 
 ![Kiến trúc hệ thống CubeSat tổng thể](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/system.png)
 
-> **Lưu ý về phân chia phân hệ:** Theo tài liệu kỹ thuật hệ thống CubeSat tiêu chuẩn, vệ tinh thường được phân tách thành 7 nhóm chức năng (Kết cấu cơ khí, Nguồn điện EPS, Xử lý dữ liệu & điều khiển C&DH, Thông tin liên lạc COM, Xác định & điều khiển hướng ADCS, Điều khiển nhiệt TCS và Tải hữu ích Payload). Trên bộ kit giáo dục **PTITCube 1U**, hệ thống được tổ chức gọn thành **6 Phân hệ Cốt lõi**: các cảm biến giám sát trạng thái và tải trọng nhiệm vụ được gộp chung thành phân hệ **Cảm biến & Tải trọng Sứ mệnh**, còn chức năng **Điều khiển Nhiệt (TCS)** được tích hợp trực tiếp ở dạng thụ động thông qua khung nhôm dẫn nhiệt và giám sát nhiệt độ trên các cảm biến/mạch sạc.
+> **Phân chia phân hệ:** Mô hình CubeSat thường gồm bảy nhóm: kết cấu, nguồn, xử lý dữ liệu, liên lạc, xác định và điều khiển hướng, điều khiển nhiệt, tải trọng. Kit **PTITCube 1U** gộp cảm biến với tải trọng thành một phân hệ; điều khiển nhiệt được thực hiện thụ động qua khung nhôm và giám sát nhiệt độ.
 
 ---
 
-### 2. Chi tiết Chức năng & Thông số 6 Phân hệ Cốt lõi
+### 2. Chức năng và thông số các phân hệ
 
-#### 1. Phân hệ Xử lý Dữ liệu & Điều khiển (OBC / C&DH - On-Board Computer / Command & Data Handling)
+#### 1. Xử lý dữ liệu và điều khiển (OBC, C&DH)
 Trong kiến trúc vệ tinh, **C&DH** là phân hệ đóng vai trò trung tâm điều phối toàn bộ hoạt động trên khoang, còn **OBC** (*On-Board Computer*) là máy tính phần cứng hạt nhân thực thi các tác vụ đó.
 
 - **Chức năng Cốt lõi (3 nhóm nhiệm vụ chính):**
@@ -227,7 +227,7 @@ Trong kiến trúc vệ tinh, **C&DH** là phân hệ đóng vai trò trung tâm
 
 ---
 
-#### 2. Phân hệ Năng lượng Điện (EPS - Electrical Power System)
+#### 2. Nguồn điện (EPS)
 **EPS** đảm nhiệm việc thu nhận (phát điện), lưu trữ, điều hòa điện áp, phân phối và bảo vệ nguồn điện cho toàn bộ vệ tinh. Khả năng cấp nguồn quyết định trực tiếp thời lượng vận hành tải hữu ích, công suất phát sóng và sự sống còn của vệ tinh.
 
 - **Nguyên lý Vận hành Theo Chu kỳ Quỹ đạo:**
@@ -247,7 +247,7 @@ Trong kiến trúc vệ tinh, **C&DH** là phân hệ đóng vai trò trung tâm
 
 ---
 
-#### 3. Phân hệ Cảm biến & Tải trọng Sứ mệnh (Sensors & Payload)
+#### 3. Cảm biến và tải trọng nhiệm vụ
 Trong hệ thống CubeSat, cần phân biệt rõ hai nhóm thành phần: **các cảm biến nền tảng** (cung cấp dữ liệu vật lý cho OBC và ADCS để giám sát sức khỏe, định vị, xác định hướng) và **tải trọng sứ mệnh (Payload)** (thiết bị trực tiếp thực hiện nhiệm vụ khoa học hoặc quan sát của vệ tinh). Trên kit PTITCube, cả hai nhóm được tích hợp đồng bộ trên cùng phân hệ:
 
 - **Nhóm Cảm biến Môi trường & Giám sát Nội bộ:**
@@ -271,7 +271,7 @@ $$\text{Heading} = \text{atan2}(B_y, B_x) \cdot \frac{180}{\pi}$$
 
 ---
 
-#### 4. Phân hệ Thông tin Liên lạc (COM - Communication Subsystem)
+#### 4. Thông tin liên lạc (COM)
 **COM** là cầu nối vô tuyến hai chiều duy nhất giữa CubeSat trên quỹ đạo và trạm mặt đất (**GS** - *Ground Station*). Nếu phân hệ COM mất kết nối không thể phục hồi, trạm mặt đất sẽ mất hoàn toàn khả năng điều khiển và thu nhận dữ liệu sứ mệnh.
 
 - **Chức năng Theo Hai Chiều Liên kết:**
@@ -294,7 +294,7 @@ $$\lambda = \frac{c}{f} = \frac{3 \times 10^8\text{ m/s}}{433 \times 10^6\text{ 
 
 ---
 
-#### 5. Phân hệ Kết cấu Cơ khí (Structure Subsystem) & Kiểm soát Nhiệt Thụ động
+#### 5. Kết cấu cơ khí và kiểm soát nhiệt
 Phân hệ kết cấu cơ khí tạo bộ khung chịu lực, định hình bao hình tiêu chuẩn, liên kết và bảo vệ toàn bộ bo mạch, cảm biến và tải trọng trong suốt quá trình lắp ráp, vận chuyển, phóng tên lửa và vận hành trên quỹ đạo.
 
 - **Chức năng Cơ khí & Tải trọng Khi Phóng:**
@@ -312,7 +312,7 @@ Phân hệ kết cấu cơ khí tạo bộ khung chịu lực, định hình bao
 
 ---
 
-#### 6. Phân hệ Xác định & Điều khiển Hướng (ADCS - Attitude Determination and Control Subsystem)
+#### 6. Xác định và điều khiển hướng (ADCS)
 **ADCS** chịu trách nhiệm xác định tư thế (định hướng của thân vệ tinh so với hệ quy chiếu quán tính hoặc hệ quỹ đạo) và vận tốc góc, sau đó điều khiển vệ tinh xoay về hướng mong muốn và giữ ổn định. *(Lưu ý: ADCS điều khiển chuyển động quay quanh trọng tâm của thân vệ tinh, khác với việc điều chỉnh vị trí hay quỹ đạo bay).*
 
 - **Thách thức Môi trường & 4 Mô-men Nhiễu Quỹ đạo LEO (Environmental Disturbance Torques):**
@@ -337,14 +337,14 @@ Phân hệ kết cấu cơ khí tạo bộ khung chịu lực, định hình bao
 
 #### Bảng Tổng hợp Nhanh 6 Phân hệ Cốt lõi trên Kit PTITCube 1U
 
-| Phân hệ | Vai trò Chính | Thành phần / Thông số Cốt lõi trên PTITCube | Giao tiếp / Đường Nguồn |
+| Phân hệ | Vai trò | Thành phần chính | Giao tiếp / nguồn |
 | :--- | :--- | :--- | :--- |
-| **1. OBC / C&DH** | Bộ não điều phối, xử lý lệnh, đóng gói dữ liệu HK & nhiệm vụ, FDIR | **ESP32-WROOM-32** (2 nhân 240 MHz, 520 KB SRAM, 4 MB Flash), microSD FAT32 | Bus chủ: I2C, SPI, UART; Nguồn 3.3 V |
-| **2. EPS** | Thu nhận, lưu trữ, biến đổi, phân phối & giám sát năng lượng | Pin mặt trời 4 mặt (19 - 22%), Li-Po 3.7 V (1200 - 2000 mAh), **TP4056** (CC/CV), Buck 3.3 V / Boost 5 V, **MAX17048** | I2C (`0x36` cho MAX17048); cấp rail 3.3 V & 5.0 V |
-| **3. Sensors & Payload** | Đo thông số môi trường, vị trí/tư thế & chụp ảnh viễn thám | **BMP280** (áp suất/nhiệt độ), **MPU6500** (IMU 6 trục), **QMC5883L** (từ kế), **GNSS L76X** (GPS/GLONASS), **OV2640** (Camera 2 MP JPEG) | I2C (BMP280, MPU6500, QMC5883L), UART (L76X, OV2640 qua 74HC4066) |
-| **4. COM** | Cầu nối vô tuyến 2 chiều Uplink/Downlink với trạm mặt đất | **LoRa Ebyte E32** (UHF 433 MHz, CSS, độ nhạy -138 dBm, 20/30 dBm), anten đơn cực λ/4 ≈ 17.32 cm tự bung | UART; Nguồn 5.0 V |
-| **5. Structure (& TCS)** | Chịu tải phóng, bảo vệ cơ khí, chuẩn hóa kết nối & dẫn nhiệt thụ động | Khung CNC **Al 6061-T6** / 7075-T6, ray Hard Anodize, chuẩn ngăn xếp **PC/104** (90 × 96 mm, standoff 16 mm), keo khóa ren | Liên kết cơ khí, tản nhiệt dẫn |
-| **6. ADCS** | Ước lượng tư thế & mô phỏng điều khiển ổn định hướng | Thuật toán lọc bù / Mahony / Madgwick (từ **MPU6500** + **QMC5883L**); chấp hành thực nghiệm: động cơ **ERM** (PWM) & còi báo | Dữ liệu I2C; Điều khiển PWM từ OBC |
+| **1. OBC / C&DH** | Điều khiển, xử lý lệnh và dữ liệu | **ESP32-WROOM-32**, microSD FAT32 | I2C, SPI, UART; nguồn 3.3 V |
+| **2. EPS** | Thu, lưu trữ và phân phối điện | Pin mặt trời, Li-Po, TP4056, Buck/Boost, MAX17048 | I2C; nguồn 3.3 V và 5.0 V |
+| **3. Cảm biến và tải trọng** | Đo môi trường, tư thế, vị trí và chụp ảnh | BMP280, MPU6500, QMC5883L, L76X, OV2640 | I2C, UART |
+| **4. COM** | Liên lạc hai chiều với trạm mặt đất | LoRa E32 433 MHz, anten λ/4 | UART; nguồn 5.0 V |
+| **5. Kết cấu và nhiệt** | Chịu tải, bảo vệ bo mạch và tản nhiệt | Khung Al 6061-T6/7075-T6, PC/104, keo khóa ren | Cơ khí; dẫn nhiệt |
+| **6. ADCS** | Ước lượng tư thế và ổn định hướng | MPU6500, QMC5883L, động cơ ERM | I2C, PWM |
 
 > **Tổng kết Kiến trúc Hệ thống:** Sáu phân hệ kỹ thuật trên kết hợp chặt chẽ tạo thành một hệ sinh thái CubeSat 1U hoàn chỉnh, tuân thủ đúng chuẩn công nghiệp vũ trụ CalPoly CDS và triết lý COTS hiện đại. Toàn bộ các luồng dữ liệu điều khiển, viễn trắc sinh tồn và công suất nguồn được liên kết xuyên suốt qua ngăn xếp PC/104, tạo nền tảng vững chắc để người học tiếp tục triển khai các bài thực hành cấu hình và lập trình chuyên sâu từ Lab 1 đến Lab 8.
 

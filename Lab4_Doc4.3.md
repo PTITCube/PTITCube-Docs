@@ -1,8 +1,8 @@
-# Lab 4: Doc 4.3 - Nguyên lý Phần Cứng Module Định Vị GNSS L76X & Giao Tiếp UART Đọc Dữ Liệu Thô
+# Lab 4: Doc 4.3 - GNSS L76X và đọc dữ liệu NMEA qua UART
 
 ![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_gnss_l76x_architecture.png)
 
-### 1. Kiến trúc Phần cứng Module Định vị Toàn cầu GNSS L76X
+### 1. Module định vị GNSS L76X
 Module Quectel **L76X** là khí tài định vị không gian tích hợp đồng thời hai hệ thống vệ tinh: **GPS** (Hoa Kỳ - tần số L1 1575.42 MHz) và **GLONASS** (Nga - tần số L1 1602 MHz):
 - **Ăng-ten Gốm Tích hợp (Ceramic Patch Antenna):** Thu sóng vô tuyến phân cực tròn thuận (RHCP) từ các chòm vệ tinh trên quỹ đạo.
 - **Tầng Tiền Khuếch đại Nhiễu Thấp (LNA):** Khuếch đại tín hiệu vệ tinh cực kỳ yếu ớt (mức thu chỉ từ -130 dBm đến -165 dBm) trước khi đưa vào bộ giải mã RF.
@@ -28,7 +28,7 @@ Module Quectel **L76X** là khí tài định vị không gian tích hợp đồ
 
 
 
-### 2. Kỹ thuật Lập trình: Đọc Luồng Ký Tự NMEA Thô qua UART
+### 2. Đọc dữ liệu NMEA qua UART
 Trong bài thực hành đọc dữ liệu thô, mục tiêu là kiểm tra thông mạch phần cứng và quan sát trực tiếp luồng ký tự thô đổ về từ không gian:
 ```cpp
 void setup() {

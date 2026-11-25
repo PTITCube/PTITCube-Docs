@@ -1,31 +1,31 @@
-# Lab 7: Tích hợp Hệ thống Toàn diện, Thách thức Tích hợp & Vận hành Sứ mệnh Bay
+# Lab 7: Tích hợp hệ thống và vận hành sứ mệnh
 
 ---
 
-## 📖 Doc 7.1: Năm Thách Thức Kỹ Thuật Khốc Liệt Khi Tích Hợp Đa Phân Hệ vào Khối 1U
+## 📖 Doc 7.1: Thách thức khi tích hợp CubeSat 1U
 
-### 1. Tổng quan Bài toán Tích hợp Hệ thống (System Integration)
-Giai đoạn Tích hợp Hệ thống là thời điểm quyết định của toàn bộ dự án vệ tinh, chuyển hóa các phân hệ phần cứng và phần mềm hoạt động riêng rẽ (OBC, EPS, C&DH, Sensors, COM, Khung cơ khí) thành một **thực thể vệ tinh duy nhất, tự chủ, bền bỉ và đồng bộ** có khả năng hoàn thành xuất sắc sứ mệnh trong môi trường khắc nghiệt ngoài không gian.
+### 1. Tổng quan tích hợp hệ thống
+Giai đoạn tích hợp kết nối các phân hệ phần cứng và phần mềm (OBC, EPS, C&DH, cảm biến, COM, khung cơ khí) thành một **hệ thống vệ tinh tự chủ và đồng bộ** để vận hành trong môi trường không gian.
 
 Khi nhồi nhét tất cả các phân hệ vào không gian chật hẹp của khối lập phương 1U (10 × 10 × 11.35 cm), kỹ sư tích hợp phải đối mặt và giải quyết đồng thời 5 thách thức kỹ thuật lớn:
 
 ![5 thách thức tích hợp hệ thống CubeSat](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab7_integration_challenges.png)
 
-### 2. Chi tiết Giải pháp Kỹ thuật Khắc phục 5 Thách thức
+### 2. Giải pháp cho năm thách thức
 1. **Giải quyết Xung đột Bus I2C/SPI:**
    - *Vấn đề:* Bus I2C là tài nguyên dùng chung nối tiếp; nếu hai tác vụ phần mềm cùng truy cập đồng thời sẽ làm vỡ khung truyền tin và treo cứng cảm biến.
-   - *Giải pháp:* Sử dụng khóa tương hỗ **Mutex (`xI2CMutex`)** trong FreeRTOS với cơ chế Thừa kế Ưu tiên (Priority Inheritance). Tác vụ nào muốn đọc cảm biến bắt buộc phải lấy Mutex (`xSemaphoreTake`), hoàn thành giao tiếp xong phải nhả khóa (`xSemaphoreGive`) mới cho tác vụ khác truy cập.
+   - *Giải pháp:* Dùng khóa **Mutex (`xI2CMutex`)** trong FreeRTOS với cơ chế thừa kế ưu tiên. Tác vụ phải lấy khóa bằng `xSemaphoreTake` trước khi đọc cảm biến và nhả bằng `xSemaphoreGive` sau khi hoàn tất.
 2. **Khắc phục Nhiễu Tương thích Điện từ (EMI Nội bộ):**
    - *Vấn đề:* Bộ phát sóng LoRa công suất cao (100 mW) và xung nhịp camera 20 MHz phát xạ điện từ làm giảm độ nhạy máy thu GPS.
-   - *Giải pháp:* Bố trí mạch đất hình sao (**Star Grounding**), bọc màng đồng shield cách ly các đường tín hiệu RF và áp dụng cơ chế bật tắt On-Demand ngắt xung nhịp camera khi định vị GPS bằng IC chuyển mạch 74HC4066.
+   - *Giải pháp:* Nối mass hình sao, bọc các đường RF bằng màng đồng và dùng IC 74HC4066 để ngắt camera khi định vị GPS.
 3. **Chống Sụt áp Nguồn (Brownout Mitigation):**
    - *Vấn đề:* Nếu camera nạp điện (250 mA), thẻ nhớ ghi khối (100 mA) và LoRa phát sóng (120 mA) cùng xảy ra trong 1 mili-giây, tổng dòng đỉnh vượt quá 500 mA sẽ làm sụt áp pin xuống dưới 2.7V gây sập nguồn OBC.
-   - *Giải pháp:* Lập trình giãn cách thời gian kích hoạt các phụ tải công suất cao (Time-staggered execution) kết hợp mảng tụ lọc Tantalum dung lượng lớn.
+   - *Giải pháp:* Giãn cách thời điểm bật các tải công suất cao và dùng tụ lọc Tantalum dung lượng lớn.
 4. **Quản lý Cân bằng Nhiệt Toàn diện:**
    - *Vấn đề:* Trong chân không, nhiệt lượng sinh ra từ OBC và mạch phát sóng bị giữ lại bên trong khung.
-   - *Giải pháp:* Thiết kế lớp Anodize đen bên trong để hấp thụ nhiệt bức xạ, cầu nhiệt kim loại dẫn nhiệt trực tiếp ra khung nhôm ngoài để tản nhiệt vào vũ trụ, duy trì nhiệt độ pin luôn trong dải an toàn từ 0°C đến +45°C.
+   - *Giải pháp:* Dùng bề mặt Anodize đen và cầu nhiệt kim loại để truyền nhiệt ra khung, giữ nhiệt độ pin trong khoảng 0–45°C.
 5. **Tính Tất định Thời gian thực & Ngăn ngừa Deadlock:**
-   - *Vấn đề:* Phần mềm điều hành bay phải xử lý đồng thời nhiều luồng tín hiệu (chu kỳ đọc cảm biến 10Hz, ghi thẻ nhớ 1Hz, phát beacon 30s, ngắt nhận viễn lệnh vô tuyến bất kỳ lúc nào). Nếu thiết kế khóa không cẩn thận sẽ xảy ra hiện tượng kẹt bế tắc Deadlock.
+   - *Vấn đề:* Phần mềm xử lý đồng thời nhiều luồng tín hiệu: đọc cảm biến 10 Hz, ghi thẻ nhớ 1 Hz, phát beacon mỗi 30 giây và nhận lệnh vô tuyến. Thiết kế khóa không hợp lý có thể gây bế tắc.
    - *Giải pháp:* Thiết kế cấu trúc phân cấp khóa tài nguyên cố định và áp dụng kỹ thuật FreeRTOS Queue truyền dữ liệu bất đồng bộ.
 
 ---
@@ -37,7 +37,7 @@ Khi nhồi nhét tất cả các phân hệ vào không gian chật hẹp của 
    - C. Can nhiễu điện từ (EMI) giữa module phát sóng LoRa và các cảm biến nhạy
    - D. Bộ nhớ vi điều khiển quá nhỏ không chứa đủ tên sinh viên
 
-2. **Bài toán cân đối ngân sách năng lượng (Power Budget) trong pha tích hợp hệ thống đòi hỏi:**
+2. **Cân đối năng lượng khi tích hợp hệ thống cần bảo đảm điều gì?**
    - A. Tổng năng lượng tấm pin tạo ra trong chu kỳ bay phải lớn hơn tổng tiêu thụ của các tải
    - B. Pin phải luôn được nạp đầy 100% trong suốt thời gian bay
    - C. Vệ tinh phải tắt hoàn toàn bộ vi xử lý khi đi vào vùng tối
@@ -45,25 +45,25 @@ Khi nhồi nhét tất cả các phân hệ vào không gian chật hẹp của 
 
 ---
 
-## 📖 Doc 7.2: Kiến Trúc Phân Lớp Phần Mềm Bay (FSW) & Máy Trạng Thái Hữu Hạn (Mission FSM)
+## 📖 Doc 7.2: Kiến trúc phần mềm bay và máy trạng thái
 
-### 1. Kiến trúc Phân tầng Phần mềm Bay (FSW Layered Architecture)
+### 1. Các lớp phần mềm bay
 Để hệ thống phần mềm có tính module hóa cao, dễ kiểm thử và độc lập phần cứng, phần mềm bay được tổ chức theo 5 tầng phân cấp:
-1. **Tầng Trừu tượng Phần cứng (HAL - Hardware Abstraction Layer):** Cung cấp các hàm API truy cập thanh ghi chân GPIO, ADC, PWM, UART, I2C, SPI.
-2. **Tầng Trình điều khiển Thiết bị (Device Drivers):** Các lớp driver điều khiển trực tiếp từng IC cụ thể (Driver BMP280, Driver MPU6500, Driver MAX17048, Driver LoRa E32, Driver MicroSD).
-3. **Tầng Hệ điều hành Thời gian thực (OS / Kernel Layer):** FreeRTOS quản lý bộ điều phối tác vụ (Scheduler), hàng đợi tin nhắn (Queue), bộ đếm thời gian (Software Timers) và khóa bảo vệ (Mutex).
-4. **Tầng Dịch vụ Hệ thống (System Services):** Phân tích cú pháp viễn lệnh (Command Parser), Quản lý đóng khung bản tin (Telemetry Service), Ghi nhật ký thẻ nhớ (Storage Service), Giám sát hệ thống (Watchdog Manager).
-5. **Tầng Ứng dụng & Điều khiển Sứ mệnh (Mission Application Layer):** Máy trạng thái hữu hạn (Mission FSM) ra quyết định chuyển đổi chế độ hoạt động của toàn bộ vệ tinh.
+1. **Tầng trừu tượng phần cứng (HAL):** Cung cấp giao diện cho GPIO, ADC, PWM, UART, I2C và SPI.
+2. **Tầng trình điều khiển:** Điều khiển các IC như BMP280, MPU6500, MAX17048, LoRa E32 và MicroSD.
+3. **Tầng hệ điều hành:** FreeRTOS quản lý tác vụ, hàng đợi, bộ định thời và khóa Mutex.
+4. **Tầng dịch vụ:** Xử lý lệnh, đóng khung dữ liệu, ghi thẻ nhớ và giám sát hệ thống.
+5. **Tầng ứng dụng:** Máy trạng thái sứ mệnh (FSM) điều khiển chế độ hoạt động của vệ tinh.
 
-### 2. Máy Trạng Thái Hữu Hạn Điều Khiển Sứ Mệnh (Mission FSM)
-Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu Hạn (**Finite State Machine - FSM**) chuẩn mực:
+### 2. Máy trạng thái sứ mệnh
+Phần mềm bay được điều khiển bởi máy trạng thái hữu hạn (FSM):
 
 ![Máy trạng thái nhiệm vụ bay CubeSat FSM](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab7_mission_fsm.png)
 
-### 3. Chi tiết 6 Trạng thái Bay Cốt lõi
+### 3. Sáu trạng thái bay
 - **`STATE_BOOT`:**
   - Khởi động hệ thống, kiểm tra ngoại vi, khôi phục tham số từ NVS.
-  - Đếm ngược thời gian **30 phút im lặng vô tuyến (30-Minute Radio Silence)** theo luật quốc tế của Liên minh Viễn thông Quốc tế (ITU) trước khi được phép bung ăng-ten và phát sóng RF đầu tiên.
+  - Chờ **30 phút im lặng vô tuyến** theo quy định của ITU trước khi bung ăng-ten và phát sóng.
 - **`STATE_DETUMBLE`:**
   - Giảm tốc độ xoay hỗn loạn sinh ra khi rời ống phóng xuống dưới 5°/s bằng thuật toán điều khiển từ tính B-dot và thanh giảm chấn trễ từ.
 - **`STATE_NORMAL_OPS`:**
@@ -71,7 +71,7 @@ Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu H�
 - **`STATE_PAYLOAD_EXEC`:**
   - Kích hoạt tải trọng camera chụp ảnh viễn thám Trái Đất, nén JPEG và phân mảnh tệp dữ liệu. Chỉ cho phép kích hoạt khi dung lượng pin $\text{SOC} > 60\%$ và nhiệt độ nằm trong dải an toàn.
 - **`STATE_POWER_SAVE`:**
-  - Khi pin yếu ($V_\text{bat} < 3.55\text{V}$, $\text{SOC} < 25\%$), hệ thống tự động sa thải phụ tải (Load Shedding): Tắt camera, tắt GPS, giãn chu kỳ phát Beacon lên 120 giây, giảm xung nhịp CPU xuống 80 MHz.
+  - Khi pin yếu ($V_\text{bat} < 3.55\text{ V}$, $\text{SOC} < 25\%$), hệ thống tắt camera và GPS, giãn chu kỳ phát beacon lên 120 giây, giảm xung CPU xuống 80 MHz.
 - **`STATE_SAFE_MODE`:**
   - Chế độ phòng thủ sống còn khi xảy ra sự cố nghiêm trọng (pin chạm đáy $< 3.4\text{V}$ hoặc cảm biến báo lỗi liên tục), chỉ duy trì nguồn tối thiểu cho bộ thu lệnh vô tuyến để chờ lệnh giải cứu từ mặt đất.
 
@@ -84,7 +84,7 @@ Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu H�
    - C. Chờ 24 giờ liên tục không thực hiện lệnh nào
    - D. Trễ im lặng tối thiểu 30 đến 45 phút trước khi kích hoạt thu phát RF
 
-2. **Máy trạng thái hữu hạn (Mission FSM) của phần mềm bay chuyển từ trạng thái `DETUMBLE` sang `MISSION` khi nào?**
+2. **Phần mềm bay chuyển từ `DETUMBLE` sang `MISSION` khi nào?**
    - A. Khi dung lượng pin sụt giảm dưới 20%
    - B. Khi vận tốc góc quay của vệ tinh trên các trục giảm xuống dưới ngưỡng an toàn
    - C. Khi có tín hiệu ngắt nguồn khẩn cấp từ trạm mặt đất
@@ -92,28 +92,28 @@ Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu H�
 
 ---
 
-## 📖 Doc 7.3: Sổ Tay Vận Hành Bay (FOM) & Mô Phỏng Quỹ Đạo LEO 95 Phút
+## 📖 Doc 7.3: Vận hành bay và quỹ đạo LEO
 
 ![Chu kỳ quỹ đạo LEO 95 phút và cửa sổ liên lạc Trạm Mặt đất](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab7_leo_orbit_pass.png)
 
-### 1. Sổ Tay Vận Hành Bay (Flight Operations Manual - FOM)
+### 1. Sổ tay vận hành bay
 Sổ tay FOM là tài liệu quy chuẩn tác chiến dành cho kíp trực điều hành Trạm mặt đất:
-- **Quy trình Kiểm tra Trước Phiên Liên lạc (Pre-Pass Checklist):** Kiểm tra hướng ăng-ten, hiệu chuẩn tần số SDR, tải tệp phần tử quỹ đạo TLE mới nhất từ Space-Track.org để tính toán thời điểm đón sóng (AOS - Acquisition of Signal) và mất sóng (LOS - Loss of Signal).
-- **Giao thức Thông qua Trạm Mặt đất (Ground Pass Protocol):**
-  1. *Giai đoạn Bắt sóng (AOS):* Vệ tinh mọc trên chân trời, trạm bắt tín hiệu Beacon đầu tiên, gửi lệnh xác thực `CMD_PING`.
-  2. *Giai đoạn Trút Dữ liệu (Telemetry Dump):* Gửi lệnh `CMD_DUMP_LOG`, vệ tinh truyền tải nhanh các khối dữ liệu cảm biến tích lũy trong vòng quỹ đạo trước đó.
+- **Trước phiên liên lạc:** Kiểm tra hướng ăng-ten, hiệu chuẩn tần số SDR và tải phần tử quỹ đạo TLE mới nhất từ Space-Track.org để tính thời điểm bắt đầu (AOS) và kết thúc (LOS) liên lạc.
+- **Quy trình liên lạc:**
+  1. *Bắt sóng (AOS):* Khi vệ tinh xuất hiện ở chân trời, trạm nhận beacon đầu tiên và gửi lệnh xác thực `CMD_PING`.
+  2. *Trút dữ liệu:* Gửi lệnh `CMD_DUMP_LOG`; vệ tinh truyền dữ liệu cảm biến đã lưu trong vòng quỹ đạo trước.
   3. *Giai đoạn Thực thi Nhiệm vụ:* Gửi các lệnh cấu hình hoặc yêu cầu chụp ảnh.
-  4. *Giai đoạn Mất sóng (LOS):* Vệ tinh lặn xuống chân trời, trạm đóng phiên và lưu trữ nhật ký phiên liên lạc.
+  4. *Mất sóng (LOS):* Khi vệ tinh khuất dưới chân trời, trạm đóng phiên và lưu nhật ký liên lạc.
 
-### 2. Mô phỏng Chu kỳ Quỹ đạo LEO 95 Phút
+### 2. Mô phỏng chu kỳ quỹ đạo 95 phút
 Bộ kit PTITCube hỗ trợ chế độ mô phỏng quỹ đạo thực tế để rèn luyện kỹ năng vận hành:
-- **Pha Ban ngày Đón nắng (Sunlight - 60 phút):** Tấm pin mặt trời nhận ánh sáng, dòng nạp TP4056 đạt +500 mA, pin sạc tăng dần từ 3.7V → 4.15V, vệ tinh thoải mái thực hiện các tác vụ chụp ảnh và truyền thông công suất cao.
-- **Pha Vùng tối Trái Đất (Eclipse - 35 phút):** Vệ tinh chìm vào bóng tối Trái Đất, dòng sạc mặt trời về 0 mA. Toàn bộ năng lượng vận hành được rút từ khối pin Li-Po, điện áp pin xả dần. Học viên phải lập trình quản lý năng lượng thông minh để vệ tinh không bị cạn pin trước khi chu kỳ ban ngày tiếp theo bắt đầu.
+- **Pha có nắng (60 phút):** Tấm pin cấp dòng sạc đến 500 mA; điện áp pin tăng từ 3.7 V lên 4.15 V. Vệ tinh có thể chụp ảnh và truyền dữ liệu.
+- **Pha vùng tối (35 phút):** Dòng sạc bằng 0 mA; vệ tinh dùng pin Li-Po. Quản lý năng lượng để pin không cạn trước pha có nắng tiếp theo.
 
 ---
 
 ### ❓ Câu Hỏi Củng Cố Kiến Thức (Doc 7.3)
-1. **Khái niệm 'AOS' (Acquisition of Signal) và 'LOS' (Loss of Signal) trong sổ tay vận hành bay (FOM) có ý nghĩa gì?**
+1. **AOS và LOS trong sổ tay vận hành bay là gì?**
    - A. Mốc thời gian bắt đầu và kết thúc cửa sổ liên lạc vô tuyến khi vệ tinh bay qua trạm
    - B. Thời điểm bật và tắt nguồn khối pin mặt trời
    - C. Tín hiệu báo động lỗi bộ nhớ RAM và ROM
@@ -127,9 +127,9 @@ Bộ kit PTITCube hỗ trợ chế độ mô phỏng quỹ đạo thực tế đ
 
 ---
 
-## 💻 Hướng Dẫn Thực Hành: Lập Trình Vòng Lặp Tuần Tự vs Đa Nhiệm FreeRTOS
+## 💻 Hướng dẫn thực hành: Vòng lặp tuần tự và FreeRTOS
 
-### 1. Kiến trúc Đa Nhiệm FreeRTOS Mô Phỏng Vận Hành Bay
+### 1. Mô phỏng vận hành bay bằng FreeRTOS
 Đoạn mã C++ minh họa cài đặt máy trạng thái FSM kết hợp hàng đợi sự kiện:
 
 ```cpp
@@ -183,7 +183,7 @@ void handleFSM() {
 }
 ```
 
-### 2. Danh mục Bài Thực hành Lab 7
+### 2. Bài thực hành Lab 7
 - `Lab7-01_Full_Satellite_Program`: Phiên bản phần mềm bay tích hợp chạy theo vòng lặp tuần tự Non-blocking (Super-Loop) kết hợp `millis()`.
 - `Lab7-02_RTOS_Satellite_System`: Phiên bản phần mềm bay đa nhiệm thời gian thực FreeRTOS phân chia hai lõi vi xử lý, tích hợp mô phỏng chu kỳ quỹ đạo 95 phút (Sunlight/Eclipse).
 

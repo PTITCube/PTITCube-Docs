@@ -1,25 +1,25 @@
-# Lab 7: Doc 7.3 - Sổ Tay Vận Hành Bay (FOM) & Mô Phỏng Quỹ Đạo LEO 95 Phút
+# Lab 7: Doc 7.3 - Vận hành bay và quỹ đạo LEO
 
 ![Chu kỳ quỹ đạo LEO 95 phút và cửa sổ liên lạc Trạm Mặt đất](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab7_leo_orbit_pass.png)
 
-### 1. Sổ Tay Vận Hành Bay (Flight Operations Manual - FOM)
+### 1. Sổ tay vận hành bay
 Sổ tay FOM là tài liệu quy chuẩn tác chiến dành cho kíp trực điều hành Trạm mặt đất:
-- **Quy trình Kiểm tra Trước Phiên Liên lạc (Pre-Pass Checklist):** Kiểm tra hướng ăng-ten, hiệu chuẩn tần số SDR, tải tệp phần tử quỹ đạo TLE mới nhất từ Space-Track.org để tính toán thời điểm đón sóng (AOS - Acquisition of Signal) và mất sóng (LOS - Loss of Signal).
-- **Giao thức Thông qua Trạm Mặt đất (Ground Pass Protocol):**
-  1. *Giai đoạn Bắt sóng (AOS):* Vệ tinh mọc trên chân trời, trạm bắt tín hiệu Beacon đầu tiên, gửi lệnh xác thực `CMD_PING`.
-  2. *Giai đoạn Trút Dữ liệu (Telemetry Dump):* Gửi lệnh `CMD_DUMP_LOG`, vệ tinh truyền tải nhanh các khối dữ liệu cảm biến tích lũy trong vòng quỹ đạo trước đó.
+- **Trước phiên liên lạc:** Kiểm tra hướng ăng-ten, hiệu chuẩn tần số SDR và tải phần tử quỹ đạo TLE mới nhất từ Space-Track.org để tính thời điểm bắt đầu (AOS) và kết thúc (LOS) liên lạc.
+- **Quy trình liên lạc:**
+  1. *Bắt sóng (AOS):* Khi vệ tinh xuất hiện ở chân trời, trạm nhận beacon đầu tiên và gửi lệnh xác thực `CMD_PING`.
+  2. *Trút dữ liệu:* Gửi lệnh `CMD_DUMP_LOG`; vệ tinh truyền dữ liệu cảm biến đã lưu trong vòng quỹ đạo trước.
   3. *Giai đoạn Thực thi Nhiệm vụ:* Gửi các lệnh cấu hình hoặc yêu cầu chụp ảnh.
-  4. *Giai đoạn Mất sóng (LOS):* Vệ tinh lặn xuống chân trời, trạm đóng phiên và lưu trữ nhật ký phiên liên lạc.
+  4. *Mất sóng (LOS):* Khi vệ tinh khuất dưới chân trời, trạm đóng phiên và lưu nhật ký liên lạc.
 
-### 2. Mô phỏng Chu kỳ Quỹ đạo LEO 95 Phút
+### 2. Mô phỏng chu kỳ quỹ đạo 95 phút
 Bộ kit PTITCube hỗ trợ chế độ mô phỏng quỹ đạo thực tế để rèn luyện kỹ năng vận hành:
-- **Pha Ban ngày Đón nắng (Sunlight - 60 phút):** Tấm pin mặt trời nhận ánh sáng, dòng nạp TP4056 đạt +500 mA, pin sạc tăng dần từ 3.7V → 4.15V, vệ tinh thoải mái thực hiện các tác vụ chụp ảnh và truyền thông công suất cao.
-- **Pha Vùng tối Trái Đất (Eclipse - 35 phút):** Vệ tinh chìm vào bóng tối Trái Đất, dòng sạc mặt trời về 0 mA. Toàn bộ năng lượng vận hành được rút từ khối pin Li-Po, điện áp pin xả dần. Học viên phải lập trình quản lý năng lượng thông minh để vệ tinh không bị cạn pin trước khi chu kỳ ban ngày tiếp theo bắt đầu.
+- **Pha có nắng (60 phút):** Tấm pin cấp dòng sạc đến 500 mA; điện áp pin tăng từ 3.7 V lên 4.15 V. Vệ tinh có thể chụp ảnh và truyền dữ liệu.
+- **Pha vùng tối (35 phút):** Dòng sạc bằng 0 mA; vệ tinh dùng pin Li-Po. Quản lý năng lượng để pin không cạn trước pha có nắng tiếp theo.
 
 ---
 
 ### ❓ Câu Hỏi Củng Cố Kiến Thức (Doc 7.3)
-1. **Khái niệm 'AOS' (Acquisition of Signal) và 'LOS' (Loss of Signal) trong sổ tay vận hành bay (FOM) có ý nghĩa gì?**
+1. **AOS và LOS trong sổ tay vận hành bay là gì?**
    - A. Mốc thời gian bắt đầu và kết thúc cửa sổ liên lạc vô tuyến khi vệ tinh bay qua trạm
    - B. Thời điểm bật và tắt nguồn khối pin mặt trời
    - C. Tín hiệu báo động lỗi bộ nhớ RAM và ROM
@@ -33,9 +33,9 @@ Bộ kit PTITCube hỗ trợ chế độ mô phỏng quỹ đạo thực tế đ
 
 ---
 
-## 💻 Hướng Dẫn Thực Hành: Lập Trình Vòng Lặp Tuần Tự vs Đa Nhiệm FreeRTOS
+## 💻 Hướng dẫn thực hành: Vòng lặp tuần tự và FreeRTOS
 
-### 1. Kiến trúc Đa Nhiệm FreeRTOS Mô Phỏng Vận Hành Bay
+### 1. Mô phỏng vận hành bay bằng FreeRTOS
 Đoạn mã C++ minh họa cài đặt máy trạng thái FSM kết hợp hàng đợi sự kiện:
 
 ```cpp
@@ -89,7 +89,7 @@ void handleFSM() {
 }
 ```
 
-### 2. Danh mục Bài Thực hành Lab 7
+### 2. Bài thực hành Lab 7
 - `Lab7-01_Full_Satellite_Program`: Phiên bản phần mềm bay tích hợp chạy theo vòng lặp tuần tự Non-blocking (Super-Loop) kết hợp `millis()`.
 - `Lab7-02_RTOS_Satellite_System`: Phiên bản phần mềm bay đa nhiệm thời gian thực FreeRTOS phân chia hai lõi vi xử lý, tích hợp mô phỏng chu kỳ quỹ đạo 95 phút (Sunlight/Eclipse).
 

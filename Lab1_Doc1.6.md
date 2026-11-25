@@ -1,21 +1,21 @@
-# Lab 1: Doc 1.6 - Quy chuẩn Lập trình C++ Định thời Non-blocking với millis() & Thuật toán Chống Tràn số
+# Lab 1: Doc 1.6 - Định thời bằng `millis()` và xử lý tràn số
 
-![Kiến trúc định thời Non-blocking millis() và chống tràn số](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_millis_nonblocking.png)
+![Định thời không chặn và xử lý tràn số](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_millis_nonblocking.png)
 
-### 1. Tại sao Tuyệt đối CẤM sử dụng `delay()` trong Phần mềm Bay Vệ tinh?
+### 1. Vì sao cần tránh `delay()`?
 
-Hàm `delay(ms)` là một hàm **chặn luồng thực thi (Blocking Function)**:
+`delay(ms)` chặn chương trình trong khoảng thời gian chỉ định.
 
-- Khi vi điều khiển gọi lệnh `delay(1000)`, CPU sẽ bị "giam lỏng" trong một vòng lặp rỗng đếm xung suốt $1000\text{ ms}$.
-- Trong khoảng thời gian $1$ giây đó, CPU hoàn toàn không thể làm gì khác: không thể đọc dữ liệu cảm biến, không thể kiểm tra gói tin gửi đến từ cổng Serial, không thể phục vụ yêu cầu từ trạm mặt đất và không thể phát hiện các điều kiện sự cố khẩn cấp.
-- Nguy hiểm hơn, nếu thời gian `delay()` quá dài vượt quá chu kỳ làm việc của Bộ định thời Watchdog Timer Watchdog Timer, WDT sẽ phát hiện CPU bị đóng băng và tự động khởi động lại toàn bộ vệ tinh!
+- Với `delay(1000)`, CPU chờ trong $1000\text{ ms}$.
+- Trong thời gian đó, chương trình không đọc cảm biến, xử lý dữ liệu Serial, phục vụ yêu cầu từ trạm mặt đất hay phát hiện sự cố.
+- Nếu thời gian chờ vượt chu kỳ Watchdog Timer, WDT phát hiện CPU bị treo và khởi động lại hệ thống.
 
-### 2. Kỹ thuật Định thời An toàn bằng `millis()` (Non-blocking Timing)
+### 2. Định thời không chặn bằng `millis()`
 
-Thay vì sử dụng `delay()`, phần mềm bay chuyên nghiệp luôn áp dụng kỹ thuật định thời bất đồng bộ dựa trên bộ đếm thời gian hệ thống `millis()`:
+Thay `delay()` bằng bộ đếm thời gian `millis()` để chương trình tiếp tục xử lý các tác vụ khác.
 
-- Hàm `millis()` trả về số mili-giây trôi qua kể từ thời điểm ESP32 được cấp điện khởi động, sử dụng biến kiểu số nguyên không dấu 32-bit (`unsigned long`).
-- **Nguyên lý Hoạt động:** Ta ghi nhận mốc thời gian của lần thực hiện gần nhất (`previousMillis`). Trong mỗi vòng lặp `loop()`, ta lấy thời gian hiện tại (`currentMillis`) trừ đi `previousMillis`. Chỉ khi khoảng chênh lệch này lớn hơn hoặc bằng chu kỳ mong muốn (`INTERVAL`), ta mới thực hiện công việc và cập nhật lại mốc `previousMillis`:
+- `millis()` trả về số mili-giây từ lúc ESP32 khởi động. Trên ESP32, giá trị dùng kiểu số nguyên không dấu 32-bit (`unsigned long`).
+- Lưu thời điểm chạy gần nhất vào `previousMillis`. Trong `loop()`, chỉ chạy tác vụ khi `currentMillis - previousMillis` lớn hơn hoặc bằng `INTERVAL`, sau đó cập nhật mốc thời gian:
 
 ```cpp
 unsigned long previousMillis = 0;
@@ -24,59 +24,54 @@ const unsigned long INTERVAL = 1000; // Chu kỳ 1000 ms (1 giây)
 void loop() {
     unsigned long currentMillis = millis();
   
-    // Kiểm tra khoảng thời gian trôi qua theo cơ chế non-blocking
+    // Chỉ chạy khi đã đủ chu kỳ
     if (currentMillis - previousMillis >= INTERVAL) {
         previousMillis = currentMillis;
       
-        // Thực thi tác vụ bay: Đọc cảm biến & Gửi Telemetry
+        // Đọc cảm biến và gửi dữ liệu
         readSensorsAndSendTelemetry();
     }
   
-    // CPU rảnh tay thực thi ngay lập tức các tác vụ quan trọng khác
+    // Tiếp tục xử lý các tác vụ khác
     handleSerialCommands();
     server.handleClient();
 }
 ```
 
-### 3. Phân tích Toán học về Hiện tượng Tràn số (Rollover Protection)
+### 3. Xử lý tràn số
 
-Biến `unsigned long` trong chuẩn C++ có độ rộng 32-bit, biểu diễn các giá trị từ $0$ đến $2^{32} - 1 = 4.294.967.295$:
+Trên ESP32, `unsigned long` là số nguyên không dấu 32-bit, có giá trị từ $0$ đến $2^{32} - 1 = 4.294.967.295$:
 
 - Sau khoảng thời gian:
 
 $$T_{\text{overflow}} = \frac{4294967295\text{ ms}}{1000 \times 60 \times 60 \times 24} \approx 49.71\text{ days}$$
 
-  giá trị của hàm `millis()` sẽ bị tràn số và tự động quay vòng trở về giá trị $0$.
-- **Tính toán Đúng đắn Tuyệt đối (Luôn Dùng Phép Trừ):**
-  Nhờ quy tắc toán học số bù 2 (Two's Complement Arithmetic) của hệ thống số nguyên không dấu trong phần cứng vi xử lý, biểu thức:
+  giá trị `millis()` quay vòng về $0$.
+- Dùng phép trừ thời điểm hiện tại cho thời điểm trước đó:
 
 $$\text{currentMillis} - \text{previousMillis} \ge \text{INTERVAL}$$
 
-  luôn luôn cho ra kết quả khoảng thời gian dương chính xác ngay cả trong khoảnh khắc chuyển tiếp qua mốc tràn số!
-  *Ví dụ:* Giả sử `previousMillis = 4,294,967,200` (trước khi tràn 95 ms) và sau đó `currentMillis = 50` (đã tràn về 50 ms).
-  Phép trừ số học không dấu 32-bit:
+  Phép trừ vẫn cho khoảng thời gian đã trôi qua khi bộ đếm quay vòng. Ví dụ, nếu `previousMillis = 4,294,967,200` và `currentMillis = 50`:
 
 $$50 - 4294967200 = 146\text{ ms}$$
 
-  Hệ thống tính toán ra chính xác tuyệt đối 146 ms trôi qua mà không gặp bất kỳ lỗi logic nào!
+  Kết quả là 146 ms.
 
 ---
 
-## 💻 Hướng Dẫn Kỹ Thuật: Danh Mục 11 Bài Thực Hành Lab 1
+## 📖 Doc 1.7: Hướng dẫn lắp ráp bo thí nghiệm
 
-> [!IMPORTANT]
-> **Cơ Chế Phần Cứng Thực Hành Lab 1: Bo Mạch Thí Nghiệm Rời (Standalone Educational Breakout PCB)**
->
-> - Nhằm đảm bảo an toàn thiết bị và bảo vệ các bo mạch chuẩn vệ tinh trong giai đoạn học viên mới làm quen với lập trình nhúng, **các bài thực hành Lab 1 (từ Bài 1.1 đến Bài 1.11) được tiến hành hoàn toàn trên Bo Mạch Thí Nghiệm Rời (Breakout Demo PCB)** kết nối với ESP32 qua dây cắm jumper, **KHÔNG kết nối vào các PCB chính của chồng bo CubeSat (như bo EPS, bo Sensor, bo Truyền thông COM)**.
-> - **Sơ đồ đấu nối phần cứng thực hành Lab 1 (trên PCB rời):**
->   - **LED đơn (Chỉ thị):** Chân Anode nối qua điện trở hạn dòng về `GPIO 2`, Cathode nối GND.
->   - **Nút nhấn (Tact Switch):** Một chân nối về `GPIO 4`, một chân nối GND (sử dụng trở kéo nội `INPUT_PULLUP`). *Lưu ý: Tín hiệu nút nhấn này nằm độc lập trên PCB rời, hoàn toàn không kết nối tới đường điều khiển hạ áp của bo nguồn EPS.*
->   - **Khối IC 74HC595 & LED 7 đoạn:** Chân dữ liệu $DS$ nối `GPIO 13`, chân chốt $ST\_CP$ nối `GPIO 14`, chân xung nhịp $SH\_CP$ nối `GPIO 15`, nguồn cấp $VCC$ nối 3.3V và $GND$.
-> - Toàn bộ cấu trúc chồng bo CubeSat chuẩn công nghiệp (PC/104 Bus) sẽ được học viên tiếp cận và tích hợp từng bước trong các Lab chuyên sâu tiếp theo (từ Lab 2 đến Lab 8).
+Xem [hướng dẫn lắp ráp bo thí nghiệm Lab 1](./Lab1_Doc1.7.md) trước khi thực hành.
 
-Học viên lần lượt thực hành 11 bài tập lập trình nhúng từ cơ bản đến nâng cao trên Web IDE để làm chủ toàn diện phân hệ OBC:
+---
 
-### Bài 1.1: Blink LED Cơ bản (Hello World của Kỹ thuật Nhúng)
+## 💻 Hướng dẫn thực hành Lab 1
+
+> **Thiết bị thực hành:** Dùng bo thí nghiệm rời nối với ESP32 bằng dây jumper. Không nối bo này với các bo chính EPS, Sensor hoặc COM. Xem [hướng dẫn lắp ráp](./Lab1_Doc1.7.md) để biết các chân kết nối.
+
+Thực hiện lần lượt 11 bài thực hành trên Web IDE:
+
+### Bài 1.1: Nháy LED
 
 - **Mục tiêu:** Cấu hình chân GPIO làm `OUTPUT` và điều khiển bật/tắt LED theo chu kỳ.
 
@@ -95,7 +90,7 @@ void loop() {
 }
 ```
 
-### Bài 1.2: Blink LED Không chặn luồng bằng hàm `millis()`
+### Bài 1.2: Định thời bằng `millis()`
 
 - **Mục tiêu:** Thay thế hoàn toàn hàm `delay()` bằng thuật toán định thời non-blocking.
 
@@ -119,7 +114,7 @@ void loop() {
 }
 ```
 
-### Bài 1.3: Đọc Công tắc Hành trình Phóng (Digital Input & Điện trở Kéo lên Nội bộ)
+### Bài 1.3: Đọc công tắc hành trình phóng
 
 - **Mục tiêu:** Cấu hình chân GPIO làm `INPUT_PULLUP` để đọc trạng thái đóng/ngắt của công tắc hành trình phóng mà không cần gắn thêm điện trở ngoài.
 
@@ -139,7 +134,7 @@ void loop() {
 }
 ```
 
-### Bài 1.4: Điều khiển Độ sáng LED bằng Điều chế Độ rộng Xung PWM (LEDC)
+### Bài 1.4: Điều chỉnh độ sáng LED bằng PWM
 
 - **Mục tiêu:** Cấu hình khối phần cứng LEDC PWM của ESP32 để điều chỉnh mức điện áp hiệu dụng ngõ ra.
 
@@ -155,12 +150,12 @@ void setup() {
 }
 
 void loop() {
-    // Tăng dần độ sáng (Fade In)
+    // Tăng độ sáng từ từ
     for (int duty = 0; duty <= 255; duty++) {
         ledcWrite(PWM_CH, duty);
         delay(5);
     }
-    // Giảm dần độ sáng (Fade Out)
+    // Giảm độ sáng từ từ
     for (int duty = 255; duty >= 0; duty--) {
         ledcWrite(PWM_CH, duty);
         delay(5);
@@ -168,7 +163,7 @@ void loop() {
 }
 ```
 
-### Bài 1.5: Giao tiếp Cổng Serial Monitor & Định dạng Viễn trắc
+### Bài 1.5: Gửi dữ liệu qua cổng nối tiếp
 
 - **Mục tiêu:** Xuất dữ liệu bản tin viễn trắc ra cổng nối tiếp ở tốc độ 115200 bps.
 
@@ -192,7 +187,7 @@ void loop() {
 }
 ```
 
-### Bài 1.6: Nhận và Phân tích Lệnh Điều khiển qua Serial (Telecommand Parsing)
+### Bài 1.6: Nhận lệnh qua cổng nối tiếp
 
 - **Mục tiêu:** Lắng nghe luồng ký tự từ bàn phím và thực thi lệnh tương ứng.
 
@@ -219,7 +214,7 @@ void loop() {
 }
 ```
 
-### Bài 1.7: Điều khiển Vi mạch Dịch Chốt 74HC595 Hiển thị LED Đơn
+### Bài 1.7: Điều khiển 74HC595 và LED đơn
 
 - **Mục tiêu:** Lập trình dịch 8 bit nối tiếp qua hàm `shiftOut()`.
 
@@ -244,7 +239,7 @@ void loop() {
 }
 ```
 
-### Bài 1.8: Bộ Đếm Số Thập phân $0 - 9$ trên Màn hình LED 7 Đoạn
+### Bài 1.8: Đếm từ 0 đến 9 trên LED 7 đoạn
 
 - **Mục tiêu:** Sử dụng mảng mã Hex điều khiển hiển thị các chữ số đếm trên LED 7 đoạn.
 
@@ -274,7 +269,7 @@ void loop() {
 }
 ```
 
-### Bài 1.9: Khởi tạo Wi-Fi Điểm Truy Cập Mềm (SoftAP Mode)
+### Bài 1.9: Tạo mạng Wi-Fi bằng SoftAP
 
 - **Mục tiêu:** Phát sóng mạng Wi-Fi mang tên vệ tinh với mật khẩu bảo mật WPA2.
 
@@ -296,7 +291,7 @@ void loop() {
 }
 ```
 
-### Bài 1.10: Xây dựng Máy chủ Web HTTP Nhúng Giám sát Viễn trắc
+### Bài 1.10: Tạo máy chủ HTTP giám sát dữ liệu
 
 - **Mục tiêu:** Phục vụ trang HTML hiển thị trạng thái sinh tồn của vệ tinh qua trình duyệt.
 
@@ -326,7 +321,7 @@ void loop() {
 }
 ```
 
-### Bài 1.11: Tích hợp Đa nhiệm: Điều khiển LED qua Giao diện Web API & Hiển thị Đồng thời
+### Bài 1.11: Điều khiển LED qua API và hiển thị đồng thời
 
 - **Mục tiêu:** Tổng hợp toàn bộ kỹ năng lập trình nhúng của Lab 1: kết hợp máy chủ Web API, điều khiển GPIO, dịch dữ liệu 74HC595 và định thời non-blocking trong cùng một chương trình bay duy nhất.
 

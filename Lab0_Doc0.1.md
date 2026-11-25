@@ -1,34 +1,34 @@
-# Lab 0: Doc 0.1 - Lịch sử CubeSat, Tiêu chuẩn Kỹ thuật & Môi trường Quỹ đạo LEO
+# Lab 0: Doc 0.1 - Lịch sử CubeSat, tiêu chuẩn và môi trường quỹ đạo thấp
 
 ### 1. Lịch sử Phát triển và Triết lý Tiêu chuẩn Hóa CubeSat
 Vệ tinh siêu nhỏ tiêu chuẩn **CubeSat** được khởi xướng vào năm 1999 thông qua sự hợp tác lịch sử giữa Giáo sư **Jordi Puig-Suari** (Đại học Bách khoa Bang California - CalPoly, San Luis Obispo) và Giáo sư **Bob Twiggs** (Đại học Stanford). Mục tiêu nguyên bản của dự án là thiết lập một tiêu chuẩn kích thước và giao diện cơ khí đồng nhất, giúp sinh viên đại học có thể tự tay thiết kế, chế tạo, thử nghiệm và vận hành một vệ tinh nhân tạo thực thụ trong khoảng thời gian phù hợp với chu kỳ đào tạo (1 - 2 năm) với ngân sách chỉ bằng một phần nghìn so với các vệ tinh truyền thống.
 
 Trước khi CubeSat ra đời, ngành công nghiệp vũ trụ bị chi phối bởi các vệ tinh lớn có khối lượng từ vài trăm kilogam đến hàng tấn, chi phí phát triển lên tới hàng trăm triệu USD và thời gian chuẩn bị kéo dài hàng thập kỷ. Bất kỳ một sai sót nhỏ nào cũng dẫn đến thiệt hại khổng lồ, khiến các kỹ sư có xu hướng cực kỳ bảo thủ, chỉ sử dụng các linh kiện điện tử chuyên dụng chống bức xạ (**Radiation-Hardened**) thế hệ cũ và đắt đỏ.
 
-CubeSat đã tạo nên một cuộc cách mạng mang tính đột phá (**New Space Revolution**) dựa trên ba trụ cột triết lý cốt lõi:
-1. **Tiêu chuẩn Hóa Cơ khí & Giao diện Phóng (Standardized Form Factor & Deployment):** Quy định kích thước khối lập phương cố định giúp các nhà cung cấp tên lửa đẩy dễ dàng tích hợp vệ tinh vào các khoang chứa tiêu chuẩn mà không cần thiết kế lại cơ cấu gá phóng cho từng sứ mệnh.
-2. **Khai thác Linh kiện Thương mại Sẵn có (COTS - Commercial Off-The-Shelf):** Tận dụng bước nhảy vọt của ngành công nghiệp bán dẫn tiêu dùng (vi xử lý kiến trúc **ARM** / **ESP32**, cảm biến vi cơ điện tử **MEMS** - *Micro-Electro-Mechanical Systems*, pin Lithium-Ion điện thoại). Mặc dù linh kiện COTS không được bọc chắn bức xạ chuyên dụng, các kỹ sư vũ trụ hiện đại áp dụng các giải pháp kiến trúc hệ thống, thuật toán tự sửa lỗi và cơ chế dự phòng đa tầng để đạt độ tin cậy bay mong muốn với giá thành cực thấp.
-3. **Đóng gói Kín Giảm Thiểu Rủi ro cho Tên lửa Mẹ (Containerized Launch Integration):** Vệ tinh được nhốt hoàn toàn bên trong ống phóng dạng hộp kín có nắp đậy (như **P-POD** - *Poly-Picosatellite Orbital Deployer*). Mọi nguy cơ bung vỡ chi tiết, đoản mạch hay phát sóng ngoài ý muốn đều bị cô lập hoàn toàn, bảo vệ an toàn tuyệt đối cho tên lửa đẩy và tải trọng thương mại chính.
+CubeSat thúc đẩy cách tiếp cận mới trong phát triển vệ tinh, dựa trên ba nguyên tắc:
+1. **Tiêu chuẩn kích thước và giao diện phóng:** Kích thước thống nhất giúp tích hợp vệ tinh vào khoang phóng mà không cần thiết kế lại cơ cấu gá.
+2. **Linh kiện thương mại sẵn có (COTS):** Tận dụng vi xử lý ARM/ESP32, cảm biến MEMS và pin điện thoại. Dù không được thiết kế riêng để chống bức xạ, các linh kiện này có thể đạt độ tin cậy cần thiết nhờ kiến trúc hệ thống, sửa lỗi và dự phòng.
+3. **Tích hợp an toàn khi phóng:** Ống phóng kín như **P-POD** cô lập nguy cơ bung vỡ, đoản mạch hoặc phát sóng ngoài ý muốn.
 
 ![Lịch sử phát triển chuẩn CubeSat & New Space](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_timeline.png)
 
 ---
 
-### 2. Phân loại Vệ tinh Nhỏ (SmallSat) theo Khối lượng
-Trong thang phân loại quốc tế của Liên đoàn Hàng không Vũ trụ Quốc tế (**IAF** - *International Astronautical Federation*) và Cơ quan Hàng không và Vũ trụ Hoa Kỳ (**NASA** - *National Aeronautics and Space Administration*), các vệ tinh nhỏ (**SmallSat** - *Small Satellite*) được định danh chính xác dựa trên khối lượng ướt khi phóng (**Wet Mass** — bao gồm cả nhiên liệu nếu có):
+### 2. Phân loại vệ tinh theo khối lượng
+Các vệ tinh được phân nhóm theo khối lượng khi phóng, bao gồm cả nhiên liệu nếu có:
 
 | Nhóm Vệ tinh | Khối lượng Phóng ($M$) | Ví dụ Điển hình & Cấu hình CubeSat |
 | :--- | :--- | :--- |
-| **Minisatellite (Vệ tinh nhỏ)** | $100\text{ kg} \le M < 500\text{ kg}$ | Vệ tinh viễn thám cao cấp, chòm vệ tinh Starlink v1 |
-| **Microsatellite (Vệ tinh siêu nhỏ)** | $10\text{ kg} \le M < 100\text{ kg}$ | Vệ tinh VNREDSat-1 (115 kg), CubeSat 12U - 27U |
-| **Nanosatellite (Vệ tinh nano)** | $1\text{ kg} \le M < 10\text{ kg}$ | **Chuẩn CubeSat tiêu chuẩn: 1U (1.33 kg), 2U, 3U, 6U** |
-| **Picosatellite (Vệ tinh pico)** | $0.1\text{ kg} \le M < 1\text{ kg}$ | Vệ tinh dạng bản mạch PocketQube (5 × 5 × 5 cm), Chipsat |
-| **Femtosatellite (Vệ tinh femto)** | $M < 0.1\text{ kg}$ ($< 100\text{ g}$) | Vệ tinh vi mạch đơn màng mỏng (Sprite, KickSat) |
+| **Minisatellite** | $100\text{ kg} \le M < 500\text{ kg}$ | VNREDSat-1 (115 kg), Starlink v1 |
+| **Microsatellite** | $10\text{ kg} \le M < 100\text{ kg}$ | CubeSat 12U–27U |
+| **Nanosatellite** | $1\text{ kg} \le M < 10\text{ kg}$ | CubeSat 1U (1.33 kg), 2U, 3U, 6U |
+| **Picosatellite** | $0.1\text{ kg} \le M < 1\text{ kg}$ | PocketQube (5 × 5 × 5 cm), Chipsat |
+| **Femtosatellite** | $M < 0.1\text{ kg}$ ($< 100\text{ g}$) | Sprite, KickSat |
 
 ---
 
-### 3. Thông số Hình học Tiêu chuẩn 1U (1 Unit) theo Quy chuẩn CalPoly
-Một vệ tinh CubeSat đơn vị cơ sở (**1U** - *1 Unit*) phải tuân thủ nghiêm ngặt các quy định kích thước trong tài liệu đặc tả **CubeSat Design Specification (CDS)** do Đại học CalPoly ban hành để đảm bảo vệ tinh có thể trượt vừa vặn trơn tru bên trong ống phóng mà không bao giờ bị kẹt:
+### 3. Kích thước CubeSat 1U theo tiêu chuẩn CalPoly
+CubeSat 1U phải đáp ứng quy định trong tài liệu **CubeSat Design Specification (CDS)** để trượt vừa trong ống phóng:
 
 ![Thông số cơ học tiêu chuẩn CubeSat 1U](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_1u_dimensions.png)
 
@@ -39,9 +39,9 @@ Một vệ tinh CubeSat đơn vị cơ sở (**1U** - *1 Unit*) phải tuân th�
 | **Bề rộng Thanh ray (Rails)** | Tối thiểu 8.5 mm | Tiếp xúc trực tiếp với rãnh dẫn hướng của ống phóng **POD** (*Picosatellite Orbital Deployer*) để chịu tải trọng rung động. |
 | **Bán kính Bo viền Ray** | Tối thiểu 1.0 mm | Bán kính lượn góc nhẵn bóng nhằm loại bỏ hoàn toàn các gờ sắc nhọn gây cào xước ống phóng. |
 | **Độ nhám Bề mặt Ray ($R_a$)** | $R_a \le 0.8\text{ }\mu\text{m}$ | Bề mặt ray trượt phải được mài bóng kỹ thuật cao để giảm thiểu lực ma sát trượt khi bung. |
-| **Xử lý Bề mặt Ray (Hard Anodize)** | Anodize Cứng Type III | Tạo lớp gốm oxit nhôm ($\text{Al}_2\text{O}_3$) dày ($25 - 50\text{ }\mu\text{m}$) cách điện, chống mài mòn và chống hàn nguội trong chân không. |
-| **Vùng Cấm Nhô (Keep-out Zone)** | Tối đa 6.5 mm | Không có bất kỳ linh kiện, đầu ốc vít hay thấu kính nào được nhô ra khỏi bề mặt ngoài vượt quá 6.5 mm. |
-| **Vị trí Trọng tâm (CoM - Center of Mass)** | Cách tâm hình học ≤ 20 mm | Phân bố khối lượng lệch tâm vượt chuẩn sẽ tạo mô-men xoắn gây rung lắc ống phóng và kẹt khi đẩy. |
+| **Xử lý bề mặt ray** | Anodize Type III | Tạo lớp oxit nhôm dày 25–50 μm, cách điện và chống mài mòn. |
+| **Vùng giới hạn nhô** | Tối đa 6.5 mm | Linh kiện không được nhô quá giới hạn này. |
+| **Trọng tâm (CoM)** | Cách tâm hình học ≤ 20 mm | Lệch quá giới hạn có thể gây rung và kẹt khi phóng. |
 
 ---
 
@@ -52,15 +52,15 @@ CubeSat không được gắn trực tiếp lên tên lửa đẩy mà bắt bu�
 
 ![Trình tự phóng và triển khai CubeSat lên quỹ đạo](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_deployment_sequence.png)
 
-- **Lò xo đẩy chính (Ejection Spring):** Đặt tại đáy ống phóng, cung cấp lực đẩy tuyến tính ổn định để phóng vệ tinh với vận tốc tương đối từ $1.0\text{ m/s}$ đến $1.5\text{ m/s}$, tránh nguy cơ vệ tinh bay lơ lửng ngay cửa ống gây va chạm với tên lửa.
-- **Lò xo tách tầng (Deployment Plungers):** Lắp ở đỉnh các thanh ray trượt. Khi hai vệ tinh CubeSat xếp chồng trong cùng một ống phóng rời khỏi cửa, các lò xo plunger nhỏ sẽ lập tức đẩy hai vệ tinh dạt xa nhau để ngăn ngừa va chạm thứ cấp.
-- **Công tắc Hành trình Phóng (Deployment Switch / Inhibit Switch):** Lắp ở chân thanh ray trượt. Khi vệ tinh nằm trong ống phóng, nắp hoặc ray đè chặt công tắc ở trạng thái ngắt mạch điện (**Open Circuit**). Khi vệ tinh vừa trượt ra ngoài không gian, công tắc bung ra, đóng mạch điện kết nối pin sạc với hệ thống phân phối nguồn điện **EPS** (*Electrical Power System*).
-- **Quy tắc Im lặng Vô tuyến 30 Phút (30-Minute Radio Silence Rule):** Theo yêu cầu an toàn phóng quốc tế của CalPoly, NASA và Cơ quan Thám hiểm Hàng không Vũ trụ Nhật Bản (**JAXA** - *Japan Aerospace Exploration Agency*), CubeSat **bắt buộc phải giữ im lặng vô tuyến (RF Silence) hoàn toàn trong ít nhất 30 phút đầu tiên** sau khi rời ống phóng. Trong khoảng thời gian này, vi điều khiển không được phát sóng radio (**RF** - *Radio Frequency*), không được kích hoạt đốt nhiệt bung anten hay mở các tấm pin để tránh gây nhiễu cho các thiết bị điều khiển của tên lửa đẩy và các vệ tinh khác phóng cùng cụm.
+- **Lò xo đẩy:** Đặt ở đáy ống, phóng vệ tinh với vận tốc 1.0–1.5 m/s.
+- **Chốt đẩy tách vệ tinh:** Đặt ở đầu ray, đẩy hai vệ tinh ra xa nhau khi cùng rời ống.
+- **Công tắc hành trình:** Khi vệ tinh nằm trong ống, công tắc ngắt nguồn. Khi vệ tinh rời ống, công tắc đóng mạch pin với EPS.
+- **Im lặng vô tuyến:** CubeSat phải giữ im lặng ít nhất 30 phút sau khi rời ống phóng. Trong thời gian này, không phát sóng hoặc kích hoạt cơ cấu bung anten và pin mặt trời.
 
 ---
 
-### 5. Môi trường Vật lý Khắc nghiệt tại Quỹ đạo Trái Đất Tầm thấp (LEO)
-Quỹ đạo **LEO** (*Low Earth Orbit* - Quỹ đạo Trái Đất Tầm thấp) nằm ở độ cao từ 160 km đến 2000 km so với mực nước biển (phổ biến nhất cho CubeSat là 400 - 600 km, tương đương quỹ đạo trạm ISS $\approx 410\text{ km}$). Môi trường không gian tại đây đặt ra những thử thách kỹ thuật cực đoan:
+### 5. Môi trường quỹ đạo Trái Đất tầm thấp (LEO)
+LEO nằm ở độ cao 160–2000 km; CubeSat thường hoạt động ở 400–600 km, gần với quỹ đạo ISS (khoảng 410 km).
 
 #### A. Môi trường Chân không Cực cao (Ultra-High Vacuum)
 Áp suất khí quyển tại độ cao 500 km suy giảm xuống chỉ còn khoảng $10^{-6}\text{ Pa}$ đến $10^{-8}\text{ Pa}$ ($10^{-8} - 10^{-10}\text{ Torr}$), so với áp suất khí quyển tiêu chuẩn tại mặt đất là $101.325\text{ kPa}$ ($760\text{ Torr}$):

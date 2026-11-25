@@ -1,15 +1,15 @@
-# Lab 5: Phân hệ Truyền thông (COM) & Trạm Mặt Đất
+# Lab 5: Truyền thông và trạm mặt đất
 
 ---
 
-## 📖 Doc 5.1: Cơ Sở Lý Thuyết Truyền Thông Vô Tuyến Không Gian & Cân Bằng Tuyến
+## 📖 Doc 5.1: Truyền thông vô tuyến và cân bằng tuyến
 
-### 1. Vai trò của Phân hệ Truyền thông (COM - Communication Subsystem)
+### 1. Vai trò của phân hệ truyền thông
 Phân hệ Truyền thông được xem như "Giọng nói và Đôi tai" của CubeSat. Cho dù các phân hệ khác hoạt động hoàn hảo và thu thập được hàng nghìn bức ảnh giá trị, nếu phân hệ COM thất bại, vệ tinh sẽ vĩnh viễn trở thành một khối rác vũ trụ câm lặng. Phân hệ COM đảm nhận:
 - **Tuyến truyền Đường xuống (Downlink):** Định kỳ phát sóng các gói tin tín hiệu định vị (Beacon) thông báo trạng thái sinh tồn của vệ tinh ($V_\text{bat}$, SOC, nhiệt độ) và truyền dữ liệu khoa học, hình ảnh về mặt đất.
 - **Tuyến truyền Đường lên (Uplink):** Lắng nghe các mệnh lệnh viễn lệnh (Telecommands) từ Trạm mặt đất để điều khiển vệ tinh, nạp cấu hình mới hoặc kích hoạt chế độ an toàn.
 
-### 2. Đặc tính Lan truyền Sóng Điện từ Băng tần UHF (433 MHz)
+### 2. Sóng UHF ở băng tần 433 MHz
 Băng tần sóng cực ngắn UHF (Ultra High Frequency, 300 MHz - 3 GHz) là băng tần kinh điển cho các vệ tinh CubeSat giáo dục và nghiên cứu:
 - **Khả năng Xuyên qua Tầng Điện ly (Ionospheric Penetration):** Khác với sóng ngắn HF bị phản xạ ngược lại Trái Đất, sóng vô tuyến tần số 433 MHz có khả năng xuyên thủng tầng điện ly của khí quyển để đi vào không gian sâu với độ suy hao tối thiểu.
 - **Kích thước Ăng-ten Hợp lý:** Bước sóng $\lambda$ ở tần số 433 MHz là:
@@ -18,7 +18,7 @@ $$\lambda = \frac{c}{f} = \frac{3 \times 10^8\text{ m/s}}{433 \times 10^6\text{ 
 
   Một ăng-ten đơn cực một phần tư bước sóng (λ/4) chỉ có chiều dài xấp xỉ 17.3 cm, rất lý tưởng để cuộn gọn gàng bên trong khung 1U trước khi bung mở ngoài không gian.
 
-### 3. Phương trình Suy hao Truyền sóng trong Không gian Tự do (Friis FSPL)
+### 3. Suy hao truyền sóng trong không gian tự do
 Khi sóng điện từ lan truyền từ ăng-ten phát hình cầu ra không gian vô tận, mật độ công suất sóng bị suy giảm theo bình phương khoảng cách. Công thức suy hao truyền sóng trong không gian tự do (**Free-Space Path Loss - FSPL**) của Harald T. Friis:
 
 $$\text{FSPL} = \left(\frac{4\pi d}{\lambda} \right)^2 = \left(\frac{4\pi d f}{c} \right)^2$$
@@ -37,7 +37,7 @@ $$\text{FSPL (dB)} = 20 \log_{10}(800) + 20 \log_{10}(433) + 32.44 \approx 58.06
 
 ![Sơ đồ cân bằng tuyến truyền thông vô tuyến LEO](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab5_rf_link_budget.png)
 
-### 4. Phương trình Cân Bằng Tuyến Truyền Thông (Link Budget)
+### 4. Cân bằng tuyến truyền thông
 Bảng cân đối tuyến truyền thông tổng hợp toàn bộ các nguồn tăng ích và suy hao trên toàn bộ chuỗi thu phát:
 
 $$P_\text{rx (dBm)} = P_\text{tx} + G_\text{tx} - L_\text{tx} - \text{FSPL} - L_\text{atm} + G_\text{rx} - L_\text{rx}$$
@@ -60,7 +60,7 @@ $$\text{Margin} = P_\text{rx} - S_\text{rx} = (-112.55\text{ dBm}) - (-140\text{
 
   Quy chuẩn không gian yêu cầu độ dự trữ tuyến truyền thông tối thiểu phải ≥ +6 dB. Với mức dự trữ +27.45 dB, tuyến truyền tin của PTITCube hoạt động cực kỳ tin cậy ngay cả khi trời mưa bão.
 
-### 5. Hiệu ứng Dịch Tần Doppler trên Quỹ đạo LEO
+### 5. Hiệu ứng Doppler trên quỹ đạo LEO
 Do vệ tinh bay với vận tốc quỹ đạo cực lớn (v ≈ 7.6 km/s), tần số sóng vô tuyến thu được tại trạm mặt đất bị dịch chuyển theo hiệu ứng Doppler:
 
 $$f_\text{rx} = f_0 \left(1 + \frac{v_\text{los}}{c} \right)$$
@@ -94,25 +94,25 @@ $$\Delta f_\text{max} \approx 433\text{ MHz} \times \frac{7.6\text{ km/s}}{300.0
 
 ---
 
-## 📖 Doc 5.2: Giao Thức Đóng Gói Bản Tin, Kiểm Tra CRC-16 & Tổng Quan Chuẩn CCSDS
+## 📖 Doc 5.2: Đóng gói bản tin, CRC-16 và chuẩn CCSDS
 
-### 1. Cấu trúc Khung Bản Tin Viễn Trắc (Telemetry Frame Structure)
+### 1. Cấu trúc khung bản tin
 Để đảm bảo dữ liệu truyền qua không gian không bị xáo trộn, luồng byte được đóng gói thành các cấu trúc khung truyền tin tiêu chuẩn:
 
-| Trường Dữ liệu | Độ dài | Chức năng & Ý nghĩa Kỹ thuật |
+| Trường | Độ dài | Mô tả |
 | :--- | :--- | :--- |
-| **Preamble** | 4 Bytes | Chuỗi byte xen kẽ `0xAA 0xAA 0xAA 0xAA` giúp bộ thu khóa mạch đồng bộ xung bit |
-| **Sync Word** | 2 Bytes | Mã đồng bộ khung cố định `0xD3 0x91` đánh dấu điểm bắt đầu gói tin hợp lệ |
-| **Packet Length** | 1 Byte | Độ dài tổng số byte của phần thân gói tin Payload ($N$) |
-| **Satellite ID** | 1 Byte | Mã định danh duy nhất của vệ tinh trên quỹ đạo (ví dụ `0x42`) |
-| **Packet Sequence**| 2 Bytes | Số thứ tự gói tin tự tăng ($0 - 65535$), giúp trạm mặt đất phát hiện gói tin bị rơi rụng |
-| **Telemetry Data** | $N - 5$ Bytes | Khối dữ liệu cảm biến: $V_\text{bat}$, SOC, Nhiệt độ, Áp suất, Gia tốc, Tọa độ GPS |
-| **Checksum CRC-16**| 2 Bytes | Mã kiểm tra lỗi chu kỳ 16-bit bảo vệ tính toàn vẹn dữ liệu |
+| **Preamble** | 4 byte | Chuỗi `0xAA 0xAA 0xAA 0xAA`, đồng bộ bộ thu. |
+| **Sync Word** | 2 byte | `0xD3 0x91`, đánh dấu đầu gói tin. |
+| **Packet Length** | 1 byte | Độ dài phần dữ liệu ($N$). |
+| **Satellite ID** | 1 byte | Mã vệ tinh, ví dụ `0x42`. |
+| **Packet Sequence** | 2 byte | Số thứ tự từ 0 đến 65535. |
+| **Telemetry Data** | $N - 5$ byte | Điện áp, SOC, nhiệt độ, áp suất, gia tốc và tọa độ GPS. |
+| **CRC-16** | 2 byte | Phát hiện lỗi dữ liệu. |
 
 ![Cấu trúc khung bản tin viễn trắc và mã kiểm tra CRC-16](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab5_telemetry_frame_crc.png)
 
-### 2. Thuật toán Kiểm tra Lỗi Chu kỳ CRC-16-CCITT
-Trong không gian, nhiễu nền vũ trụ có thể làm biến dạng ngẫu nhiên một vài bit dữ liệu. Phương pháp tính tổng cộng (Checksum đơn giản) rất dễ bị lọt lưới khi hai lỗi bit triệt tiêu nhau.
+### 2. Kiểm tra lỗi bằng CRC-16-CCITT
+Trong không gian, nhiễu có thể làm sai một số bit dữ liệu. Phương pháp tính tổng đơn giản có thể bỏ sót lỗi khi hai lỗi bit triệt tiêu nhau.
 - **Thuật toán CRC-16-CCITT:** Sử dụng đa thức sinh chuẩn quốc tế:
 
 $$G(x) = x^{16} + x^{12} + x^5 + 1 \quad (\text{Hex: } \mathbf{0x1021})$$
@@ -120,17 +120,17 @@ $$G(x) = x^{16} + x^{12} + x^5 + 1 \quad (\text{Hex: } \mathbf{0x1021})$$
   Giá trị khởi tạo thanh ghi: `0xFFFF`.
 - Khi trạm mặt đất nhận được gói tin, nó thực hiện tính toán lại mã CRC trên toàn bộ chuỗi byte nhận được. Nếu mã CRC tính toán trùng khớp hoàn toàn với 2 byte CRC đính kèm ở cuối gói tin, gói tin được xác nhận là vẹn toàn 100%. Nếu sai khác dù chỉ một bit, gói tin bị loại bỏ ngay lập tức.
 
-### 3. Giao thức Kiểm soát Luồng & Phân mảnh Gói tin
-- **Cơ chế Dừng và Chờ (Stop-and-Wait ARQ - Automatic Repeat reQuest):**
-  - Trạm mặt đất gửi một lệnh viễn lệnh → Vệ tinh tiếp nhận, kiểm tra CRC → Nếu hợp lệ, vệ tinh phát bản tin phản hồi `ACK` (Acknowledge) → Trạm mặt đất nhận `ACK` mới tiếp tục gửi lệnh tiếp theo. Nếu hết thời gian chờ (Time-out) mà chưa nhận được `ACK`, trạm phát lại gói tin tối đa 3 lần.
-- **Kỹ thuật Phân mảnh Tệp ảnh (Packet Fragmentation):**
+### 3. Kiểm soát luồng và phân mảnh gói tin
+- **Cơ chế dừng và chờ (ARQ):**
+  - Trạm mặt đất gửi lệnh; vệ tinh kiểm tra CRC và phản hồi `ACK` nếu hợp lệ. Trạm chỉ gửi lệnh tiếp theo sau khi nhận `ACK`. Nếu hết thời gian chờ, trạm gửi lại tối đa ba lần.
+- **Chia nhỏ tệp ảnh:**
   - Một bức ảnh JPEG có dung lượng $30\text{ KB}$ không thể phát trong một gói tin duy nhất vì xác suất xảy ra lỗi trên gói tin lớn là rất cao.
-  - Tệp ảnh được cắt nhỏ thành hàng trăm mảnh nhỏ (**Chunks**), mỗi mảnh có kích thước $64\text{ bytes}$.
+  - Tệp ảnh được chia thành các mảnh 64 byte.
   - Mỗi mảnh được gắn thêm tiêu đề: `[Image_ID, Chunk_Index, Total_Chunks]`. Trạm mặt đất đón nhận từng mảnh và ráp lại thành bức ảnh hoàn chỉnh. Nếu thiếu mảnh nào, trạm chỉ cần yêu cầu phát lại đúng mảnh đó.
 
-### 4. Tổng quan Chuẩn Hàng không Vũ trụ CCSDS & Giao thức Nghiệp dư AX.25
-- **AX.25:** Giao thức truyền dữ liệu gói kinh điển của giới vô tuyến nghiệp dư (Amateur Radio), sử dụng trường địa chỉ gọi hiệu (Callsign) định danh trạm phát và trạm thu. Được áp dụng rộng rãi trên các CubeSat thế hệ đầu.
-- **CCSDS (Consultative Committee for Space Data Systems):** Tiêu chuẩn truyền thông dữ liệu không gian tối cao được liên minh NASA, ESA, JAXA ban hành. Quy định chặt chẽ các tầng giao thức từ lớp vật lý (RF & Modulation), lớp liên kết truyền dữ liệu (AOS Space Data Link Protocol) cho tới mã hóa sửa lỗi tiến tiên tiến (LDPC, Turbo Codes).
+### 4. Chuẩn CCSDS và giao thức AX.25
+- **AX.25:** Giao thức truyền gói tin vô tuyến nghiệp dư; địa chỉ gọi hiệu xác định trạm gửi và nhận.
+- **CCSDS:** Bộ tiêu chuẩn truyền thông dữ liệu không gian do NASA, ESA và JAXA ban hành, gồm giao thức RF, liên kết dữ liệu và sửa lỗi như LDPC, Turbo Codes.
 
 ---
 
@@ -141,9 +141,9 @@ $$G(x) = x^{16} + x^{12} + x^5 + 1 \quad (\text{Hex: } \mathbf{0x1021})$$
    - C. Tự động nén kích thước gói dữ liệu xuống một nửa
    - D. Phát hiện các bit dữ liệu bị sai lệch do nhiễu đường truyền không dây
 
-2. **Cấu trúc một khung tin viễn thông không gian tiêu chuẩn (CCSDS Frame) bao gồm 3 phần chính nào?**
+2. **Khung tin CCSDS gồm những phần chính nào?**
    - A. Bootloader, Firmware, Memory Dump
-   - B. Header (Tiêu đề), Payload (Dữ liệu tải), Trailer (Mã kiểm tra)
+   - B. Tiêu đề, dữ liệu và mã kiểm tra
    - C. IP Address, Port Number, Gateway
    - D. Preamble, Sync Word, Frequency
 
@@ -151,9 +151,9 @@ $$G(x) = x^{16} + x^{12} + x^5 + 1 \quad (\text{Hex: } \mathbf{0x1021})$$
 
 ---
 
-## 📖 Doc 5.3: Module Truyền Thông LoRa Ebyte E32 & Kiến Trúc Trạm Mặt Đất
+## 📖 Doc 5.3: LoRa E32 và trạm mặt đất
 
-### 1. Công nghệ Trải phổ LoRa (Long Range Chirp Spread Spectrum - CSS)
+### 1. Công nghệ LoRa
 Module **Ebyte E32-433T20D** sử dụng chip thu phát bán dẫn SX1278 của hãng Semtech ứng dụng kỹ thuật điều chế trải phổ CSS:
 - Thay vì truyền tín hiệu trên một tần số cố định, năng lượng sóng được quét biến thiên liên tục theo tần số (xung Chirp).
 - Khả năng giải mã tín hiệu nằm sâu dưới mức nhiễu nền (dưới Noise Floor tới -20 dB), mang lại độ nhạy thu vô song (lên tới -148 dBm) với công suất phát chỉ 100 mW (+20 dBm).
@@ -163,7 +163,7 @@ Module **Ebyte E32-433T20D** sử dụng chip thu phát bán dẫn SX1278 của 
 
 ![Kiến trúc truyền thông LoRa E32 và Trạm Mặt đất](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab5_lora_ground_station.png)
 
-### 2. Sơ đồ Chân & Các Chế độ Hoạt động của Module Ebyte E32
+### 2. Chân và chế độ hoạt động của Ebyte E32
 Module E32 giao tiếp với vi điều khiển OBC thông qua cổng UART1 chuẩn và hai chân điều khiển chế độ `M0`, `M1`:
 
 ![Module LoRa Ebyte E32-TTL-100 với hàng chân UART và cổng anten SMA](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab5.3_loraE32.png)
@@ -172,38 +172,35 @@ Module E32 giao tiếp với vi điều khiển OBC thông qua cổng UART1 chu�
 
 - **Sơ đồ đấu nối phần cứng chuẩn hóa :**
 
-| Tín hiệu E32 LoRa | Đường Nối OBC (ESP32) | Hướng | Vai trò Kỹ thuật |
+| Chân E32 | Nối với ESP32 | Hướng | Chức năng |
 | :--- | :--- | :--- | :--- |
-| **TXD** | **RXD (Cổng UART1)** | Input (ESP32) | Đường nhận dữ liệu từ LoRa vào UART1 của OBC |
-| **RXD** | **TXD (Cổng UART1)** | Output (ESP32) | Đường xuất dữ liệu từ UART1 của OBC sang LoRa |
-| **AUX** | **Chân AUX** | Input (ESP32) | Báo trạng thái bận/rảnh (`HIGH` = Rảnh, `LOW` = Bận) |
-| **M0** | **Chân M0** | Output (ESP32) | Chân chọn Mode 0 (Mức `LOW` ở chế độ hoạt động bình thường) |
-| **M1** | **Chân M1** | Output (ESP32) | Chân chọn Mode 1 (Mức `LOW` ở chế độ hoạt động bình thường) |
-| **VCC / GND** | **3.3V / GND** | Nguồn | Cấp nguồn vận hành danh định 3.3V từ bus nguồn vệ tinh |
+| `TXD` | `RXD` (UART1) | Vào | Dữ liệu từ E32 đến OBC. |
+| `RXD` | `TXD` (UART1) | Ra | Dữ liệu từ OBC đến E32. |
+| `AUX` | Chân AUX | Vào | `HIGH`: rảnh; `LOW`: bận. |
+| `M0`, `M1` | Chân M0, M1 | Ra | Chọn chế độ hoạt động. |
+| `VCC`, `GND` | 3.3 V, GND | Nguồn | Cấp nguồn cho module. |
 
->
-
-| Chế độ Hoạt động | Chân M0 | Chân M1 | Chức năng Kỹ thuật |
+| Chế độ | Chân M0 | Chân M1 | Chức năng |
 | :--- | :--- | :--- | :--- |
-| **Mode 0 (Normal)** | `LOW` | `LOW` | Kênh truyền nhận dữ liệu trong suốt bình thường qua cổng UART |
-| **Mode 1 (Wake-up)**| `HIGH` | `LOW` | Tự động chèn thêm mã Preamble dài để đánh thức máy thu đối phương |
-| **Mode 2 (Power Save)**| `LOW`| `HIGH`| Chế độ tiết kiệm điện năng, chỉ thức dậy khi phát hiện sóng đánh thức |
-| **Mode 3 (Sleep/Config)**| `HIGH`| `HIGH`| Chế độ ngủ sâu; dùng để đọc/ghi thanh ghi cấu hình tần số và tốc độ baud |
+| **Mode 0** | `LOW` | `LOW` | Truyền dữ liệu qua UART. |
+| **Mode 1** | `HIGH` | `LOW` | Thêm tiền tố để đánh thức bộ thu. |
+| **Mode 2** | `LOW` | `HIGH` | Tiết kiệm điện, chỉ thức dậy khi nhận tín hiệu đánh thức. |
+| **Mode 3** | `HIGH` | `HIGH` | Đọc hoặc ghi cấu hình tần số và tốc độ baud. |
 
-- **Chân Trạng thái `AUX` (Auxiliary Indicator):**
+- **Chân trạng thái `AUX`:**
   - Chân ngõ ra báo trạng thái bận của module:
     - Mức `LOW`: Module đang bận truyền dữ liệu ra ăng-ten hoặc bộ đệm FIFO nội bộ đang nạp dữ liệu.
     - Mức `HIGH`: Module rảnh rỗi, sẵn sàng nhận dữ liệu mới từ vi điều khiển.
   - Phần mềm bay bắt buộc phải kiểm tra `digitalRead(AUX_PIN) == HIGH` trước khi gửi byte tiếp theo qua UART.
 
-### 3. Cấu Hình Tham Số Hoạt Động Bằng Trang Web Cấu Hình PTITCube RF Configurator
+### 3. Cấu hình module bằng PTITCube RF Configurator
 Nhằm tối ưu hóa quy trình cấu hình trên mọi nền tảng hệ điều hành (Windows, macOS, Linux) mà không cần cài đặt bất kỳ phần mềm máy tính trung gian nào, toàn bộ quá trình đọc và ghi tham số cho các module thu phát LoRa dòng E32 (Ebyte) và AS32 (Ashining) được thực hiện trực tiếp trên trình duyệt thông qua **Trang Web Cấu Hình PTITCube RF Configurator** (truy cập tại: `https://ptitcube.github.io/RF-Setting-Web/`).
 
-#### a. Công nghệ Giao Tiếp Web Serial API
+#### a. Giao tiếp qua Web Serial API
 - Trang web ứng dụng tiêu chuẩn công nghệ **Web Serial API** trên các trình duyệt web hiện đại (Google Chrome, Microsoft Edge, Opera), cho phép trang web kết nối trực tiếp hai chiều với cổng COM ảo của mạch nạp USB-to-UART.
 - Người dùng chỉ cần cắm mạch nạp USB nối với module LoRa, chọn cổng kết nối trên trình duyệt và thiết lập tốc độ truyền thông cấu hình danh định của module ở Mode 3 là **9600 bps** (8N1).
 
-#### b. Yêu Cầu Kết Nối Phần Cứng Khi Cấu Hình
+#### b. Kết nối phần cứng khi cấu hình
 - **Chân Chọn Chế Độ:** Module LoRa bắt buộc phải được chuyển sang **Mode 3 (Sleep / Config Mode)**:
   - Chân `M0` nối lên mức **HIGH** (3.3V).
   - Chân `M1` nối lên mức **HIGH** (3.3V).
@@ -212,7 +209,7 @@ Nhằm tối ưu hóa quy trình cấu hình trên mọi nền tảng hệ đi�
   - `RXD` của module LoRa nối vào chân `TXD` của mạch nạp USB-to-UART.
   - Cấp nguồn 3.3V hoặc 5V và nối chung Mass (`GND`).
 
-#### c. Cấu Trúc Khung Lệnh Cấu Hình 6-Byte
+#### c. Khung lệnh cấu hình 6 byte
 Giao thức giao tiếp cấu hình của module E32 và AS32 sử dụng khung chuẩn 6 byte (`HEAD, ADDH, ADDL, SPED, CHAN, OPTION`):
 - **Byte 0 (HEAD - Mã lệnh hoạt động):**
   - `0xC0`: **Lưu Vĩnh Viễn vào EEPROM (Permanent Save):** Các tham số được ghi đè vào bộ nhớ không bay hơi của module, giữ nguyên giá trị ngay cả khi tắt nguồn hoặc reset.
@@ -236,7 +233,7 @@ $$f_\text{RF} = 410\text{ MHz} + \text{CHAN} \times 1\text{ MHz}$$
   - Chọn chế độ truyền: Truyền trong suốt (Transparent Transmission) hoặc Truyền cố định có định tuyến địa chỉ (Fixed Transmission).
   - Cấu hình công suất phát tối đa (lên tới 20 dBm = 100 mW) và kích hoạt mã sửa lỗi tiến truyền trước (FEC - Forward Error Correction).
 
-#### d. Các Tính Năng Nổi Bật Trên Trang Web Cấu Hình
+#### d. Tính năng của trang cấu hình
 1. **Quick Presets (Cấu Hình Mẫu Nhanh):** Cung cấp sẵn các bộ thông số tối ưu cho từng kịch bản vệ tinh chỉ với một cú nhấp chuột:
    - *CubeSat Telemetry Profile:* Tối ưu cân bằng giữa tầm xa và tốc độ phát viễn trắc.
    - *Long Range Mission:* Tối đa hóa độ nhạy thu để vượt qua cự ly truyền thông vũ trụ xa nhất.
@@ -245,7 +242,7 @@ $$f_\text{RF} = 410\text{ MHz} + \text{CHAN} \times 1\text{ MHz}$$
 3. **Packet Tester (Kiểm Tra Gói Tin Thực Nghiệm):** Hỗ trợ gửi/nhận dữ liệu kiểm thử trực tiếp trên web theo cả dạng văn bản (ASCII) và chuỗi Hex.
 4. **Arduino C++ Code Generator:** Tự động sinh mã nguồn khởi tạo thư viện C++ tương thích với mã cấu hình vừa tạo để sao chép thẳng vào dự án PlatformIO / Arduino IDE.
 
-### 4. Kiến trúc Trạm Mặt Đất (Ground Station Architecture)
+### 4. Kiến trúc trạm mặt đất
 Một trạm mặt đất thu nhận tín hiệu CubeSat tiêu chuẩn bao gồm:
 1. **Ăng-ten Định hướng Thu sóng:** Ăng-ten Yagi-Uda hoặc ăng-ten phân cực tròn xoắn ốc (Helical Antenna) băng tần UHF có độ tăng ích cao ($10 - 14\text{ dBi}$).
 2. **Khối Thu Sóng Vô tuyến Định nghĩa bằng Phần mềm (SDR - Software Defined Radio):** Các thiết bị SDR băng rộng (như RTL-SDR, HackRF, LimeSDR) kết nối máy tính qua cổng USB, số hóa toàn bộ phổ tần vô tuyến.
@@ -281,7 +278,37 @@ Một trạm mặt đất thu nhận tín hiệu CubeSat tiêu chuẩn bao gồm
 
 ---
 
-## 💻 Hướng Dẫn Thực Hành: Lập Trình Truyền Nhận Viễn Trắc & Lệnh Điều Hành
+## 📖 Doc 5.4: Hướng dẫn kết nối module LoRa
+
+Tài liệu này hướng dẫn đấu nối module Ebyte E32 với ESP32. Các chân điều khiển chưa có số GPIO được để theo nhãn trên bo và chờ sơ đồ lắp thực tế.
+
+### 1. Bố trí linh kiện
+
+> **Vị trí chèn hình:** Bố trí module E32, ESP32 và anten.
+
+### 2. Kết nối E32 với ESP32
+
+| E32 | ESP32 / nguồn |
+| :--- | :--- |
+| `TXD` | `RXD` của UART1 |
+| `RXD` | `TXD` của UART1 |
+| `AUX` | Chân GPIO dùng đọc trạng thái |
+| `M0`, `M1` | Chân GPIO dùng chọn chế độ |
+| `VCC`, `GND` | 3.3 V, `GND` |
+
+Ở chế độ truyền nhận thông thường, đặt `M0` và `M1` ở mức `LOW`. Chờ sơ đồ lắp để điền số GPIO cho `AUX`, `M0` và `M1`.
+
+> **Vị trí chèn hình:** Đấu nối các chân UART, AUX, M0 và M1 của E32.
+
+### 3. Kết nối khi cấu hình module
+
+Khi cấu hình qua USB-UART, đặt `M0` và `M1` ở mức `HIGH`; nối chéo `TXD` và `RXD`, đồng thời nối chung `GND`.
+
+> **Vị trí chèn hình:** Kết nối E32 với bộ chuyển USB-UART để cấu hình.
+
+---
+
+## 💻 Hướng dẫn thực hành Lab 5: Truyền nhận dữ liệu và lệnh
 
 ### 1. Đóng Gói và Phát Bản Tin Viễn Trắc Telemetry qua C++
 ```cpp

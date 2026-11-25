@@ -1,20 +1,20 @@
-# Lab 0: Doc 0.2 - Kiến trúc Hệ thống Vệ tinh 1U & 6 Phân hệ Cốt lõi
+# Lab 0: Doc 0.2 - Kiến trúc CubeSat 1U và sáu phân hệ
 
 ### 1. Kiến trúc Hệ thống Phân rã theo Khối Chức năng
 Một vệ tinh CubeSat là một hệ sinh thái cơ điện tử thu nhỏ, trong đó các thành phần được tổ chức thành các phân hệ chức năng phối hợp chặt chẽ với nhau. Xét theo mục tiêu nhiệm vụ, kiến trúc vệ tinh được chia thành hai nhóm lớn:
-1. **Hệ thống Nền tảng (Bus System):** Tập hợp các phân hệ kỹ thuật cơ bản đóng vai trò hạ tầng dịch vụ hỗ trợ — bảo đảm độ bền cơ khí, cung cấp năng lượng, điều khiển nhiệt, xử lý lệnh/dữ liệu, ổn định hướng và duy trì liên lạc với Trái Đất.
-2. **Tải trọng Sứ mệnh (Payload):** Bộ phận trực tiếp thực hiện mục tiêu khoa học, quan sát hoặc thử nghiệm công nghệ của chuyến bay — đây chính là lý do tồn tại của toàn bộ hệ thống vệ tinh trên quỹ đạo (ví dụ: camera chụp ảnh bề mặt Trái Đất, máy thu tín hiệu hàng hải AIS/ADS-B, cảm biến đo bức xạ hoặc mô-đun quan sát khí tượng).
+1. **Hệ thống nền tảng:** Các phân hệ cung cấp kết cấu, nguồn, điều khiển nhiệt, xử lý dữ liệu, ổn định hướng và liên lạc.
+2. **Tải trọng nhiệm vụ:** Thiết bị thực hiện mục tiêu khoa học hoặc công nghệ, như camera, máy thu AIS/ADS-B và cảm biến bức xạ.
 
 
 ![Kiến trúc hệ thống CubeSat tổng thể](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/system.png)
 
-> **Lưu ý về phân chia phân hệ:** Theo tài liệu kỹ thuật hệ thống CubeSat tiêu chuẩn, vệ tinh thường được phân tách thành 7 nhóm chức năng (Kết cấu cơ khí, Nguồn điện EPS, Xử lý dữ liệu & điều khiển C&DH, Thông tin liên lạc COM, Xác định & điều khiển hướng ADCS, Điều khiển nhiệt TCS và Tải hữu ích Payload). Trên bộ kit giáo dục **PTITCube 1U**, hệ thống được tổ chức gọn thành **6 Phân hệ Cốt lõi**: các cảm biến giám sát trạng thái và tải trọng nhiệm vụ được gộp chung thành phân hệ **Cảm biến & Tải trọng Sứ mệnh**, còn chức năng **Điều khiển Nhiệt (TCS)** được tích hợp trực tiếp ở dạng thụ động thông qua khung nhôm dẫn nhiệt và giám sát nhiệt độ trên các cảm biến/mạch sạc.
+> **Phân chia phân hệ:** Mô hình CubeSat thường gồm bảy nhóm: kết cấu, nguồn, xử lý dữ liệu, liên lạc, xác định và điều khiển hướng, điều khiển nhiệt, tải trọng. Kit **PTITCube 1U** gộp cảm biến với tải trọng thành một phân hệ; điều khiển nhiệt được thực hiện thụ động qua khung nhôm và giám sát nhiệt độ.
 
 ---
 
-### 2. Chi tiết Chức năng & Thông số 6 Phân hệ Cốt lõi
+### 2. Chức năng và thông số các phân hệ
 
-#### 1. Phân hệ Xử lý Dữ liệu & Điều khiển (OBC / C&DH - On-Board Computer / Command & Data Handling)
+#### 1. Xử lý dữ liệu và điều khiển (OBC, C&DH)
 Trong kiến trúc vệ tinh, **C&DH** là phân hệ đóng vai trò trung tâm điều phối toàn bộ hoạt động trên khoang, còn **OBC** (*On-Board Computer*) là máy tính phần cứng hạt nhân thực thi các tác vụ đó.
 
 - **Chức năng Cốt lõi (3 nhóm nhiệm vụ chính):**
@@ -29,7 +29,7 @@ Trong kiến trúc vệ tinh, **C&DH** là phân hệ đóng vai trò trung tâm
 
 ---
 
-#### 2. Phân hệ Năng lượng Điện (EPS - Electrical Power System)
+#### 2. Nguồn điện (EPS)
 **EPS** đảm nhiệm việc thu nhận (phát điện), lưu trữ, điều hòa điện áp, phân phối và bảo vệ nguồn điện cho toàn bộ vệ tinh. Khả năng cấp nguồn quyết định trực tiếp thời lượng vận hành tải hữu ích, công suất phát sóng và sự sống còn của vệ tinh.
 
 - **Nguyên lý Vận hành Theo Chu kỳ Quỹ đạo:**
@@ -49,7 +49,7 @@ Trong kiến trúc vệ tinh, **C&DH** là phân hệ đóng vai trò trung tâm
 
 ---
 
-#### 3. Phân hệ Cảm biến & Tải trọng Sứ mệnh (Sensors & Payload)
+#### 3. Cảm biến và tải trọng nhiệm vụ
 Trong hệ thống CubeSat, cần phân biệt rõ hai nhóm thành phần: **các cảm biến nền tảng** (cung cấp dữ liệu vật lý cho OBC và ADCS để giám sát sức khỏe, định vị, xác định hướng) và **tải trọng sứ mệnh (Payload)** (thiết bị trực tiếp thực hiện nhiệm vụ khoa học hoặc quan sát của vệ tinh). Trên kit PTITCube, cả hai nhóm được tích hợp đồng bộ trên cùng phân hệ:
 
 - **Nhóm Cảm biến Môi trường & Giám sát Nội bộ:**
@@ -73,7 +73,7 @@ $$\text{Heading} = \text{atan2}(B_y, B_x) \cdot \frac{180}{\pi}$$
 
 ---
 
-#### 4. Phân hệ Thông tin Liên lạc (COM - Communication Subsystem)
+#### 4. Thông tin liên lạc (COM)
 **COM** là cầu nối vô tuyến hai chiều duy nhất giữa CubeSat trên quỹ đạo và trạm mặt đất (**GS** - *Ground Station*). Nếu phân hệ COM mất kết nối không thể phục hồi, trạm mặt đất sẽ mất hoàn toàn khả năng điều khiển và thu nhận dữ liệu sứ mệnh.
 
 - **Chức năng Theo Hai Chiều Liên kết:**
@@ -96,7 +96,7 @@ $$\lambda = \frac{c}{f} = \frac{3 \times 10^8\text{ m/s}}{433 \times 10^6\text{ 
 
 ---
 
-#### 5. Phân hệ Kết cấu Cơ khí (Structure Subsystem) & Kiểm soát Nhiệt Thụ động
+#### 5. Kết cấu cơ khí và kiểm soát nhiệt
 Phân hệ kết cấu cơ khí tạo bộ khung chịu lực, định hình bao hình tiêu chuẩn, liên kết và bảo vệ toàn bộ bo mạch, cảm biến và tải trọng trong suốt quá trình lắp ráp, vận chuyển, phóng tên lửa và vận hành trên quỹ đạo.
 
 - **Chức năng Cơ khí & Tải trọng Khi Phóng:**
@@ -114,7 +114,7 @@ Phân hệ kết cấu cơ khí tạo bộ khung chịu lực, định hình bao
 
 ---
 
-#### 6. Phân hệ Xác định & Điều khiển Hướng (ADCS - Attitude Determination and Control Subsystem)
+#### 6. Xác định và điều khiển hướng (ADCS)
 **ADCS** chịu trách nhiệm xác định tư thế (định hướng của thân vệ tinh so với hệ quy chiếu quán tính hoặc hệ quỹ đạo) và vận tốc góc, sau đó điều khiển vệ tinh xoay về hướng mong muốn và giữ ổn định. *(Lưu ý: ADCS điều khiển chuyển động quay quanh trọng tâm của thân vệ tinh, khác với việc điều chỉnh vị trí hay quỹ đạo bay).*
 
 - **Thách thức Môi trường & 4 Mô-men Nhiễu Quỹ đạo LEO (Environmental Disturbance Torques):**
@@ -139,14 +139,14 @@ Phân hệ kết cấu cơ khí tạo bộ khung chịu lực, định hình bao
 
 #### Bảng Tổng hợp Nhanh 6 Phân hệ Cốt lõi trên Kit PTITCube 1U
 
-| Phân hệ | Vai trò Chính | Thành phần / Thông số Cốt lõi trên PTITCube | Giao tiếp / Đường Nguồn |
+| Phân hệ | Vai trò | Thành phần chính | Giao tiếp / nguồn |
 | :--- | :--- | :--- | :--- |
-| **1. OBC / C&DH** | Bộ não điều phối, xử lý lệnh, đóng gói dữ liệu HK & nhiệm vụ, FDIR | **ESP32-WROOM-32** (2 nhân 240 MHz, 520 KB SRAM, 4 MB Flash), microSD FAT32 | Bus chủ: I2C, SPI, UART; Nguồn 3.3 V |
-| **2. EPS** | Thu nhận, lưu trữ, biến đổi, phân phối & giám sát năng lượng | Pin mặt trời 4 mặt (19 - 22%), Li-Po 3.7 V (1200 - 2000 mAh), **TP4056** (CC/CV), Buck 3.3 V / Boost 5 V, **MAX17048** | I2C (`0x36` cho MAX17048); cấp rail 3.3 V & 5.0 V |
-| **3. Sensors & Payload** | Đo thông số môi trường, vị trí/tư thế & chụp ảnh viễn thám | **BMP280** (áp suất/nhiệt độ), **MPU6500** (IMU 6 trục), **QMC5883L** (từ kế), **GNSS L76X** (GPS/GLONASS), **OV2640** (Camera 2 MP JPEG) | I2C (BMP280, MPU6500, QMC5883L), UART (L76X, OV2640 qua 74HC4066) |
-| **4. COM** | Cầu nối vô tuyến 2 chiều Uplink/Downlink với trạm mặt đất | **LoRa Ebyte E32** (UHF 433 MHz, CSS, độ nhạy -138 dBm, 20/30 dBm), anten đơn cực λ/4 ≈ 17.32 cm tự bung | UART; Nguồn 5.0 V |
-| **5. Structure (& TCS)** | Chịu tải phóng, bảo vệ cơ khí, chuẩn hóa kết nối & dẫn nhiệt thụ động | Khung CNC **Al 6061-T6** / 7075-T6, ray Hard Anodize, chuẩn ngăn xếp **PC/104** (90 × 96 mm, standoff 16 mm), keo khóa ren | Liên kết cơ khí, tản nhiệt dẫn |
-| **6. ADCS** | Ước lượng tư thế & mô phỏng điều khiển ổn định hướng | Thuật toán lọc bù / Mahony / Madgwick (từ **MPU6500** + **QMC5883L**); chấp hành thực nghiệm: động cơ **ERM** (PWM) & còi báo | Dữ liệu I2C; Điều khiển PWM từ OBC |
+| **1. OBC / C&DH** | Điều khiển, xử lý lệnh và dữ liệu | **ESP32-WROOM-32**, microSD FAT32 | I2C, SPI, UART; nguồn 3.3 V |
+| **2. EPS** | Thu, lưu trữ và phân phối điện | Pin mặt trời, Li-Po, TP4056, Buck/Boost, MAX17048 | I2C; nguồn 3.3 V và 5.0 V |
+| **3. Cảm biến và tải trọng** | Đo môi trường, tư thế, vị trí và chụp ảnh | BMP280, MPU6500, QMC5883L, L76X, OV2640 | I2C, UART |
+| **4. COM** | Liên lạc hai chiều với trạm mặt đất | LoRa E32 433 MHz, anten λ/4 | UART; nguồn 5.0 V |
+| **5. Kết cấu và nhiệt** | Chịu tải, bảo vệ bo mạch và tản nhiệt | Khung Al 6061-T6/7075-T6, PC/104, keo khóa ren | Cơ khí; dẫn nhiệt |
+| **6. ADCS** | Ước lượng tư thế và ổn định hướng | MPU6500, QMC5883L, động cơ ERM | I2C, PWM |
 
 > **Tổng kết Kiến trúc Hệ thống:** Sáu phân hệ kỹ thuật trên kết hợp chặt chẽ tạo thành một hệ sinh thái CubeSat 1U hoàn chỉnh, tuân thủ đúng chuẩn công nghiệp vũ trụ CalPoly CDS và triết lý COTS hiện đại. Toàn bộ các luồng dữ liệu điều khiển, viễn trắc sinh tồn và công suất nguồn được liên kết xuyên suốt qua ngăn xếp PC/104, tạo nền tảng vững chắc để người học tiếp tục triển khai các bài thực hành cấu hình và lập trình chuyên sâu từ Lab 1 đến Lab 8.
 
