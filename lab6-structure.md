@@ -10,10 +10,14 @@ Trong kỹ thuật vệ tinh CubeSat, Phân hệ Cấu trúc thường bị nh�
 - **Duy trì Giao diện Cơ học Tiêu chuẩn với Ống Phóng P-POD:** Định hình chính xác bao hình kích thước bên ngoài, dẫn hướng vệ tinh trượt êm ái ra khỏi ống phóng mà không bị kẹt dính.
 - **Khối Tản Nhiệt Thụ Động Chủ Đạo (Primary Thermal Heat Sink):** Dẫn nhiệt lượng tỏa ra từ các chip công suất bên trong truyền ra các bề mặt ngoài để bức xạ vào vũ trụ.
 
+![Mô hình khung CubeSat 1U với các vách và thanh ray dẫn hướng ở góc](../PTITCube-Figs/png/Lab6.1_structure.png)
+
+*Mô hình khung CubeSat 1U.*
+
 ### 2. Tác động Đa chiều của Khung Cơ khí lên các Phân hệ Khác
 Một thay đổi nhỏ trong thiết kế cơ khí sẽ ngay lập tức gây ra hiệu ứng domino ảnh hưởng trực tiếp tới hoạt động của tất cả các phân hệ còn lại:
 
-![Giao diện liên kết cơ khí cấu trúc 1U](../figs/png/lab6_structure_interfaces.png)
+![Giao diện liên kết cơ khí cấu trúc 1U](../PTITCube-Figs/png/lab6_structure_interfaces.png)
 
 1. **Tác động lên Phân hệ Năng lượng (EPS):**
    - *Tản nhiệt cho Khối Pin:* Pin Li-Po chỉ hoạt động an toàn trong dải nhiệt độ hẹp (0°C - 45°C). Khung cơ khí phải cung cấp các cầu nhiệt kim loại dẫn nhiệt sinh ra khi sạc/xả pin ra vỏ ngoài.
@@ -44,6 +48,8 @@ Một thay đổi nhỏ trong thiết kế cơ khí sẽ ngay lập tức gây r
 
 ---
 
+---
+
 ## 📖 Doc 6.2: Vật Liệu Hợp Kim Không Gian & Xử Lý Bề Mặt Chuyên Dụng
 
 ### 1. Lựa chọn Hợp kim Nhôm Hàng không Al 6061-T6 và Al 7075-T6
@@ -61,7 +67,7 @@ Vật liệu sử dụng cho khung CubeSat phải đáp ứng đồng thời 4 t
 ### 2. Quy trình Xử lý Bề mặt Chọn lọc: Anodize Cứng Type III vs Lớp Phủ Alodine
 Khung nhôm CubeSat bắt buộc phải trải qua quy trình xử lý bề mặt chọn lọc hai giai đoạn (Selective Masking) theo tiêu chuẩn quân sự Hoa Kỳ:
 
-![Quy trình xử lý bề mặt Anodize và Alodine](../figs/png/lab6_surface_treatment.png)
+![Quy trình xử lý bề mặt Anodize và Alodine](../PTITCube-Figs/png/lab6_surface_treatment.png)
 
 1. **Anodize Hóa Cứng Type III (Hard Anodizing - Tiêu chuẩn MIL-A-8625):**
    - Áp dụng trên: **4 thanh ray dẫn hướng ở 4 góc** tiếp xúc trực tiếp với lòng ống phóng P-POD.
@@ -94,6 +100,8 @@ Trong môi trường chân không sâu (< 10⁻⁵ Torr) và nhiệt độ cao, 
 
 ---
 
+---
+
 ## 📖 Doc 6.3: Tiêu Chuẩn Ngăn Xếp PC/104, Chốt Khóa Ren & Cân Bằng Trọng Tâm CoM
 
 ### 1. Kiến trúc Ngăn xếp Bo Mạch Chuẩn PC/104
@@ -101,6 +109,22 @@ Bên trong lòng khối lập phương 1U, các tầng bo mạch điện tử (O
 - **Kích thước Bo mạch Chuẩn:** 90.17 × 95.89 mm với 4 lỗ bắt bu lông ở 4 góc đối xứng.
 - **Trụ Ren Cách Tầng (Standoffs):** Các tầng bo mạch được cách ly khoảng cách bằng các trụ lục giác kim loại bằng đồng hoặc nhôm (chiều cao tiêu chuẩn 15.0 mm).
 - **Thanh Ren Chịu Lực Xâu Suốt (Threaded Rods):** Sử dụng 4 thanh ren bằng thép không gỉ Inox M3 xâu xuyên suốt từ tấm đáy lên tấm nóc của khung, kẹp chặt toàn bộ khối bo mạch thành một khối vững chắc nguyên khối (Monolithic Block), phân tán đều ứng suất rung động của tên lửa đẩy.
+
+#### 1.1. Các phương thức tích hợp cơ khí và điện của các bo mạch trên CubeSat
+
+Tích hợp cơ khí xác định vị trí và cách cố định từng bo mạch vào khung. Tích hợp điện xác định đường cấp nguồn và truyền tín hiệu giữa các bo mạch. Mục 2.1.3.4 của báo cáo *17– SV – 2026 – VT1, NV.Hưng (1).docx* trình bày ba phương thức sau.
+
+![Minh họa ba phương thức PC/104, Backplane và Point-to-Point](../PTITCube-Figs/png/lab6_tich_hop_bo_mach.png)
+
+*Hình bổ sung. Các phương thức tích hợp bo mạch CubeSat, trích Hình 2.12 của báo cáo Word (nguồn [18] trong báo cáo).*
+
+| Phương thức | Tích hợp cơ khí | Tích hợp điện |
+|---|---|---|
+| **PC/104 (ngăn xếp)** | Các bo mạch xếp chồng, cách tầng bằng trụ đỡ và cố định qua lỗ lắp. | Đầu nối xuyên tầng mang nguồn và tín hiệu, giúp giảm dây rời. Các bo phải thống nhất vị trí đầu nối và sơ đồ chân. |
+| **Backplane (bo mạch nền)** | Các bo chức năng cắm vào đầu nối trên một bo nền chung và được định vị, giữ chắc bằng cơ cấu của khung. | Bo nền phân phối nguồn và đi dây tín hiệu đến các đầu nối. Có thể tháo hoặc thay từng bo thuận tiện khi giao diện tương thích. Bo nền phải được thiết kế theo số mô-đun và giao diện cần dùng. |
+| **Point-to-Point (nối trực tiếp)** | Các bo hoặc thiết bị được cố định ở vị trí phù hợp trong khung. Dây và đầu nối cần được giữ chắc để tránh kéo căng. | Từng cặp thiết bị nối với nhau bằng dây và đầu nối riêng. Cách này linh hoạt với các giao diện khác nhau, nhưng dây chiếm thêm không gian và khó quản lý hơn khi số thiết bị tăng. |
+
+**Liên hệ với bộ kit:** Có thể xếp các bo bằng trụ ren và thanh M3, đồng thời nối riêng GNSS hoặc LoRa với OBC qua dây UART. Cùng một bộ kit có thể dùng ngăn xếp để cố định cơ khí và dùng Point-to-Point cho một số đường điện. Khi báo cáo, hãy ghi rõ cả cách giữ bo và cách truyền nguồn, tín hiệu.
 
 ### 2. Bu lông Inox A2-70, Keo Khóa Ren Loctite 222 & Bu lông Thông Hơi
 - **Cấp bền Bu lông Inox A2-70:** Chế tạo bằng thép không gỉ austenit AISI 304, giới hạn bền kéo tối thiểu 700 MPa.
@@ -110,7 +134,7 @@ Bên trong lòng khối lập phương 1U, các tầng bo mạch điện tử (O
   - Khi đưa vệ tinh vào buồng thử nghiệm chân không nhiệt (TVAC), lượng khí nén này sẽ rò rỉ cực kỳ chậm chạp qua các khe hở vi mô của đường ren ra ngoài (hiện tượng **Rò rỉ ảo - Virtual Leak**), khiến buồng thử nghiệm không bao giờ đạt được mức chân không mong muốn và làm sai lệch kết quả đo.
   - Bu lông thông hơi được khoan một lỗ rỗng siêu nhỏ xuyên suốt tâm dọc trục bu lông, cho phép toàn bộ không khí ở đáy lỗ ren thoát ra ngay lập tức khi buồng hút chân không.
 
-![Thiết kế bu-lông thông hơi chống rò rỉ ảo](../figs/png/lab6_vented_screw.png)
+![Thiết kế bu-lông thông hơi chống rò rỉ ảo](../PTITCube-Figs/png/lab6_vented_screw.png)
 
 ### 3. Bảng Cân Đối Khối Lượng (Mass Budget) & Cân Bằng Trọng Tâm (Center of Mass - CoM)
 - **Bảng Cân đối Khối lượng (Mass Budget):** Tổng khối lượng của một CubeSat 1U bị khống chế nghiêm ngặt không được vượt quá 1.330 kg (hoặc 2.000 kg). Trong giai đoạn thiết kế, kỹ sư phải duy trì một biên độ khối lượng dự phòng (**Mass Margin** ≥ 15 - 20%) để bù đắp cho sự tăng khối lượng thực tế của dây dẫn, màng bọc và keo dán trong quá trình lắp ráp.

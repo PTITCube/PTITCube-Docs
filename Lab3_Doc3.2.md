@@ -18,7 +18,7 @@
 - **Silent Success (Thành công Im lặng):** Các lệnh điều hướng và thay đổi trạng thái (`cd`, `mkdir`, `rmdir`, `rm`, `touch`, `echo >`) khi thực thi thành công sẽ hoàn toàn im lặng, không trả về các tiền tố `OK:` rườm rà. Chỉ lệnh có dữ liệu xuất ra (`pwd`, `ls`, `cat`, `df`, `help`) hoặc khi xảy ra lỗi (`ERR: ...`) mới in thông tin ra màn hình.
 - **An toàn Hạt nhân VFS ESP-IDF:** Trước khi truy xuất tệp/thư mục, hệ thống sử dụng hàm `SD.exists()` để kiểm tra sự tồn tại (sử dụng hàm gọi hệ thống `stat()`), tuyệt đối không gọi `SD.open()` khi tệp chưa chắc chắn tồn tại nhằm triệt tiêu hoàn toàn các thông báo lỗi kernel VFS `[E][vfs_api.cpp:105] open(): ... does not exist`.
 
-![Kiến trúc Shell CLI và bộ điều phối FreeRTOS](../figs/png/lab3_cli_rtos_overview.png)
+![Kiến trúc Shell CLI và bộ điều phối FreeRTOS](../PTITCube-Figs/png/lab3_cli_rtos_overview.png)
 
 ### 2. Tổng quan Hệ Điều Hành: Tuần Tự (Super-Loop) vs Đa Nhiệm Thời Gian Thực (RTOS)
 Trong các dự án nhúng đơn giản, kỹ sư thường sử dụng kiến trúc vòng lặp tuần tự (Bare-metal Super-Loop). Tuy nhiên, trên một vệ tinh không gian hiện đại, khối lượng công việc đòi hỏi phải chuyển sang sử dụng Hệ điều hành Thời gian thực (**Real-Time Operating System - RTOS**):

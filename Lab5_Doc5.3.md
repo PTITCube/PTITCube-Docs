@@ -8,12 +8,16 @@ Module **Ebyte E32-433T20D** sử dụng chip thu phát bán dẫn SX1278 của 
   - **Hệ số Trải phổ (Spreading Factor - SF7 đến SF12):** SF càng lớn, tầm xa càng tăng nhưng tốc độ truyền dữ liệu (Data Rate) càng giảm.
   - **Băng thông (Bandwidth - BW):** Thường chọn 125 kHz cho kênh UHF.
 
-![Kiến trúc truyền thông LoRa E32 và Trạm Mặt đất](../figs/png/lab5_lora_ground_station.png)
+![Kiến trúc truyền thông LoRa E32 và Trạm Mặt đất](../PTITCube-Figs/png/lab5_lora_ground_station.png)
 
 ### 2. Sơ đồ Chân & Các Chế độ Hoạt động của Module Ebyte E32
 Module E32 giao tiếp với vi điều khiển OBC thông qua cổng UART1 chuẩn và hai chân điều khiển chế độ `M0`, `M1`:
 
-- **Sơ đồ đấu nối phần cứng chuẩn hóa theo thư viện `PTITCube.h` (Lớp `PTIT_COM`):**
+![Module LoRa Ebyte E32-TTL-100 với hàng chân UART và cổng anten SMA](../PTITCube-Figs/png/Lab5.3_loraE32.png)
+
+*Module E32-TTL-100. Đối chiếu hàng chân bên trái từ trên xuống (M0, M1, RXD, TXD, AUX, VCC, GND) với bảng đấu nối bên dưới. Đầu nối anten nằm ở bên phải.*
+
+- **Sơ đồ đấu nối phần cứng chuẩn hóa :**
 
 | Tín hiệu E32 LoRa | Đường Nối OBC (ESP32) | Hướng | Vai trò Kỹ thuật |
 | :--- | :--- | :--- | :--- |
@@ -24,9 +28,7 @@ Module E32 giao tiếp với vi điều khiển OBC thông qua cổng UART1 chu�
 | **M1** | **Chân M1** | Output (ESP32) | Chân chọn Mode 1 (Mức `LOW` ở chế độ hoạt động bình thường) |
 | **VCC / GND** | **3.3V / GND** | Nguồn | Cấp nguồn vận hành danh định 3.3V từ bus nguồn vệ tinh |
 
-> [!IMPORTANT]
-> **Lưu ý Chuẩn Hóa Chân LoRa & An Toàn ESP32:**
-> Toàn bộ các chân kết nối module LoRa E32 bắt buộc phải tuân thủ nghiêm ngặt theo thư viện `PTITCube.h`. Các chân điều khiển ngõ ra `M0`/`M1` bắt buộc phải là chân hỗ trợ Output, không được sử dụng các chân chỉ có chiều vào (Input-Only).
+>
 
 | Chế độ Hoạt động | Chân M0 | Chân M1 | Chức năng Kỹ thuật |
 | :--- | :--- | :--- | :--- |

@@ -1,6 +1,6 @@
 # Lab 4: Doc 4.3 - Nguyên lý Phần Cứng Module Định Vị GNSS L76X & Giao Tiếp UART Đọc Dữ Liệu Thô
 
-![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](../figs/png/lab4_gnss_l76x_architecture.png)
+![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](../PTITCube-Figs/png/lab4_gnss_l76x_architecture.png)
 
 ### 1. Kiến trúc Phần cứng Module Định vị Toàn cầu GNSS L76X
 Module Quectel **L76X** là khí tài định vị không gian tích hợp đồng thời hai hệ thống vệ tinh: **GPS** (Hoa Kỳ - tần số L1 1575.42 MHz) và **GLONASS** (Nga - tần số L1 1602 MHz):
@@ -13,6 +13,20 @@ Module Quectel **L76X** là khí tài định vị không gian tích hợp đồ
   - Kết nối với cổng nối tiếp phần cứng `UART2` (`Serial2`) của OBC.
   - Tốc độ baud tiêu chuẩn: 9600 bps, cấu hình khung truyền `8-N-1`.
   - **Đặc tính phát dữ liệu tự động:** Ngay khi được cấp nguồn 3.3V, module tự động phát ra luồng ký tự ASCII chứa các dòng bản tin NMEA định kỳ mỗi giây (1 Hz) qua chân TX mà không cần OBC phải gửi bất kỳ lệnh kích hoạt nào.
+
+![Hai mặt module Waveshare L76X, đầu nối 5 chân và anten gốm](../PTITCube-Figs/png/Lab4.3_L76X.png)
+
+
+
+| Chân | Tín hiệu | Chức năng và cách nối trong Lab |
+|---:|---|---|
+| 1 | VCC | Cấp nguồn cho module. Dùng đường 3,3 V theo cấu hình Lab. |
+| 2 | GND | Nối mass chung với ESP32. |
+| 3 | TX | Ngõ ra UART gửi bản tin NMEA. Nối với RX2 (GPIO16). |
+| 4 | RX | Ngõ vào UART nhận lệnh cấu hình. Nối với TX2 (GPIO17) nếu cần gửi lệnh. |
+| 5 | PPS | Ngõ ra xung 1 PPS dùng làm mốc thời gian. Có thể để hở khi chỉ đọc NMEA. |
+
+
 
 ### 2. Kỹ thuật Lập trình: Đọc Luồng Ký Tự NMEA Thô qua UART
 Trong bài thực hành đọc dữ liệu thô, mục tiêu là kiểm tra thông mạch phần cứng và quan sát trực tiếp luồng ký tự thô đổ về từ không gian:

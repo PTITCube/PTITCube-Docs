@@ -3,7 +3,7 @@
 ### 1. Tại Sao Bắt Buộc Phải Chuyển Đổi Dữ Liệu NMEA Thô?
 Luồng dữ liệu thô thu được từ cổng UART là các dòng chuỗi văn bản ASCII thuần túy. Vi điều khiển OBC không thể sử dụng trực tiếp chuỗi ký tự này để tính toán quỹ đạo, kiểm tra hàng rào địa lý (Geofencing) hay đóng gói vào bản tin Telemetry nếu không chuyển đổi thành các kiểu dữ liệu số thực (`float`, `double`) và số nguyên (`int`).
 
-![Quy trình kiểm tra Checksum XOR và giải mã bản tin NMEA 0183](../figs/png/lab4_nmea_parsing_flow.png)
+![Quy trình kiểm tra Checksum XOR và giải mã bản tin NMEA 0183](../PTITCube-Figs/png/lab4_nmea_parsing_flow.png)
 
 ### 2. Cấu Trúc Chi Tiết Từng Trường của Bản Tin NMEA Chuẩn
 Mỗi câu tin NMEA bắt đầu bằng ký tự `$`, theo sau là mã định danh nguồn phát (`GP` cho GPS, `GL` cho GLONASS, `GN` cho đa hệ thống), tên câu lệnh 3 ký tự, các trường dữ liệu ngăn cách bằng dấu phẩy `,` và kết thúc bằng mã Checksum sau dấu `*`:

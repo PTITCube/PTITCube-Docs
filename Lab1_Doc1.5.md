@@ -7,7 +7,7 @@ Khối vô tuyến Wi-Fi tích hợp trên ESP32 hỗ trợ đầy đủ các ch
 - **Chế độ Máy khách (Station Mode - STA):** ESP32 kết nối vào một mạng Wi-Fi có sẵn (như router phòng lab) và nhận một địa chỉ IP nội bộ từ máy chủ DHCP.
 - **Chế độ Điểm truy cập Mềm (SoftAP Mode):** ESP32 tự mình biến thành một trạm phát sóng Wi-Fi độc lập, tự cấp phát địa chỉ IP cho các thiết bị kết nối vào (mặc định là `192.168.4.1`). Học viên dùng laptop hoặc điện thoại kết nối thẳng vào mạng của vệ tinh mà không phụ thuộc vào hạ tầng mạng bên ngoài.
 
-![Kiến trúc SoftAP Web Server trên ESP32](../figs/png/lab1_softap_webserver.png)
+![Kiến trúc SoftAP Web Server trên ESP32](../PTITCube-Figs/png/lab1_softap_webserver.png)
 
 ### 2. Máy chủ Web HTTP Nhúng (Embedded Web Server)
 

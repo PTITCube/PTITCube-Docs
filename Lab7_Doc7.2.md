@@ -11,7 +11,7 @@
 ### 2. Máy Trạng Thái Hữu Hạn Điều Khiển Sứ Mệnh (Mission FSM)
 Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu Hạn (**Finite State Machine - FSM**) chuẩn mực:
 
-![Máy trạng thái nhiệm vụ bay CubeSat FSM](../figs/png/lab7_mission_fsm.png)
+![Máy trạng thái nhiệm vụ bay CubeSat FSM](../PTITCube-Figs/png/lab7_mission_fsm.png)
 
 ### 3. Chi tiết 6 Trạng thái Bay Cốt lõi
 - **`STATE_BOOT`:**

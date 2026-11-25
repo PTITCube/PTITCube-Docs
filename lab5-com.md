@@ -21,7 +21,7 @@ $$\lambda = \frac{c}{f} = \frac{3 \times 10^8\text{ m/s}}{433 \times 10^6\text{ 
 ### 3. Phương trình Suy hao Truyền sóng trong Không gian Tự do (Friis FSPL)
 Khi sóng điện từ lan truyền từ ăng-ten phát hình cầu ra không gian vô tận, mật độ công suất sóng bị suy giảm theo bình phương khoảng cách. Công thức suy hao truyền sóng trong không gian tự do (**Free-Space Path Loss - FSPL**) của Harald T. Friis:
 
-$$\text{FSPL} = \left(\frac{4\pi d}{\lambda}\right)^2 = \left(\frac{4\pi d f}{c}\right)^2$$
+$$\text{FSPL} = \left(\frac{4\pi d}{\lambda} \right)^2 = \left(\frac{4\pi d f}{c} \right)^2$$
 
 Chuyển đổi sang đơn vị logarit Decibel (dB):
 
@@ -35,7 +35,7 @@ $$\text{FSPL (dB)} = 20 \log_{10}(800) + 20 \log_{10}(433) + 32.44 \approx 58.06
 
 - Nhận xét: Sóng vô tuyến bị suy yếu tới 143 dB (tương đương năng lượng bị suy giảm hơn 10¹⁴ lần) trên hành trình xuyên qua bầu khí quyển xuống mặt đất!
 
-![Sơ đồ cân bằng tuyến truyền thông vô tuyến LEO](../figs/png/lab5_rf_link_budget.png)
+![Sơ đồ cân bằng tuyến truyền thông vô tuyến LEO](../PTITCube-Figs/png/lab5_rf_link_budget.png)
 
 ### 4. Phương trình Cân Bằng Tuyến Truyền Thông (Link Budget)
 Bảng cân đối tuyến truyền thông tổng hợp toàn bộ các nguồn tăng ích và suy hao trên toàn bộ chuỗi thu phát:
@@ -63,7 +63,7 @@ $$\text{Margin} = P_\text{rx} - S_\text{rx} = (-112.55\text{ dBm}) - (-140\text{
 ### 5. Hiệu ứng Dịch Tần Doppler trên Quỹ đạo LEO
 Do vệ tinh bay với vận tốc quỹ đạo cực lớn (v ≈ 7.6 km/s), tần số sóng vô tuyến thu được tại trạm mặt đất bị dịch chuyển theo hiệu ứng Doppler:
 
-$$f_\text{rx} = f_0 \left(1 + \frac{v_\text{los}}{c}\right)$$
+$$f_\text{rx} = f_0 \left(1 + \frac{v_\text{los}}{c} \right)$$
 
 Trong đó: $v_\text{los}$ là vận tốc dọc theo đường ngắm (Line-of-Sight Velocity).
 - Khi vệ tinh vừa mọc ở phía chân trời và bay lại gần trạm: $v_\text{los} > 0$, tần số thu được dịch lên cao nhất ($+\Delta f$).
@@ -92,6 +92,8 @@ $$\Delta f_\text{max} \approx 433\text{ MHz} \times \frac{7.6\text{ km/s}}{300.0
 
 ---
 
+---
+
 ## 📖 Doc 5.2: Giao Thức Đóng Gói Bản Tin, Kiểm Tra CRC-16 & Tổng Quan Chuẩn CCSDS
 
 ### 1. Cấu trúc Khung Bản Tin Viễn Trắc (Telemetry Frame Structure)
@@ -107,7 +109,7 @@ $$\Delta f_\text{max} \approx 433\text{ MHz} \times \frac{7.6\text{ km/s}}{300.0
 | **Telemetry Data** | $N - 5$ Bytes | Khối dữ liệu cảm biến: $V_\text{bat}$, SOC, Nhiệt độ, Áp suất, Gia tốc, Tọa độ GPS |
 | **Checksum CRC-16**| 2 Bytes | Mã kiểm tra lỗi chu kỳ 16-bit bảo vệ tính toàn vẹn dữ liệu |
 
-![Cấu trúc khung bản tin viễn trắc và mã kiểm tra CRC-16](../figs/png/lab5_telemetry_frame_crc.png)
+![Cấu trúc khung bản tin viễn trắc và mã kiểm tra CRC-16](../PTITCube-Figs/png/lab5_telemetry_frame_crc.png)
 
 ### 2. Thuật toán Kiểm tra Lỗi Chu kỳ CRC-16-CCITT
 Trong không gian, nhiễu nền vũ trụ có thể làm biến dạng ngẫu nhiên một vài bit dữ liệu. Phương pháp tính tổng cộng (Checksum đơn giản) rất dễ bị lọt lưới khi hai lỗi bit triệt tiêu nhau.
@@ -147,6 +149,8 @@ $$G(x) = x^{16} + x^{12} + x^5 + 1 \quad (\text{Hex: } \mathbf{0x1021})$$
 
 ---
 
+---
+
 ## 📖 Doc 5.3: Module Truyền Thông LoRa Ebyte E32 & Kiến Trúc Trạm Mặt Đất
 
 ### 1. Công nghệ Trải phổ LoRa (Long Range Chirp Spread Spectrum - CSS)
@@ -157,12 +161,16 @@ Module **Ebyte E32-433T20D** sử dụng chip thu phát bán dẫn SX1278 của 
   - **Hệ số Trải phổ (Spreading Factor - SF7 đến SF12):** SF càng lớn, tầm xa càng tăng nhưng tốc độ truyền dữ liệu (Data Rate) càng giảm.
   - **Băng thông (Bandwidth - BW):** Thường chọn 125 kHz cho kênh UHF.
 
-![Kiến trúc truyền thông LoRa E32 và Trạm Mặt đất](../figs/png/lab5_lora_ground_station.png)
+![Kiến trúc truyền thông LoRa E32 và Trạm Mặt đất](../PTITCube-Figs/png/lab5_lora_ground_station.png)
 
 ### 2. Sơ đồ Chân & Các Chế độ Hoạt động của Module Ebyte E32
 Module E32 giao tiếp với vi điều khiển OBC thông qua cổng UART1 chuẩn và hai chân điều khiển chế độ `M0`, `M1`:
 
-- **Sơ đồ đấu nối phần cứng chuẩn hóa theo thư viện `PTITCube.h` (Lớp `PTIT_COM`):**
+![Module LoRa Ebyte E32-TTL-100 với hàng chân UART và cổng anten SMA](../PTITCube-Figs/png/Lab5.3_loraE32.png)
+
+*Module E32-TTL-100. Đối chiếu hàng chân bên trái từ trên xuống (M0, M1, RXD, TXD, AUX, VCC, GND) với bảng đấu nối bên dưới. Đầu nối anten nằm ở bên phải.*
+
+- **Sơ đồ đấu nối phần cứng chuẩn hóa :**
 
 | Tín hiệu E32 LoRa | Đường Nối OBC (ESP32) | Hướng | Vai trò Kỹ thuật |
 | :--- | :--- | :--- | :--- |
@@ -173,9 +181,7 @@ Module E32 giao tiếp với vi điều khiển OBC thông qua cổng UART1 chu�
 | **M1** | **Chân M1** | Output (ESP32) | Chân chọn Mode 1 (Mức `LOW` ở chế độ hoạt động bình thường) |
 | **VCC / GND** | **3.3V / GND** | Nguồn | Cấp nguồn vận hành danh định 3.3V từ bus nguồn vệ tinh |
 
-> [!IMPORTANT]
-> **Lưu ý Chuẩn Hóa Chân LoRa & An Toàn ESP32:**
-> Toàn bộ các chân kết nối module LoRa E32 bắt buộc phải tuân thủ nghiêm ngặt theo thư viện `PTITCube.h`. Các chân điều khiển ngõ ra `M0`/`M1` bắt buộc phải là chân hỗ trợ Output, không được sử dụng các chân chỉ có chiều vào (Input-Only).
+>
 
 | Chế độ Hoạt động | Chân M0 | Chân M1 | Chức năng Kỹ thuật |
 | :--- | :--- | :--- | :--- |

@@ -5,7 +5,7 @@ Giai đoạn Tích hợp Hệ thống là thời điểm quyết định của t
 
 Khi nhồi nhét tất cả các phân hệ vào không gian chật hẹp của khối lập phương 1U (10 × 10 × 11.35 cm), kỹ sư tích hợp phải đối mặt và giải quyết đồng thời 5 thách thức kỹ thuật lớn:
 
-![5 thách thức tích hợp hệ thống CubeSat](../figs/png/lab7_integration_challenges.png)
+![5 thách thức tích hợp hệ thống CubeSat](../PTITCube-Figs/png/lab7_integration_challenges.png)
 
 ### 2. Chi tiết Giải pháp Kỹ thuật Khắc phục 5 Thách thức
 1. **Giải quyết Xung đột Bus I2C/SPI:**

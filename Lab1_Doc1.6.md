@@ -1,6 +1,6 @@
 # Lab 1: Doc 1.6 - Quy chuẩn Lập trình C++ Định thời Non-blocking với millis() & Thuật toán Chống Tràn số
 
-![Kiến trúc định thời Non-blocking millis() và chống tràn số](../figs/png/lab1_millis_nonblocking.png)
+![Kiến trúc định thời Non-blocking millis() và chống tràn số](../PTITCube-Figs/png/lab1_millis_nonblocking.png)
 
 ### 1. Tại sao Tuyệt đối CẤM sử dụng `delay()` trong Phần mềm Bay Vệ tinh?
 

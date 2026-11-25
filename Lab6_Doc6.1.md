@@ -6,10 +6,14 @@ Trong kỹ thuật vệ tinh CubeSat, Phân hệ Cấu trúc thường bị nh�
 - **Duy trì Giao diện Cơ học Tiêu chuẩn với Ống Phóng P-POD:** Định hình chính xác bao hình kích thước bên ngoài, dẫn hướng vệ tinh trượt êm ái ra khỏi ống phóng mà không bị kẹt dính.
 - **Khối Tản Nhiệt Thụ Động Chủ Đạo (Primary Thermal Heat Sink):** Dẫn nhiệt lượng tỏa ra từ các chip công suất bên trong truyền ra các bề mặt ngoài để bức xạ vào vũ trụ.
 
+![Mô hình khung CubeSat 1U với các vách và thanh ray dẫn hướng ở góc](../PTITCube-Figs/png/Lab6.1_structure.png)
+
+*Mô hình khung CubeSat 1U.*
+
 ### 2. Tác động Đa chiều của Khung Cơ khí lên các Phân hệ Khác
 Một thay đổi nhỏ trong thiết kế cơ khí sẽ ngay lập tức gây ra hiệu ứng domino ảnh hưởng trực tiếp tới hoạt động của tất cả các phân hệ còn lại:
 
-![Giao diện liên kết cơ khí cấu trúc 1U](../figs/png/lab6_structure_interfaces.png)
+![Giao diện liên kết cơ khí cấu trúc 1U](../PTITCube-Figs/png/lab6_structure_interfaces.png)
 
 1. **Tác động lên Phân hệ Năng lượng (EPS):**
    - *Tản nhiệt cho Khối Pin:* Pin Li-Po chỉ hoạt động an toàn trong dải nhiệt độ hẹp (0°C - 45°C). Khung cơ khí phải cung cấp các cầu nhiệt kim loại dẫn nhiệt sinh ra khi sạc/xả pin ra vỏ ngoài.
