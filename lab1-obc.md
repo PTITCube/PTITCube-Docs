@@ -16,7 +16,7 @@ Các nhiệm vụ sống còn mà OBC đảm nhiệm bao gồm:
 4. **Quản lý Hệ thống Tệp tin & Lưu trữ Dữ liệu Bay (Data Storage & File Management):** Quản lý quá trình ghi tệp dữ liệu cảm biến, hình ảnh viễn thám và nhật ký hành trình bay (Flight Log) lên thẻ nhớ microSD qua giao diện SPI tốc độ cao định dạng FAT32.
 5. **Giám sát Trạng thái & Tự động Phục hồi Lỗi (FDIR - Fault Detection, Isolation, and Recovery):** Theo dõi nhịp tim hệ thống (Heartbeat), duy trì xung làm tươi bộ định thời Watchdog Timer phần cứng (Hardware Watchdog Timer) và kích hoạt quy trình khởi động lại mềm (Soft Reset) hoặc ngắt mở lại nguồn (Power Cycling) khi phát hiện sự cố treo bus do bức xạ không gian.
 
-![Kiến trúc phần cứng OBC ESP32](../PTITCube-Figs/png/lab1_obc_architecture.png)
+![Kiến trúc phần cứng OBC ESP32](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_obc_architecture.png)
 
 ---
 
@@ -42,7 +42,7 @@ Bộ kit vệ tinh giáo dục **PTITCube** lựa chọn vi điều khiển hệ
 
 Trên thực tế, module **ESP32-WROOM-32** thường được tích hợp lên bo mạch phát triển **NodeMCU-32S (chuẩn 38 chân)** để thuận tiện cắm thử nghiệm và tích hợp lên bo chủ OBC của bộ kit PTITCube. Nhờ kiến trúc ma trận chuyển mạch **GPIO Matrix**, hầu hết các chân ngoại vi (PWM, I2C, SPI, UART) có thể được gán linh hoạt, nhưng người thiết kế phải tuân thủ đúng nhóm chức năng vật lý và giới hạn điện áp 3.3V của từng chân.
 
-![Sơ đồ chân đầy đủ của bo mạch ESP32 NodeMCU-32S](../PTITCube-Figs/png/Lab1.1_esp32.png)
+![Sơ đồ chân đầy đủ của bo mạch ESP32 NodeMCU-32S](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab1.1_esp32.png)
 
 #### Bảng Chức năng Các Chân trên Bo mạch ESP32 NodeMCU-32S
 
@@ -66,7 +66,7 @@ Trên thực tế, module **ESP32-WROOM-32** thường được tích hợp lên
 
 Trên vi điều khiển ESP32, có một số chân GPIO đặc biệt được gọi là **Strapping Pins**. Mức logic điện áp tại các chân này được chip lấy mẫu (sample) ngay tại khoảnh khắc xung Reset nhả ra ($0 \to 1$). Mức logic này quyết định chế độ hoạt động của chip:
 
-![Luồng khởi động và chân Strapping Pin ESP32](../PTITCube-Figs/png/lab1_strapping_flow.png)
+![Luồng khởi động và chân Strapping Pin ESP32](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_strapping_flow.png)
 
 | Tên Chân GPIO | Chức năng Strapping | Mức Logic Boot Bình thường | Mức Logic Nạp Firmware | Cảnh báo An toàn Thiết kế |
 | :--- | :--- | :--- | :--- | :--- |
@@ -91,7 +91,7 @@ Trên vi điều khiển ESP32, có một số chân GPIO đặc biệt được
 
 Môi trường thực hành của PTITCube được thiết kế theo mô hình điện toán đám mây hiện đại (Cloud-native Embedded Development Platform), giúp học viên có thể lập trình, biên dịch và nạp vi điều khiển trực tiếp trên trình duyệt web mà không cần cài đặt chuỗi công cụ cồng kềnh (như Python, Toolchain GCC, ESP-IDF hay driver phức tạp):
 
-![Quy trình biên dịch đám mây và nạp Web Serial](../PTITCube-Figs/png/lab1_cloud_compile_flow.png)
+![Quy trình biên dịch đám mây và nạp Web Serial](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_cloud_compile_flow.png)
 
 - **Khung Biên tập Mã nguồn (Monaco Editor):** Sử dụng nhân trình soạn thảo mã nguồn chuẩn công nghiệp (cùng nền tảng với VS Code), hỗ trợ đầy đủ các tính năng lập trình chuyên nghiệp: tô màu cú pháp C++, gợi ý mã thông minh (IntelliSense), tự động thụt đầu dòng và phát hiện lỗi cú pháp theo thời gian thực.
 - **Trình Biên dịch Đám mây (Cloud Compiler Backend):** Hệ thống máy chủ phân tán tự động tiếp nhận mã nguồn, kích hoạt môi trường container hóa chứa bộ công cụ biên dịch chéo `xtensa-esp32-elf-gcc`, liên kết thư viện bay PTITCube và xuất ra tệp nhị phân nén duy nhất `firmware.bin` trong vòng dưới 5 giây.
@@ -121,7 +121,7 @@ Web Serial API là tiêu chuẩn web hiện đại do W3C ban hành, cho phép c
 
 Trong thiết kế phần cứng vệ tinh, số lượng chân I/O trên vi điều khiển luôn là tài nguyên quý giá cần được tối ưu hóa triệt để. Vi mạch **74HC595** là chip dịch bit nối tiếp sang song song 8-bit tốc độ cao (**Serial-In Parallel-Out Shift Register**) kết hợp với một tầng thanh ghi chốt lưu trữ (**Storage / Latch Register**):
 
-![Cấu trúc vi mạch ghi dịch 74HC595 và LED 7 đoạn](../PTITCube-Figs/png/lab1_74hc595_structure.png)
+![Cấu trúc vi mạch ghi dịch 74HC595 và LED 7 đoạn](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_74hc595_structure.png)
 
 - **Thanh ghi Dịch (Shift Register):** Hoạt động theo cơ chế hàng đợi bit. Mỗi khi xuất hiện một cạnh lên ($0 \to 1$) trên chân xung nhịp **SH_CP (Shift Clock)**, bit dữ liệu hiện tại trên chân **DS (Serial Data)** sẽ được ghi vào tầng đầu tiên, đồng thời toàn bộ 7 bit trước đó sẽ bị đẩy dịch sang phải một nấc.
 - **Thanh ghi Chốt Lưu trữ (Storage / Latch Register):** Hoạt động độc lập với thanh ghi dịch. Trong suốt quá trình dịch 8 bit vào thanh ghi dịch, trạng thái của 8 chân ngõ ra Q₀ - Q₇ vẫn được giữ nguyên không đổi. Chỉ khi ta kích hoạt một xung cạnh lên ($0 \to 1$) trên chân **ST_CP (Latch Clock)**, toàn bộ 8 bit từ thanh ghi dịch mới được sao chép tức thì sang thanh ghi chốt và xuất ra ngoài. Cơ chế đệm hai tầng này loại bỏ hoàn toàn hiện tượng nhấp nháy đèn LED trong quá trình dịch dữ liệu.
@@ -161,9 +161,9 @@ Giao tiếp **UART (Universal Asynchronous Receiver-Transmitter)** là chuẩn t
   - `TX (Transmit)`: Đường xuất dữ liệu từ thiết bị phát.
   - `RX (Receive)`: Đường nhận dữ liệu vào thiết bị thu (Nối chéo: TX_A → RX_B và RX_A → TX_B).
 
-![Sơ đồ kết nối UART Full-Duplex](../PTITCube-Figs/png/lab1_uart_connection.png)
+![Sơ đồ kết nối UART Full-Duplex](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_uart_connection.png)
 
-![Giản đồ xung khung truyền UART 8-N-1](../PTITCube-Figs/png/lab1_uart_timing_sequence.png)
+![Giản đồ xung khung truyền UART 8-N-1](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_uart_timing_sequence.png)
 
 ### 2. Cấu hình Cổng Serial & Khung Truyền SERIAL_8N1
 
@@ -184,7 +184,7 @@ $$T_{\text{bit}} = \frac{1}{115200} \approx 8.68\,\mu\text{s} \implies T_{\text{
 
 Vi điều khiển ESP32 tích hợp sẵn 3 khối phần cứng UART độc lập (`UART0`, `UART1`, `UART2`). Nhờ ma trận chuyển mạch **GPIO Matrix**, ngoài các chân mặc định trên bo mạch NodeMCU-32S, các tín hiệu TX/RX của bộ UART có thể được định tuyến linh hoạt tới các chân GPIO an toàn nhằm tránh xung đột phần cứng:
 
-![Đánh dấu vị trí 3 cổng UART phần cứng trên ESP32 NodeMCU-32S](../PTITCube-Figs/png/Lab1.1_esp32.png)
+![Đánh dấu vị trí 3 cổng UART phần cứng trên ESP32 NodeMCU-32S](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab1.1_esp32.png)
 
 1. **UART0 (`Serial` — GPIO1 TX / GPIO3 RX):** Cổng UART nối tiếp mặc định được nối trực tiếp với chip cầu USB-UART (CP2102/CH340) trên bo mạch, dùng cho việc nạp mã nguồn từ Web IDE và in nhật ký gỡ lỗi ra cửa sổ Serial Monitor (tốc độ chuẩn 115200 bps).
 2. **UART1 (`Serial1` — Ánh xạ qua GPIO Matrix):** Cổng UART thứ hai trên chip. Về mặt phần cứng gốc, chân mặc định của UART1 (`GPIO9` / `GPIO10`) bị trùng với bus giao tiếp chip nhớ SPI Flash nội bên trong module (ký hiệu `!` màu đỏ trên sơ đồ chân). Do đó, khi khởi tạo `HardwareSerial(1)`, lập trình viên **bắt buộc phải ánh xạ (remap)** sang các chân GPIO tự do an toàn thông qua lệnh `Serial1.begin(baud, SERIAL_8N1, RX_PIN, TX_PIN)` (ví dụ kết nối tới module vô tuyến **LoRa E32**).
@@ -209,7 +209,7 @@ Khối vô tuyến Wi-Fi tích hợp trên ESP32 hỗ trợ đầy đủ các ch
 - **Chế độ Máy khách (Station Mode - STA):** ESP32 kết nối vào một mạng Wi-Fi có sẵn (như router phòng lab) và nhận một địa chỉ IP nội bộ từ máy chủ DHCP.
 - **Chế độ Điểm truy cập Mềm (SoftAP Mode):** ESP32 tự mình biến thành một trạm phát sóng Wi-Fi độc lập, tự cấp phát địa chỉ IP cho các thiết bị kết nối vào (mặc định là `192.168.4.1`). Học viên dùng laptop hoặc điện thoại kết nối thẳng vào mạng của vệ tinh mà không phụ thuộc vào hạ tầng mạng bên ngoài.
 
-![Kiến trúc SoftAP Web Server trên ESP32](../PTITCube-Figs/png/lab1_softap_webserver.png)
+![Kiến trúc SoftAP Web Server trên ESP32](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_softap_webserver.png)
 
 ### 2. Máy chủ Web HTTP Nhúng (Embedded Web Server)
 
@@ -224,7 +224,7 @@ OBC thực thi thư viện `WebServer.h` trên cổng mạng tiêu chuẩn $80$:
 
 ## 📖 Doc 1.6: Quy chuẩn Lập trình C++ Định thời Non-blocking với millis() & Thuật toán Chống Tràn số
 
-![Kiến trúc định thời Non-blocking millis() và chống tràn số](../PTITCube-Figs/png/lab1_millis_nonblocking.png)
+![Kiến trúc định thời Non-blocking millis() và chống tràn số](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_millis_nonblocking.png)
 
 ### 1. Tại sao Tuyệt đối CẤM sử dụng `delay()` trong Phần mềm Bay Vệ tinh?
 

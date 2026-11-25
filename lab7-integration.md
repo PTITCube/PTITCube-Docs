@@ -9,7 +9,7 @@ Giai đoạn Tích hợp Hệ thống là thời điểm quyết định của t
 
 Khi nhồi nhét tất cả các phân hệ vào không gian chật hẹp của khối lập phương 1U (10 × 10 × 11.35 cm), kỹ sư tích hợp phải đối mặt và giải quyết đồng thời 5 thách thức kỹ thuật lớn:
 
-![5 thách thức tích hợp hệ thống CubeSat](../PTITCube-Figs/png/lab7_integration_challenges.png)
+![5 thách thức tích hợp hệ thống CubeSat](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab7_integration_challenges.png)
 
 ### 2. Chi tiết Giải pháp Kỹ thuật Khắc phục 5 Thách thức
 1. **Giải quyết Xung đột Bus I2C/SPI:**
@@ -58,7 +58,7 @@ Khi nhồi nhét tất cả các phân hệ vào không gian chật hẹp của 
 ### 2. Máy Trạng Thái Hữu Hạn Điều Khiển Sứ Mệnh (Mission FSM)
 Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu Hạn (**Finite State Machine - FSM**) chuẩn mực:
 
-![Máy trạng thái nhiệm vụ bay CubeSat FSM](../PTITCube-Figs/png/lab7_mission_fsm.png)
+![Máy trạng thái nhiệm vụ bay CubeSat FSM](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab7_mission_fsm.png)
 
 ### 3. Chi tiết 6 Trạng thái Bay Cốt lõi
 - **`STATE_BOOT`:**
@@ -94,7 +94,7 @@ Phần mềm bay được điều hành bởi một Máy Trạng Thái Hữu H�
 
 ## 📖 Doc 7.3: Sổ Tay Vận Hành Bay (FOM) & Mô Phỏng Quỹ Đạo LEO 95 Phút
 
-![Chu kỳ quỹ đạo LEO 95 phút và cửa sổ liên lạc Trạm Mặt đất](../PTITCube-Figs/png/lab7_leo_orbit_pass.png)
+![Chu kỳ quỹ đạo LEO 95 phút và cửa sổ liên lạc Trạm Mặt đất](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab7_leo_orbit_pass.png)
 
 ### 1. Sổ Tay Vận Hành Bay (Flight Operations Manual - FOM)
 Sổ tay FOM là tài liệu quy chuẩn tác chiến dành cho kíp trực điều hành Trạm mặt đất:

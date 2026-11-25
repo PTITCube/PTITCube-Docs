@@ -10,7 +10,7 @@ Phân hệ Xử lý Dữ liệu và Lệnh (**Command and Data Handling - C&DH**
 - **Lưu trữ tệp dữ liệu sứ mệnh:** Lưu giữ các tệp ảnh chụp Trái Đất và số liệu quan trắc khoa học để sẵn sàng trút dữ liệu (Data Dump) khi bay qua trạm mặt đất.
 - **Nhật ký sự kiện (Flight Event Log):** Ghi lại chi tiết thời điểm xuất hiện các cảnh báo bất thường, lỗi vi xử lý, và các lần phục hồi hệ thống.
 
-![Sơ đồ kết nối bus SPI Full-Duplex](../PTITCube-Figs/png/lab3_spi_connection.png)
+![Sơ đồ kết nối bus SPI Full-Duplex](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_spi_connection.png)
 
 ### 2. Giao thức Truyền thông Đồng bộ SPI (Serial Peripheral Interface)
 Chuẩn giao tiếp **SPI** là một bus truyền thông nối tiếp đồng bộ 4 dây, hoạt động theo mô hình Master-Slave ở chế độ song công toàn phần (Full-duplex):
@@ -73,7 +73,7 @@ Chuẩn giao tiếp **SPI** là một bus truyền thông nối tiếp đồng b
 - **Silent Success (Thành công Im lặng):** Các lệnh điều hướng và thay đổi trạng thái (`cd`, `mkdir`, `rmdir`, `rm`, `touch`, `echo >`) khi thực thi thành công sẽ hoàn toàn im lặng, không trả về các tiền tố `OK:` rườm rà. Chỉ lệnh có dữ liệu xuất ra (`pwd`, `ls`, `cat`, `df`, `help`) hoặc khi xảy ra lỗi (`ERR: ...`) mới in thông tin ra màn hình.
 - **An toàn Hạt nhân VFS ESP-IDF:** Trước khi truy xuất tệp/thư mục, hệ thống sử dụng hàm `SD.exists()` để kiểm tra sự tồn tại (sử dụng hàm gọi hệ thống `stat()`), tuyệt đối không gọi `SD.open()` khi tệp chưa chắc chắn tồn tại nhằm triệt tiêu hoàn toàn các thông báo lỗi kernel VFS `[E][vfs_api.cpp:105] open(): ... does not exist`.
 
-![Kiến trúc Shell CLI và bộ điều phối FreeRTOS](../PTITCube-Figs/png/lab3_cli_rtos_overview.png)
+![Kiến trúc Shell CLI và bộ điều phối FreeRTOS](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_cli_rtos_overview.png)
 
 ### 2. Tổng quan Hệ Điều Hành: Tuần Tự (Super-Loop) vs Đa Nhiệm Thời Gian Thực (RTOS)
 Trong các dự án nhúng đơn giản, kỹ sư thường sử dụng kiến trúc vòng lặp tuần tự (Bare-metal Super-Loop). Tuy nhiên, trên một vệ tinh không gian hiện đại, khối lượng công việc đòi hỏi phải chuyển sang sử dụng Hệ điều hành Thời gian thực (**Real-Time Operating System - RTOS**):
@@ -122,7 +122,7 @@ Khi hệ thống chạy đa tác vụ, các tài nguyên phần cứng duy nhấ
 - Sau khi hoàn thành việc ghi dữ liệu, tác vụ bắt buộc phải nhả khóa: `xSemaphoreGive(xSPIMutex)`.
 - Các tác vụ khác muốn truy cập tài nguyên trong thời gian này sẽ tự động chuyển sang trạng thái chờ (Blocked), giải phóng chu kỳ CPU cho các công việc khác.
 
-![Đảo ngược ưu tiên và cơ chế khóa Mutex](../PTITCube-Figs/png/lab3_priority_inversion_mutex.png)
+![Đảo ngược ưu tiên và cơ chế khóa Mutex](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_priority_inversion_mutex.png)
 
 ### 3. Vấn đề Nghịch đảo Mức Ưu tiên (Priority Inversion) & Cơ chế Thừa kế Ưu tiên (Priority Inheritance)
 - **Sự cố Lịch sử Mars Pathfinder (1997):** Tàu đổ bộ Sao Hỏa liên tục bị reset phần mềm bí ẩn giữa sa mạc Sao Hỏa do một lỗi thiết kế RTOS kinh điển:
@@ -166,7 +166,7 @@ Trong môi trường bức xạ quỹ đạo LEO, các hạt ion mang điện t�
 - Trong điều kiện hoạt động bình thường, phần mềm bay định kỳ thực hiện thao tác **Làm tươi Watchdog Timer (Feed Watchdog / Reset WDT)** để nạp lại giá trị ban đầu cho bộ đếm.
 - Nếu phần mềm bị treo hoặc rơi vào vòng lặp vô tận, thao tác làm tươi Watchdog Timer không được thực hiện. Bộ đếm chạm mức $0$, ngay lập tức kéo chân Reset phần cứng của vi điều khiển xuống mức thấp, ép buộc toàn bộ hệ thống khởi động lại sạch sẽ.
 
-![Máy trạng thái bộ định thời Watchdog Timer](../PTITCube-Figs/png/lab3_watchdog_fsm.png)
+![Máy trạng thái bộ định thời Watchdog Timer](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab3_watchdog_fsm.png)
 
 ### 2. Hai Phân cấp Watchdog Timer trong ESP32
 1. **Hardware Interrupt Watchdog (IWDT):** Giám sát ở cấp độ vi xử lý phần cứng cấp thấp. Nếu một ngắt (Interrupt Handler) chạy quá lâu hoặc CPU bị khóa hoàn toàn, IWDT kích hoạt.

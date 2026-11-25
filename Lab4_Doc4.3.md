@@ -1,6 +1,6 @@
 # Lab 4: Doc 4.3 - Nguyên lý Phần Cứng Module Định Vị GNSS L76X & Giao Tiếp UART Đọc Dữ Liệu Thô
 
-![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](../PTITCube-Figs/png/lab4_gnss_l76x_architecture.png)
+![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_gnss_l76x_architecture.png)
 
 ### 1. Kiến trúc Phần cứng Module Định vị Toàn cầu GNSS L76X
 Module Quectel **L76X** là khí tài định vị không gian tích hợp đồng thời hai hệ thống vệ tinh: **GPS** (Hoa Kỳ - tần số L1 1575.42 MHz) và **GLONASS** (Nga - tần số L1 1602 MHz):
@@ -14,7 +14,7 @@ Module Quectel **L76X** là khí tài định vị không gian tích hợp đồ
   - Tốc độ baud tiêu chuẩn: 9600 bps, cấu hình khung truyền `8-N-1`.
   - **Đặc tính phát dữ liệu tự động:** Ngay khi được cấp nguồn 3.3V, module tự động phát ra luồng ký tự ASCII chứa các dòng bản tin NMEA định kỳ mỗi giây (1 Hz) qua chân TX mà không cần OBC phải gửi bất kỳ lệnh kích hoạt nào.
 
-![Hai mặt module Waveshare L76X, đầu nối 5 chân và anten gốm](../PTITCube-Figs/png/Lab4.3_L76X.png)
+![Hai mặt module Waveshare L76X, đầu nối 5 chân và anten gốm](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab4.3_L76X.png)
 
 
 

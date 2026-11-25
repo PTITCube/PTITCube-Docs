@@ -6,7 +6,7 @@ Một vệ tinh CubeSat là một hệ sinh thái cơ điện tử thu nhỏ, tr
 2. **Tải trọng Sứ mệnh (Payload):** Bộ phận trực tiếp thực hiện mục tiêu khoa học, quan sát hoặc thử nghiệm công nghệ của chuyến bay — đây chính là lý do tồn tại của toàn bộ hệ thống vệ tinh trên quỹ đạo (ví dụ: camera chụp ảnh bề mặt Trái Đất, máy thu tín hiệu hàng hải AIS/ADS-B, cảm biến đo bức xạ hoặc mô-đun quan sát khí tượng).
 
 
-![Kiến trúc hệ thống CubeSat tổng thể](../PTITCube-Figs/png/system.png)
+![Kiến trúc hệ thống CubeSat tổng thể](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/system.png)
 
 > **Lưu ý về phân chia phân hệ:** Theo tài liệu kỹ thuật hệ thống CubeSat tiêu chuẩn, vệ tinh thường được phân tách thành 7 nhóm chức năng (Kết cấu cơ khí, Nguồn điện EPS, Xử lý dữ liệu & điều khiển C&DH, Thông tin liên lạc COM, Xác định & điều khiển hướng ADCS, Điều khiển nhiệt TCS và Tải hữu ích Payload). Trên bộ kit giáo dục **PTITCube 1U**, hệ thống được tổ chức gọn thành **6 Phân hệ Cốt lõi**: các cảm biến giám sát trạng thái và tải trọng nhiệm vụ được gộp chung thành phân hệ **Cảm biến & Tải trọng Sứ mệnh**, còn chức năng **Điều khiển Nhiệt (TCS)** được tích hợp trực tiếp ở dạng thụ động thông qua khung nhôm dẫn nhiệt và giám sát nhiệt độ trên các cảm biến/mạch sạc.
 
@@ -163,7 +163,7 @@ Phân hệ kết cấu cơ khí tạo bộ khung chịu lực, định hình bao
 #### 3.2. Hướng dẫn Tương tác Không gian 3D trên Web LMS
 Trình mô phỏng 3D của CubeSat-LMS được xây dựng trên nền tảng WebGL mượt mà, cho phép người học thao tác không gian đa chiều trực tiếp trên trình duyệt mà không cần cài đặt phần mềm ngoài:
 
-![Thao tác điều khiển mô phỏng 3D WebGL](../PTITCube-Figs/png/lab0_ui_controls.png)
+![Thao tác điều khiển mô phỏng 3D WebGL](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_ui_controls.png)
 
 #### 3.3. Quy trình Thực hiện Bài Thực hành Từng bước
 1. **Bước 1 - Khởi động Trình duyệt & Mở Trình Mô phỏng 3D:**

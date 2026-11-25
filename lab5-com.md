@@ -35,7 +35,7 @@ $$\text{FSPL (dB)} = 20 \log_{10}(800) + 20 \log_{10}(433) + 32.44 \approx 58.06
 
 - Nhận xét: Sóng vô tuyến bị suy yếu tới 143 dB (tương đương năng lượng bị suy giảm hơn 10¹⁴ lần) trên hành trình xuyên qua bầu khí quyển xuống mặt đất!
 
-![Sơ đồ cân bằng tuyến truyền thông vô tuyến LEO](../PTITCube-Figs/png/lab5_rf_link_budget.png)
+![Sơ đồ cân bằng tuyến truyền thông vô tuyến LEO](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab5_rf_link_budget.png)
 
 ### 4. Phương trình Cân Bằng Tuyến Truyền Thông (Link Budget)
 Bảng cân đối tuyến truyền thông tổng hợp toàn bộ các nguồn tăng ích và suy hao trên toàn bộ chuỗi thu phát:
@@ -109,7 +109,7 @@ $$\Delta f_\text{max} \approx 433\text{ MHz} \times \frac{7.6\text{ km/s}}{300.0
 | **Telemetry Data** | $N - 5$ Bytes | Khối dữ liệu cảm biến: $V_\text{bat}$, SOC, Nhiệt độ, Áp suất, Gia tốc, Tọa độ GPS |
 | **Checksum CRC-16**| 2 Bytes | Mã kiểm tra lỗi chu kỳ 16-bit bảo vệ tính toàn vẹn dữ liệu |
 
-![Cấu trúc khung bản tin viễn trắc và mã kiểm tra CRC-16](../PTITCube-Figs/png/lab5_telemetry_frame_crc.png)
+![Cấu trúc khung bản tin viễn trắc và mã kiểm tra CRC-16](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab5_telemetry_frame_crc.png)
 
 ### 2. Thuật toán Kiểm tra Lỗi Chu kỳ CRC-16-CCITT
 Trong không gian, nhiễu nền vũ trụ có thể làm biến dạng ngẫu nhiên một vài bit dữ liệu. Phương pháp tính tổng cộng (Checksum đơn giản) rất dễ bị lọt lưới khi hai lỗi bit triệt tiêu nhau.
@@ -161,12 +161,12 @@ Module **Ebyte E32-433T20D** sử dụng chip thu phát bán dẫn SX1278 của 
   - **Hệ số Trải phổ (Spreading Factor - SF7 đến SF12):** SF càng lớn, tầm xa càng tăng nhưng tốc độ truyền dữ liệu (Data Rate) càng giảm.
   - **Băng thông (Bandwidth - BW):** Thường chọn 125 kHz cho kênh UHF.
 
-![Kiến trúc truyền thông LoRa E32 và Trạm Mặt đất](../PTITCube-Figs/png/lab5_lora_ground_station.png)
+![Kiến trúc truyền thông LoRa E32 và Trạm Mặt đất](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab5_lora_ground_station.png)
 
 ### 2. Sơ đồ Chân & Các Chế độ Hoạt động của Module Ebyte E32
 Module E32 giao tiếp với vi điều khiển OBC thông qua cổng UART1 chuẩn và hai chân điều khiển chế độ `M0`, `M1`:
 
-![Module LoRa Ebyte E32-TTL-100 với hàng chân UART và cổng anten SMA](../PTITCube-Figs/png/Lab5.3_loraE32.png)
+![Module LoRa Ebyte E32-TTL-100 với hàng chân UART và cổng anten SMA](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab5.3_loraE32.png)
 
 *Module E32-TTL-100. Đối chiếu hàng chân bên trái từ trên xuống (M0, M1, RXD, TXD, AUX, VCC, GND) với bảng đấu nối bên dưới. Đầu nối anten nằm ở bên phải.*
 

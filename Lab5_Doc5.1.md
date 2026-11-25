@@ -31,7 +31,7 @@ $$\text{FSPL (dB)} = 20 \log_{10}(800) + 20 \log_{10}(433) + 32.44 \approx 58.06
 
 - Nhận xét: Sóng vô tuyến bị suy yếu tới 143 dB (tương đương năng lượng bị suy giảm hơn 10¹⁴ lần) trên hành trình xuyên qua bầu khí quyển xuống mặt đất!
 
-![Sơ đồ cân bằng tuyến truyền thông vô tuyến LEO](../PTITCube-Figs/png/lab5_rf_link_budget.png)
+![Sơ đồ cân bằng tuyến truyền thông vô tuyến LEO](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab5_rf_link_budget.png)
 
 ### 4. Phương trình Cân Bằng Tuyến Truyền Thông (Link Budget)
 Bảng cân đối tuyến truyền thông tổng hợp toàn bộ các nguồn tăng ích và suy hao trên toàn bộ chuỗi thu phát:

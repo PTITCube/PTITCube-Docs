@@ -18,9 +18,9 @@ Bus **I2C** do hãng Philips (nay là NXP) phát triển là một bus truyền 
   - Khi không có thiết bị nào truyền tin, điện trở kéo lên giữ cho đường bus luôn ở mức logic `HIGH`.
   - Thiết kế này tạo ra cổng logic "HOẶC có dây" (Wired-AND), triệt tiêu hoàn toàn nguy cơ đoản mạch làm cháy chip khi hai thiết bị vô tình phát xung đối nghịch cùng lúc.
 
-![Sơ đồ kết nối bus I2C đa cảm biến và điện trở kéo lên](../PTITCube-Figs/png/lab4_i2c_connection.png)
+![Sơ đồ kết nối bus I2C đa cảm biến và điện trở kéo lên](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_i2c_connection.png)
 
-![Trình tự giao thức đọc thanh ghi I2C](../PTITCube-Figs/png/lab4_i2c_protocol_sequence.png)
+![Trình tự giao thức đọc thanh ghi I2C](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_i2c_protocol_sequence.png)
 
 ### 3. Khung Truyền Dữ liệu & Các Trạng thái Điều khiển
 1. **Điều kiện START và STOP (Bắt đầu và Kết thúc):**

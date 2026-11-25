@@ -1,6 +1,6 @@
 # Lab 2: Doc 2.2 - Quản lý Rủi ro Sụt áp (Brownout), Cơ chế Ngắt An toàn Phóng & Điều Khiển Mạch Hạ Áp Cấp Nguồn Cảm Biến
 
-![Bảo vệ sụt áp Brownout và điều khiển cấp nguồn tải](../PTITCube-Figs/png/lab2_brownout_power_gating.png)
+![Bảo vệ sụt áp Brownout và điều khiển cấp nguồn tải](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab2_brownout_power_gating.png)
 
 ### 1. Cơ chế Ngắt An toàn Phóng (Safety Inhibits)
 Để được các cơ quan hàng không vũ trụ (NASA, JAXA, ESA) cấp phép đưa lên tên lửa đẩy, vệ tinh bắt buộc phải có tối thiểu 2 cơ chế ngắt nguồn độc lập nhằm bảo đảm an toàn tuyệt đối cho tên lửa mẹ:

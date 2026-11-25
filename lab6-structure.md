@@ -10,14 +10,14 @@ Trong kỹ thuật vệ tinh CubeSat, Phân hệ Cấu trúc thường bị nh�
 - **Duy trì Giao diện Cơ học Tiêu chuẩn với Ống Phóng P-POD:** Định hình chính xác bao hình kích thước bên ngoài, dẫn hướng vệ tinh trượt êm ái ra khỏi ống phóng mà không bị kẹt dính.
 - **Khối Tản Nhiệt Thụ Động Chủ Đạo (Primary Thermal Heat Sink):** Dẫn nhiệt lượng tỏa ra từ các chip công suất bên trong truyền ra các bề mặt ngoài để bức xạ vào vũ trụ.
 
-![Mô hình khung CubeSat 1U với các vách và thanh ray dẫn hướng ở góc](../PTITCube-Figs/png/Lab6.1_structure.png)
+![Mô hình khung CubeSat 1U với các vách và thanh ray dẫn hướng ở góc](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab6.1_structure.png)
 
 *Mô hình khung CubeSat 1U.*
 
 ### 2. Tác động Đa chiều của Khung Cơ khí lên các Phân hệ Khác
 Một thay đổi nhỏ trong thiết kế cơ khí sẽ ngay lập tức gây ra hiệu ứng domino ảnh hưởng trực tiếp tới hoạt động của tất cả các phân hệ còn lại:
 
-![Giao diện liên kết cơ khí cấu trúc 1U](../PTITCube-Figs/png/lab6_structure_interfaces.png)
+![Giao diện liên kết cơ khí cấu trúc 1U](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab6_structure_interfaces.png)
 
 1. **Tác động lên Phân hệ Năng lượng (EPS):**
    - *Tản nhiệt cho Khối Pin:* Pin Li-Po chỉ hoạt động an toàn trong dải nhiệt độ hẹp (0°C - 45°C). Khung cơ khí phải cung cấp các cầu nhiệt kim loại dẫn nhiệt sinh ra khi sạc/xả pin ra vỏ ngoài.
@@ -67,7 +67,7 @@ Vật liệu sử dụng cho khung CubeSat phải đáp ứng đồng thời 4 t
 ### 2. Quy trình Xử lý Bề mặt Chọn lọc: Anodize Cứng Type III vs Lớp Phủ Alodine
 Khung nhôm CubeSat bắt buộc phải trải qua quy trình xử lý bề mặt chọn lọc hai giai đoạn (Selective Masking) theo tiêu chuẩn quân sự Hoa Kỳ:
 
-![Quy trình xử lý bề mặt Anodize và Alodine](../PTITCube-Figs/png/lab6_surface_treatment.png)
+![Quy trình xử lý bề mặt Anodize và Alodine](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab6_surface_treatment.png)
 
 1. **Anodize Hóa Cứng Type III (Hard Anodizing - Tiêu chuẩn MIL-A-8625):**
    - Áp dụng trên: **4 thanh ray dẫn hướng ở 4 góc** tiếp xúc trực tiếp với lòng ống phóng P-POD.
@@ -114,7 +114,7 @@ Bên trong lòng khối lập phương 1U, các tầng bo mạch điện tử (O
 
 Tích hợp cơ khí xác định vị trí và cách cố định từng bo mạch vào khung. Tích hợp điện xác định đường cấp nguồn và truyền tín hiệu giữa các bo mạch. Mục 2.1.3.4 của báo cáo *17– SV – 2026 – VT1, NV.Hưng (1).docx* trình bày ba phương thức sau.
 
-![Minh họa ba phương thức PC/104, Backplane và Point-to-Point](../PTITCube-Figs/png/lab6_tich_hop_bo_mach.png)
+![Minh họa ba phương thức PC/104, Backplane và Point-to-Point](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab6_tich_hop_bo_mach.png)
 
 *Hình bổ sung. Các phương thức tích hợp bo mạch CubeSat, trích Hình 2.12 của báo cáo Word (nguồn [18] trong báo cáo).*
 
@@ -134,7 +134,7 @@ Tích hợp cơ khí xác định vị trí và cách cố định từng bo m�
   - Khi đưa vệ tinh vào buồng thử nghiệm chân không nhiệt (TVAC), lượng khí nén này sẽ rò rỉ cực kỳ chậm chạp qua các khe hở vi mô của đường ren ra ngoài (hiện tượng **Rò rỉ ảo - Virtual Leak**), khiến buồng thử nghiệm không bao giờ đạt được mức chân không mong muốn và làm sai lệch kết quả đo.
   - Bu lông thông hơi được khoan một lỗ rỗng siêu nhỏ xuyên suốt tâm dọc trục bu lông, cho phép toàn bộ không khí ở đáy lỗ ren thoát ra ngay lập tức khi buồng hút chân không.
 
-![Thiết kế bu-lông thông hơi chống rò rỉ ảo](../PTITCube-Figs/png/lab6_vented_screw.png)
+![Thiết kế bu-lông thông hơi chống rò rỉ ảo](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab6_vented_screw.png)
 
 ### 3. Bảng Cân Đối Khối Lượng (Mass Budget) & Cân Bằng Trọng Tâm (Center of Mass - CoM)
 - **Bảng Cân đối Khối lượng (Mass Budget):** Tổng khối lượng của một CubeSat 1U bị khống chế nghiêm ngặt không được vượt quá 1.330 kg (hoặc 2.000 kg). Trong giai đoạn thiết kế, kỹ sư phải duy trì một biên độ khối lượng dự phòng (**Mass Margin** ≥ 15 - 20%) để bù đắp cho sự tăng khối lượng thực tế của dây dẫn, màng bọc và keo dán trong quá trình lắp ráp.

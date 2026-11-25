@@ -1,6 +1,6 @@
 # Lab 4: Doc 4.6 - IC Chuyển Mạch Multiplexer 74HC4066 & Kỹ Thuật Đa Hóa Cổng UART
 
-![Sơ đồ đa hóa cổng UART2 qua IC 74HC4066](../PTITCube-Figs/png/lab4_uart_mux_74hc4066.png)
+![Sơ đồ đa hóa cổng UART2 qua IC 74HC4066](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_uart_mux_74hc4066.png)
 
 ### 1. Khóa Chuyển Mạch Tương Tự 74HC4066
 - **Xung đột Phần cứng khi Dùng chung Cổng UART:**

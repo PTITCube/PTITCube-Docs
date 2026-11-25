@@ -22,9 +22,9 @@ Bus **I2C** do hãng Philips (nay là NXP) phát triển là một bus truyền 
   - Khi không có thiết bị nào truyền tin, điện trở kéo lên giữ cho đường bus luôn ở mức logic `HIGH`.
   - Thiết kế này tạo ra cổng logic "HOẶC có dây" (Wired-AND), triệt tiêu hoàn toàn nguy cơ đoản mạch làm cháy chip khi hai thiết bị vô tình phát xung đối nghịch cùng lúc.
 
-![Sơ đồ kết nối bus I2C đa cảm biến và điện trở kéo lên](../PTITCube-Figs/png/lab4_i2c_connection.png)
+![Sơ đồ kết nối bus I2C đa cảm biến và điện trở kéo lên](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_i2c_connection.png)
 
-![Trình tự giao thức đọc thanh ghi I2C](../PTITCube-Figs/png/lab4_i2c_protocol_sequence.png)
+![Trình tự giao thức đọc thanh ghi I2C](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_i2c_protocol_sequence.png)
 
 ### 3. Khung Truyền Dữ liệu & Các Trạng thái Điều khiển
 1. **Điều kiện START và STOP (Bắt đầu và Kết thúc):**
@@ -85,7 +85,7 @@ $$h = 44330 \times \left[ 1 - \left(\frac{P}{P_0}\right)^{\frac{1}{5.255}} \righ
   - `0x41 - 0x42`: Nhiệt độ nội bộ của chip silicon.
   - `0x43 - 0x48`: Vận tốc góc 3 trục $G_x, G_y, G_z$ (độ nhạy cấu hình ±250, ±500, ±1000, ±2000°/s).
 
-![Sơ đồ chân và trục tọa độ mô-đun IMU MPU6500](../PTITCube-Figs/png/Lab4.2_MPU6500.png)
+![Sơ đồ chân và trục tọa độ mô-đun IMU MPU6500](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab4.2_MPU6500.png)
 
 #### Bảng Chức năng Các Chân trên Bo mạch Cảm biến MPU6500
 
@@ -106,7 +106,7 @@ $$h = 44330 \times \left[ 1 - \left(\frac{P}{P_0}\right)^{\frac{1}{5.255}} \righ
 - **Nhà sản xuất & Địa chỉ I2C:** QST / Honeywell. Địa chỉ I2C chuẩn là `0x0D` (QMC5883L / QMC5883P) hoặc `0x1E` (HMC5883L).
 - **Cấu trúc Phần cứng:** Tích hợp 3 cảm biến từ điện trở dị hướng (Anisotropic Magnetoresistive - AMR) độ nhạy cao đo cường độ từ trường Trái Đất theo 3 trục trực giao $M_x, M_y, M_z$ (đơn vị Gauss hoặc $\mu\text{T}$) tương ứng với ký hiệu mũi tên trục $X, Y, Z$ trên bo mạch.
 
-![Sơ đồ chân và mặt linh kiện mô-đun từ kế GY-271](../PTITCube-Figs/png/Lab4.2_GY271.png)
+![Sơ đồ chân và mặt linh kiện mô-đun từ kế GY-271](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab4.2_GY271.png)
 
 #### Bảng Chức năng Các Chân trên Bo mạch La bàn số GY-271
 
@@ -138,7 +138,7 @@ $$\theta_t = \alpha \cdot (\theta_{t-1} + \omega \cdot \Delta t) + (1 - \alpha) 
 
   Trong đó: $\Delta t$ là chu kỳ lấy mẫu, $\alpha$ là trọng số lọc (thường chọn $\alpha = 0.96 - 0.98$). Thuật toán chạy siêu nhanh trên vi điều khiển, triệt tiêu hoàn toàn độ trôi của con quay và lọc sạch nhiễu rung lắc của gia tốc kế.
 
-![Bộ lọc bù hợp nhất dữ liệu IMU](../PTITCube-Figs/png/lab4_complementary_filter.png)
+![Bộ lọc bù hợp nhất dữ liệu IMU](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_complementary_filter.png)
 
 ---
 
@@ -167,7 +167,7 @@ $$\theta_t = \alpha \cdot (\theta_{t-1} + \omega \cdot \Delta t) + (1 - \alpha) 
 
 ## 📖 Doc 4.3: Nguyên lý Phần Cứng Module Định Vị GNSS L76X & Giao Tiếp UART Đọc Dữ Liệu Thô
 
-![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](../PTITCube-Figs/png/lab4_gnss_l76x_architecture.png)
+![Luồng thu nhận tín hiệu vệ tinh định vị GNSS L76X qua UART2](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_gnss_l76x_architecture.png)
 
 ### 1. Kiến trúc Phần cứng Module Định vị Toàn cầu GNSS L76X
 Module Quectel **L76X** là khí tài định vị không gian tích hợp đồng thời hai hệ thống vệ tinh: **GPS** (Hoa Kỳ - tần số L1 1575.42 MHz) và **GLONASS** (Nga - tần số L1 1602 MHz):
@@ -181,7 +181,7 @@ Module Quectel **L76X** là khí tài định vị không gian tích hợp đồ
   - Tốc độ baud tiêu chuẩn: 9600 bps, cấu hình khung truyền `8-N-1`.
   - **Đặc tính phát dữ liệu tự động:** Ngay khi được cấp nguồn 3.3V, module tự động phát ra luồng ký tự ASCII chứa các dòng bản tin NMEA định kỳ mỗi giây (1 Hz) qua chân TX mà không cần OBC phải gửi bất kỳ lệnh kích hoạt nào.
 
-![Hai mặt module Waveshare L76X, đầu nối 5 chân và anten gốm](../PTITCube-Figs/png/Lab4.3_L76X.png)
+![Hai mặt module Waveshare L76X, đầu nối 5 chân và anten gốm](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab4.3_L76X.png)
 
 
 
@@ -238,7 +238,7 @@ void loop() {
 ### 1. Tại Sao Bắt Buộc Phải Chuyển Đổi Dữ Liệu NMEA Thô?
 Luồng dữ liệu thô thu được từ cổng UART là các dòng chuỗi văn bản ASCII thuần túy. Vi điều khiển OBC không thể sử dụng trực tiếp chuỗi ký tự này để tính toán quỹ đạo, kiểm tra hàng rào địa lý (Geofencing) hay đóng gói vào bản tin Telemetry nếu không chuyển đổi thành các kiểu dữ liệu số thực (`float`, `double`) và số nguyên (`int`).
 
-![Quy trình kiểm tra Checksum XOR và giải mã bản tin NMEA 0183](../PTITCube-Figs/png/lab4_nmea_parsing_flow.png)
+![Quy trình kiểm tra Checksum XOR và giải mã bản tin NMEA 0183](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_nmea_parsing_flow.png)
 
 ### 2. Cấu Trúc Chi Tiết Từng Trường của Bản Tin NMEA Chuẩn
 Mỗi câu tin NMEA bắt đầu bằng ký tự `$`, theo sau là mã định danh nguồn phát (`GP` cho GPS, `GL` cho GLONASS, `GN` cho đa hệ thống), tên câu lệnh 3 ký tự, các trường dữ liệu ngăn cách bằng dấu phẩy `,` và kết thúc bằng mã Checksum sau dấu `*`:
@@ -351,7 +351,7 @@ void loop() {
 
 ## 📖 Doc 4.5: Tải Trọng Camera Viễn Thám OV2640, Nén JPEG Phần Cứng & Giao Thức Lệnh UART
 
-![Quy trình chụp ảnh JPEG từ OV2640 lưu MicroSD và truyền LoRa](../PTITCube-Figs/png/lab4_ov2640_capture_pipeline.png)
+![Quy trình chụp ảnh JPEG từ OV2640 lưu MicroSD và truyền LoRa](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_ov2640_capture_pipeline.png)
 
 ### 1. Tải trọng Camera OV2640
 - **Đặc tính Tải trọng:** Cảm biến ảnh màu CMOS Omnivision **OV2640** độ phân giải 2 Megapixel (1600 × 1200 pixel), tích hợp bộ mã hóa nén phần cứng JPEG giúp giảm dung lượng tệp ảnh từ hàng Megabytes xuống còn $30 - 60\text{ KB}$, rất phù hợp với băng thông hạn chế của kênh truyền sóng không gian.
@@ -371,7 +371,7 @@ Khác với giao thức ký tự đơn sơ khởi (`'p'`), giao thức chuẩn c
 
 ## 📖 Doc 4.6: IC Chuyển Mạch Multiplexer 74HC4066 & Kỹ Thuật Đa Hóa Cổng UART
 
-![Sơ đồ đa hóa cổng UART2 qua IC 74HC4066](../PTITCube-Figs/png/lab4_uart_mux_74hc4066.png)
+![Sơ đồ đa hóa cổng UART2 qua IC 74HC4066](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_uart_mux_74hc4066.png)
 
 ### 1. Khóa Chuyển Mạch Tương Tự 74HC4066
 - **Xung đột Phần cứng khi Dùng chung Cổng UART:**

@@ -14,7 +14,7 @@ CubeSat đã tạo nên một cuộc cách mạng mang tính đột phá (**New 
 2. **Khai thác Linh kiện Thương mại Sẵn có (COTS - Commercial Off-The-Shelf):** Tận dụng bước nhảy vọt của ngành công nghiệp bán dẫn tiêu dùng (vi xử lý kiến trúc **ARM** / **ESP32**, cảm biến vi cơ điện tử **MEMS** - *Micro-Electro-Mechanical Systems*, pin Lithium-Ion điện thoại). Mặc dù linh kiện COTS không được bọc chắn bức xạ chuyên dụng, các kỹ sư vũ trụ hiện đại áp dụng các giải pháp kiến trúc hệ thống, thuật toán tự sửa lỗi và cơ chế dự phòng đa tầng để đạt độ tin cậy bay mong muốn với giá thành cực thấp.
 3. **Đóng gói Kín Giảm Thiểu Rủi ro cho Tên lửa Mẹ (Containerized Launch Integration):** Vệ tinh được nhốt hoàn toàn bên trong ống phóng dạng hộp kín có nắp đậy (như **P-POD** - *Poly-Picosatellite Orbital Deployer*). Mọi nguy cơ bung vỡ chi tiết, đoản mạch hay phát sóng ngoài ý muốn đều bị cô lập hoàn toàn, bảo vệ an toàn tuyệt đối cho tên lửa đẩy và tải trọng thương mại chính.
 
-![Lịch sử phát triển chuẩn CubeSat & New Space](../PTITCube-Figs/png/lab0_timeline.png)
+![Lịch sử phát triển chuẩn CubeSat & New Space](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_timeline.png)
 
 ---
 
@@ -34,7 +34,7 @@ Trong thang phân loại quốc tế của Liên đoàn Hàng không Vũ trụ Q
 ### 3. Thông số Hình học Tiêu chuẩn 1U (1 Unit) theo Quy chuẩn CalPoly
 Một vệ tinh CubeSat đơn vị cơ sở (**1U** - *1 Unit*) phải tuân thủ nghiêm ngặt các quy định kích thước trong tài liệu đặc tả **CubeSat Design Specification (CDS)** do Đại học CalPoly ban hành để đảm bảo vệ tinh có thể trượt vừa vặn trơn tru bên trong ống phóng mà không bao giờ bị kẹt:
 
-![Thông số cơ học tiêu chuẩn CubeSat 1U](../PTITCube-Figs/png/lab0_1u_dimensions.png)
+![Thông số cơ học tiêu chuẩn CubeSat 1U](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_1u_dimensions.png)
 
 | Thông số Kỹ thuật | Tiêu chuẩn Quy định | Ý nghĩa Kỹ thuật & Dung sai Kiểm định |
 | :--- | :--- | :--- |
@@ -54,7 +54,7 @@ CubeSat không được gắn trực tiếp lên tên lửa đẩy mà bắt bu�
 1. **P-POD (Poly-Picosatellite Orbital Deployer):** Phát triển bởi CalPoly, là ống phóng kinh điển bằng hợp kim nhôm **Al 7075-T6**. Một ống P-POD tiêu chuẩn có thể chứa một vệ tinh 3U hoặc ba vệ tinh 1U xếp chồng nối tiếp nhau.
 2. **J-SSOD (JEM Small Satellite Orbital Deployer):** Hệ thống phóng vệ tinh lắp đặt trên Module Thí nghiệm Nhật Bản **JEM** (*Japanese Experiment Module*, còn gọi là Module Kibo) thuộc Trạm Vũ trụ Quốc tế (**ISS** - *International Space Station*). Các phi hành gia đưa bộ phóng ra ngoài không gian qua cửa điều áp (**Air Lock**) và cánh tay robot Kibo sẽ định hướng ống phóng về phía sau quỹ đạo ISS để đẩy CubeSat ra ngoài.
 
-![Trình tự phóng và triển khai CubeSat lên quỹ đạo](../PTITCube-Figs/png/lab0_deployment_sequence.png)
+![Trình tự phóng và triển khai CubeSat lên quỹ đạo](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_deployment_sequence.png)
 
 - **Lò xo đẩy chính (Ejection Spring):** Đặt tại đáy ống phóng, cung cấp lực đẩy tuyến tính ổn định để phóng vệ tinh với vận tốc tương đối từ $1.0\text{ m/s}$ đến $1.5\text{ m/s}$, tránh nguy cơ vệ tinh bay lơ lửng ngay cửa ống gây va chạm với tên lửa.
 - **Lò xo tách tầng (Deployment Plungers):** Lắp ở đỉnh các thanh ray trượt. Khi hai vệ tinh CubeSat xếp chồng trong cùng một ống phóng rời khỏi cửa, các lò xo plunger nhỏ sẽ lập tức đẩy hai vệ tinh dạt xa nhau để ngăn ngừa va chạm thứ cấp.
@@ -82,7 +82,7 @@ $$\text{TML} \le 1.0\%, \quad \text{CVCM} \le 0.1\%$$
 #### B. Môi trường Bức xạ Vũ trụ & Hạt Mang điện Năng lượng Cao
 Không gian LEO không được tầng khí quyển dày bảo vệ hoàn toàn, vệ tinh liên tục bị bắn phá bởi các chùm hạt proton từ gió Mặt Trời, tia vũ trụ ngân hà (**GCR** - *Galactic Cosmic Rays*) và các điện tử năng lượng cao bị bẫy trong hai vành đai bức xạ Van Allen. Tác động của **bức xạ ion hóa (Ionizing Radiation)** lên linh kiện bán dẫn được chia thành hai nhóm chính:
 
-![Tác động bức xạ không gian và giải pháp giảm thiểu](../PTITCube-Figs/png/lab0_radiation_effects.png)
+![Tác động bức xạ không gian và giải pháp giảm thiểu](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_radiation_effects.png)
 
 1. **Tác động Tích lũy — TID (Total Ionizing Dose - Tổng liều Ion hóa Tích lũy):**
    - **Bản chất:** Lượng bức xạ ion hóa tích tụ dần trong lớp oxit cách điện của vi mạch bán dẫn theo suốt thời gian hoạt động trên quỹ đạo.
@@ -131,7 +131,7 @@ $$\dot{Q}_{\text{out}} = \varepsilon \cdot \sigma \cdot A_{\text{total}} \cdot (
 
    (với $\varepsilon$ là hệ số phát xạ hồng ngoại của vật liệu vỏ, hằng số Stefan-Boltzmann $\sigma = 5.67 \times 10^{-8}\text{ W/(m}^2\text{K}^4)$, $A_{\text{total}}$ là tổng diện tích bức xạ $6$ mặt của CubeSat, và nhiệt độ nền vũ trụ $T_{\text{space}} \approx 2.7\text{ K} \approx -270.45^\circ\text{C}$).
 
-![Cân bằng nhiệt vệ tinh CubeSat trên quỹ đạo LEO](../PTITCube-Figs/png/lab0_thermal_balance.png)
+![Cân bằng nhiệt vệ tinh CubeSat trên quỹ đạo LEO](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_thermal_balance.png)
 
 - **Biên độ Biến thiên Nhiệt:**
   - **Pha Ban ngày (Sunlight):** Vệ tinh hấp thụ nhiệt mặt trời tối đa, nhiệt độ bề mặt ngoài có thể tăng vọt lên $+80^\circ\text{C}$ đến $+100^\circ\text{C}$.
@@ -204,7 +204,7 @@ Một vệ tinh CubeSat là một hệ sinh thái cơ điện tử thu nhỏ, tr
 2. **Tải trọng Sứ mệnh (Payload):** Bộ phận trực tiếp thực hiện mục tiêu khoa học, quan sát hoặc thử nghiệm công nghệ của chuyến bay — đây chính là lý do tồn tại của toàn bộ hệ thống vệ tinh trên quỹ đạo (ví dụ: camera chụp ảnh bề mặt Trái Đất, máy thu tín hiệu hàng hải AIS/ADS-B, cảm biến đo bức xạ hoặc mô-đun quan sát khí tượng).
 
 
-![Kiến trúc hệ thống CubeSat tổng thể](../PTITCube-Figs/png/system.png)
+![Kiến trúc hệ thống CubeSat tổng thể](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/system.png)
 
 > **Lưu ý về phân chia phân hệ:** Theo tài liệu kỹ thuật hệ thống CubeSat tiêu chuẩn, vệ tinh thường được phân tách thành 7 nhóm chức năng (Kết cấu cơ khí, Nguồn điện EPS, Xử lý dữ liệu & điều khiển C&DH, Thông tin liên lạc COM, Xác định & điều khiển hướng ADCS, Điều khiển nhiệt TCS và Tải hữu ích Payload). Trên bộ kit giáo dục **PTITCube 1U**, hệ thống được tổ chức gọn thành **6 Phân hệ Cốt lõi**: các cảm biến giám sát trạng thái và tải trọng nhiệm vụ được gộp chung thành phân hệ **Cảm biến & Tải trọng Sứ mệnh**, còn chức năng **Điều khiển Nhiệt (TCS)** được tích hợp trực tiếp ở dạng thụ động thông qua khung nhôm dẫn nhiệt và giám sát nhiệt độ trên các cảm biến/mạch sạc.
 
@@ -361,7 +361,7 @@ Phân hệ kết cấu cơ khí tạo bộ khung chịu lực, định hình bao
 ### 3.2. Hướng dẫn Tương tác Không gian 3D trên Web LMS
 Trình mô phỏng 3D của CubeSat-LMS được xây dựng trên nền tảng WebGL mượt mà, cho phép người học thao tác không gian đa chiều trực tiếp trên trình duyệt mà không cần cài đặt phần mềm ngoài:
 
-![Thao tác điều khiển mô phỏng 3D WebGL](../PTITCube-Figs/png/lab0_ui_controls.png)
+![Thao tác điều khiển mô phỏng 3D WebGL](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab0_ui_controls.png)
 
 ### 3.3. Quy trình Thực hiện Bài Thực hành Từng bước
 1. **Bước 1 - Khởi động Trình duyệt & Mở Trình Mô phỏng 3D:**

@@ -8,7 +8,7 @@ Phân hệ Năng lượng được ví như "Trái tim" của vệ tinh CubeSat.
 - **Giám sát Năng lượng Thời gian thực (Fuel Gauging):** Đo đạc liên tục điện áp, dòng điện tiêu thụ và phần trăm dung lượng còn lại (State of Charge - SOC) để OBC ra quyết định sa thải phụ tải khi pin yếu.
 - **Cơ chế Cách ly An toàn Phóng (Launch Safety Inhibit):** Đảm bảo vệ tinh hoàn toàn "chết điện" trong suốt quá trình phóng tên lửa cho tới khi được đẩy ra ngoài vũ trụ.
 
-![Kiến trúc hệ thống nguồn điện EPS](../PTITCube-Figs/png/lab2_eps_architecture.png)
+![Kiến trúc hệ thống nguồn điện EPS](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab2_eps_architecture.png)
 
 ### 2. Đặc tính Hóa học và Vận hành của Pin Lithium Polymer (Li-Po)
 Kit vệ tinh PTITCube sử dụng pin sạc **Lithium-ion Polymer (Li-Po)** dạng túi phẳng (Pouch Cell) với các đặc tính kỹ thuật quan trọng:
@@ -30,7 +30,7 @@ $$I_\text{chg} = \frac{1200\text{ V}}{R_\text{prog}}$$
    - Khi điện áp pin đạt chính xác ngưỡng 4.20V, mạch tự động chuyển sang chế độ áp không đổi, giữ điện áp ở mức 4.20V và để dòng điện giảm dần theo hàm mũ.
    - Khi dòng điện giảm xuống dưới $1/10$ dòng sạc định mức ($C/10 \approx 100\text{ mA}$), chip TP4056 ngắt sạc hoàn toàn, đèn chỉ thị đang sạc (`Charging Indicator`) tắt và đèn báo đầy (`Charging End Indicator`) bật sáng.
 
-![Sơ đồ mô-đun sạc và bảo vệ pin Li-Po TP4056A](../PTITCube-Figs/png/Lab2.1_Tp4056.png)
+![Sơ đồ mô-đun sạc và bảo vệ pin Li-Po TP4056A](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab2.1_Tp4056.png)
 
 | Chân / Thành phần trên Mô-đun TP4056A | Hướng / Vai trò | Thông số & Chức năng Kỹ thuật |
 | :--- | :--- | :--- |
@@ -56,7 +56,7 @@ $$V_\text{cell}\text{ (V)} = \text{RegValue} \times 0.000078125\text{ V}$$
 
   - Thanh ghi Tỷ lệ Dung lượng (`SOC` - Địa chỉ `0x04` và `0x05`): Giá trị 16-bit. Byte cao thể hiện phần nguyên phần trăm (0 - 100%), byte thấp thể hiện phần thập phân với độ phân giải $1/256\% \approx 0.0039\%$.
 
-![Sơ đồ chân và cổng kết nối bo mạch giám sát pin MAX17048](../PTITCube-Figs/png/Lab2.1_MAX17048.png)
+![Sơ đồ chân và cổng kết nối bo mạch giám sát pin MAX17048](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab2.1_MAX17048.png)
 
 | Chân / Cổng trên Bo MAX17048 | Loại Giao tiếp | Chức năng Chi tiết |
 | :--- | :--- | :--- |

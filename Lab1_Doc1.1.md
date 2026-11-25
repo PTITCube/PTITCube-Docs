@@ -12,7 +12,7 @@ Các nhiệm vụ sống còn mà OBC đảm nhiệm bao gồm:
 4. **Quản lý Hệ thống Tệp tin & Lưu trữ Dữ liệu Bay (Data Storage & File Management):** Quản lý quá trình ghi tệp dữ liệu cảm biến, hình ảnh viễn thám và nhật ký hành trình bay (Flight Log) lên thẻ nhớ microSD qua giao diện SPI tốc độ cao định dạng FAT32.
 5. **Giám sát Trạng thái & Tự động Phục hồi Lỗi (FDIR - Fault Detection, Isolation, and Recovery):** Theo dõi nhịp tim hệ thống (Heartbeat), duy trì xung làm tươi bộ định thời Watchdog Timer phần cứng (Hardware Watchdog Timer) và kích hoạt quy trình khởi động lại mềm (Soft Reset) hoặc ngắt mở lại nguồn (Power Cycling) khi phát hiện sự cố treo bus do bức xạ không gian.
 
-![Kiến trúc phần cứng OBC ESP32](../PTITCube-Figs/png/lab1_obc_architecture.png)
+![Kiến trúc phần cứng OBC ESP32](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_obc_architecture.png)
 
 ---
 
@@ -38,7 +38,7 @@ Bộ kit vệ tinh giáo dục **PTITCube** lựa chọn vi điều khiển hệ
 
 Trên thực tế, module **ESP32-WROOM-32** thường được tích hợp lên bo mạch phát triển **NodeMCU-32S (chuẩn 38 chân)** để thuận tiện cắm thử nghiệm và tích hợp lên bo chủ OBC của bộ kit PTITCube. Nhờ kiến trúc ma trận chuyển mạch **GPIO Matrix**, hầu hết các chân ngoại vi (PWM, I2C, SPI, UART) có thể được gán linh hoạt, nhưng người thiết kế phải tuân thủ đúng nhóm chức năng vật lý và giới hạn điện áp 3.3V của từng chân.
 
-![Sơ đồ chân đầy đủ của bo mạch ESP32 NodeMCU-32S](../PTITCube-Figs/png/Lab1.1_esp32.png)
+![Sơ đồ chân đầy đủ của bo mạch ESP32 NodeMCU-32S](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab1.1_esp32.png)
 
 #### Bảng Chức năng Các Chân trên Bo mạch ESP32 NodeMCU-32S
 
@@ -62,7 +62,7 @@ Trên thực tế, module **ESP32-WROOM-32** thường được tích hợp lên
 
 Trên vi điều khiển ESP32, có một số chân GPIO đặc biệt được gọi là **Strapping Pins**. Mức logic điện áp tại các chân này được chip lấy mẫu (sample) ngay tại khoảnh khắc xung Reset nhả ra ($0 \to 1$). Mức logic này quyết định chế độ hoạt động của chip:
 
-![Luồng khởi động và chân Strapping Pin ESP32](../PTITCube-Figs/png/lab1_strapping_flow.png)
+![Luồng khởi động và chân Strapping Pin ESP32](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab1_strapping_flow.png)
 
 | Tên Chân GPIO | Chức năng Strapping | Mức Logic Boot Bình thường | Mức Logic Nạp Firmware | Cảnh báo An toàn Thiết kế |
 | :--- | :--- | :--- | :--- | :--- |

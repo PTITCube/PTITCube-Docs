@@ -8,7 +8,7 @@
   - `0x41 - 0x42`: Nhiệt độ nội bộ của chip silicon.
   - `0x43 - 0x48`: Vận tốc góc 3 trục $G_x, G_y, G_z$ (độ nhạy cấu hình ±250, ±500, ±1000, ±2000°/s).
 
-![Sơ đồ chân và trục tọa độ mô-đun IMU MPU6500](../PTITCube-Figs/png/Lab4.2_MPU6500.png)
+![Sơ đồ chân và trục tọa độ mô-đun IMU MPU6500](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab4.2_MPU6500.png)
 
 #### Bảng Chức năng Các Chân trên Bo mạch Cảm biến MPU6500
 
@@ -29,7 +29,7 @@
 - **Nhà sản xuất & Địa chỉ I2C:** QST / Honeywell. Địa chỉ I2C chuẩn là `0x0D` (QMC5883L / QMC5883P) hoặc `0x1E` (HMC5883L).
 - **Cấu trúc Phần cứng:** Tích hợp 3 cảm biến từ điện trở dị hướng (Anisotropic Magnetoresistive - AMR) độ nhạy cao đo cường độ từ trường Trái Đất theo 3 trục trực giao $M_x, M_y, M_z$ (đơn vị Gauss hoặc $\mu\text{T}$) tương ứng với ký hiệu mũi tên trục $X, Y, Z$ trên bo mạch.
 
-![Sơ đồ chân và mặt linh kiện mô-đun từ kế GY-271](../PTITCube-Figs/png/Lab4.2_GY271.png)
+![Sơ đồ chân và mặt linh kiện mô-đun từ kế GY-271](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/Lab4.2_GY271.png)
 
 #### Bảng Chức năng Các Chân trên Bo mạch La bàn số GY-271
 
@@ -61,7 +61,7 @@ $$\theta_t = \alpha \cdot (\theta_{t-1} + \omega \cdot \Delta t) + (1 - \alpha) 
 
   Trong đó: $\Delta t$ là chu kỳ lấy mẫu, $\alpha$ là trọng số lọc (thường chọn $\alpha = 0.96 - 0.98$). Thuật toán chạy siêu nhanh trên vi điều khiển, triệt tiêu hoàn toàn độ trôi của con quay và lọc sạch nhiễu rung lắc của gia tốc kế.
 
-![Bộ lọc bù hợp nhất dữ liệu IMU](../PTITCube-Figs/png/lab4_complementary_filter.png)
+![Bộ lọc bù hợp nhất dữ liệu IMU](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab4_complementary_filter.png)
 
 ---
 

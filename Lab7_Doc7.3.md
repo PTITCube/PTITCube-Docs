@@ -1,6 +1,6 @@
 # Lab 7: Doc 7.3 - Sổ Tay Vận Hành Bay (FOM) & Mô Phỏng Quỹ Đạo LEO 95 Phút
 
-![Chu kỳ quỹ đạo LEO 95 phút và cửa sổ liên lạc Trạm Mặt đất](../PTITCube-Figs/png/lab7_leo_orbit_pass.png)
+![Chu kỳ quỹ đạo LEO 95 phút và cửa sổ liên lạc Trạm Mặt đất](https://raw.githubusercontent.com/PTITCube/PTITCube-Figs/main/png/lab7_leo_orbit_pass.png)
 
 ### 1. Sổ Tay Vận Hành Bay (Flight Operations Manual - FOM)
 Sổ tay FOM là tài liệu quy chuẩn tác chiến dành cho kíp trực điều hành Trạm mặt đất:
